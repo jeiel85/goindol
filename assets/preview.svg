@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e3c58"/>
+      <stop offset="55%" stop-color="#4b7b7c"/>
+      <stop offset="100%" stop-color="#d89c52"/>
+    </linearGradient>
+    <linearGradient id="hud" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d140c"/>
+      <stop offset="100%" stop-color="#110b06"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="960" height="500" fill="url(#sky)"/>
+
+  <!-- Prehistoric Sun -->
+  <circle cx="800" cy="110" r="46" fill="#ffe07d"/>
+  <circle cx="800" cy="110" r="65" fill="#ffe07d" opacity="0.22"/>
+
+  <!-- Distant Mountains -->
+  <polygon points="0,420 180,170 360,420" fill="#2c493e"/>
+  <polygon points="260,420 450,150 640,420" fill="#243d34"/>
+  <polygon points="560,420 760,180 960,420" fill="#2c493e"/>
+
+  <!-- Prehistoric Fern Trees -->
+  <rect x="140" y="240" width="18" height="180" fill="#1b3524"/>
+  <path d="M100,245 A50,45 0 0,1 198,245 Z" fill="#2d633b"/>
+  <rect x="690" y="250" width="18" height="170" fill="#1b3524"/>
+  <path d="M650,255 A50,45 0 0,1 748,255 Z" fill="#2d633b"/>
+
+  <!-- Ground & Platforms -->
+  <rect x="0" y="410" width="960" height="90" fill="#59412c" stroke="#1b130c" stroke-width="4"/>
+  <rect x="0" y="406" width="960" height="14" rx="4" fill="#4ca64c" stroke="#1b130c" stroke-width="3"/>
+
+  <!-- Elevated Ledge -->
+  <rect x="330" y="275" width="230" height="30" rx="6" fill="#59412c" stroke="#1b130c" stroke-width="3"/>
+  <rect x="328" y="272" width="234" height="12" rx="4" fill="#4ca64c" stroke="#1b130c" stroke-width="3"/>
+
+  <!-- Secret Totem Rock -->
+  <rect x="415" y="212" width="58" height="58" rx="10" fill="#7c6d58" stroke="#1a140e" stroke-width="3"/>
+  <text x="444" y="248" font-family="monospace" font-weight="bold" font-size="20" fill="#ffae00" text-anchor="middle">🍖?</text>
+
+  <!-- Exit Dolmen (고인돌) -->
+  <g transform="translate(835, 406)">
+    <rect x="-44" y="-72" width="30" height="72" rx="6" fill="#6d655a" stroke="#231f1b" stroke-width="3"/>
+    <rect x="14" y="-72" width="30" height="72" rx="6" fill="#6d655a" stroke="#231f1b" stroke-width="3"/>
+    <rect x="-66" y="-110" width="132" height="44" rx="12" fill="#877d70" stroke="#231f1b" stroke-width="3"/>
+    <rect x="-52" y="-110" width="42" height="8" fill="#477a3e"/>
+    <text x="0" y="-82" font-family="monospace" font-weight="bold" font-size="14" fill="#ffcf40" text-anchor="middle">★ EXIT OPEN ★</text>
+  </g>
+
+  <!-- Caveman Sam -->
+  <g transform="translate(220, 380)">
+    <!-- Tunic -->
+    <rect x="-18" y="-12" width="36" height="28" rx="6" fill="#e89923" stroke="#000" stroke-width="3"/>
+    <circle cx="-6" cy="-2" r="3.5" fill="#3b2109"/>
+    <circle cx="6" cy="5" r="4" fill="#3b2109"/>
+    <!-- Head -->
+    <rect x="-16" y="-36" width="34" height="26" rx="8" fill="#eab182" stroke="#000" stroke-width="3"/>
+    <!-- Hair -->
+    <polygon points="-18,-26 -12,-42 -2,-37 6,-44 16,-37 20,-28" fill="#3b2212"/>
+    <!-- Eye -->
+    <circle cx="8" cy="-24" r="5" fill="#fff" stroke="#000" stroke-width="2"/>
+    <circle cx="10" cy="-24" r="2.2" fill="#000"/>
+    <!-- Giant Wooden Club -->
+    <g transform="translate(14, -4) rotate(18)">
+      <path d="M0,-4 L46,-15 Q62,-16 62,0 Q62,16 46,15 L0,4 Z" fill="#8c5327" stroke="#000" stroke-width="3"/>
+      <polygon points="42,-14 48,-24 53,-12" fill="#d9d2c5" stroke="#000" stroke-width="2"/>
+    </g>
+    <!-- Impact Wave -->
+    <path d="M55,20 A24,20 0 0,1 100,20" fill="none" stroke="#ffcf40" stroke-width="4"/>
+    <text x="78" y="-25" font-family="monospace" font-weight="bold" font-size="18" fill="#4cd964" text-anchor="middle">쿵! BONK! +500</text>
+  </g>
+
+  <!-- Green Dinosaur -->
+  <g transform="translate(600, 382) scale(-1, 1)">
+    <rect x="-22" y="-10" width="38" height="28" rx="8" fill="#3ca34b" stroke="#000" stroke-width="3"/>
+    <rect x="0" y="-28" width="28" height="20" rx="6" fill="#3ca34b" stroke="#000" stroke-width="3"/>
+    <rect x="-8" y="-2" width="16" height="16" fill="#d4d959"/>
+    <circle cx="16" cy="-18" r="4.5" fill="#fff"/>
+    <circle cx="17" cy="-18" r="2" fill="#000"/>
+  </g>
+
+  <!-- Floating Food Items -->
+  <text x="365" y="255" font-size="28">🍖</text>
+  <text x="515" y="255" font-size="28">🍔</text>
+  <text x="660" y="390" font-size="28">🍎</text>
+
+  <!-- Top HUD -->
+  <rect x="0" y="0" width="960" height="56" fill="url(#hud)"/>
+  <line x1="0" y1="56" x2="960" y2="56" stroke="#6e6252" stroke-width="3"/>
+  <text x="20" y="25" font-family="monospace" font-weight="bold" font-size="15" fill="#f7efe2">HP ❤️❤️❤️❤️❤️</text>
+  <text x="20" y="46" font-family="monospace" font-weight="bold" font-size="14" fill="#ffd166">🪓 x6</text>
+
+  <text x="235" y="22" font-family="monospace" font-weight="bold" font-size="14" fill="#ffae00">🍖 FOOD GAUGE (85%)</text>
+  <rect x="235" y="30" width="230" height="16" fill="#2d2217" stroke="#a39581" stroke-width="2"/>
+  <rect x="237" y="32" width="192" height="12" fill="#4cd964"/>
+
+  <text x="500" y="24" font-family="monospace" font-weight="bold" font-size="14" fill="#f7efe2">STAGE 1/3</text>
+  <text x="500" y="45" font-family="monospace" font-size="13" fill="#4cd964">출구 개방 완료!</text>
+
+  <text x="940" y="24" font-family="monospace" font-weight="bold" font-size="15" fill="#ffcf40" text-anchor="end">SCORE 008450</text>
+  <text x="940" y="45" font-family="monospace" font-weight="bold" font-size="14" fill="#a39581" text-anchor="end">HI 012500</text>
+
+  <!-- Title Badge Overlay -->
+  <g transform="translate(480, 128)">
+    <rect x="-210" y="-36" width="420" height="68" rx="10" fill="#241b13" fill-opacity="0.9" stroke="#ffae00" stroke-width="3"/>
+    <text x="0" y="-2" font-family="monospace" font-weight="bold" font-size="26" fill="#ffae00" text-anchor="middle">🪨 고인돌 : GOINDOL</text>
+    <text x="0" y="21" font-family="monospace" font-size="13" fill="#f7efe2" text-anchor="middle">DOS PREHISTORIK WEB ARCADE EDITION</text>
+  </g>
+</svg>
