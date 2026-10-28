@@ -44,7 +44,7 @@ class GoindolGame {
 
   bindInput() {
     window.addEventListener('keydown', (e) => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Enter'].includes(e.code)) {
         e.preventDefault();
       }
       if (!this.keys[e.code]) {
@@ -56,7 +56,9 @@ class GoindolGame {
         this.startNewGame(0);
       } else if (this.state === 'STAGE_CLEAR' && (e.code === 'Space' || e.code === 'Enter')) {
         this.nextStage();
-      } else if ((this.state === 'GAME_OVER' || this.state === 'VICTORY') && (e.code === 'Space' || e.code === 'Enter')) {
+      } else if (this.state === 'GAME_OVER' && this.gameOverTimer <= 0 && (e.code === 'Space' || e.code === 'Enter')) {
+        this.retryCurrentStage();
+      } else if (this.state === 'VICTORY' && (e.code === 'Space' || e.code === 'Enter')) {
         this.startNewGame(0);
       } else if (e.code === 'KeyP' || e.code === 'Escape') {
         if (this.state === 'PLAYING') {
@@ -78,7 +80,9 @@ class GoindolGame {
         this.startNewGame(0);
       } else if (this.state === 'STAGE_CLEAR') {
         this.nextStage();
-      } else if (this.state === 'GAME_OVER' || this.state === 'VICTORY') {
+      } else if (this.state === 'GAME_OVER' && this.gameOverTimer <= 0) {
+        this.retryCurrentStage();
+      } else if (this.state === 'VICTORY') {
         this.startNewGame(0);
       }
     });
@@ -97,7 +101,11 @@ class GoindolGame {
           this.nextStage();
           return;
         }
-        if (this.state === 'GAME_OVER' || this.state === 'VICTORY') {
+        if (this.state === 'GAME_OVER') {
+          if (this.gameOverTimer <= 0) this.retryCurrentStage();
+          return;
+        }
+        if (this.state === 'VICTORY') {
           this.startNewGame(0);
           return;
         }
@@ -164,6 +172,7 @@ class GoindolGame {
         vy: 0,
         facing: -1,
         hurtTimer: 0,
+        stunTimer: 0,
         actionTimer: 90,
         enraged: false,
         onGround: true
@@ -173,6 +182,7 @@ class GoindolGame {
     }
 
     this.checkpointReached = false;
+    this.gameOverTimer = 0;
 
     this.player = {
       x: this.level.startX,
@@ -194,7 +204,8 @@ class GoindolGame {
       attackTimer: 0,
       attackDuration: 15,
       hasHitThisSwing: false,
-      invulnTimer: 0
+      invulnTimer: 0,
+      knockbackTimer: 0
     };
 
     this.projectiles = [];
@@ -212,6 +223,22 @@ class GoindolGame {
     document.querySelectorAll('[data-stage-btn]').forEach((btn, idx) => {
       btn.classList.toggle('active', idx === stageIndex);
     });
+  }
+
+  retryCurrentStage() {
+    const hadCheckpoint = this.checkpointReached;
+    const savedFood = this.player ? this.player.food : 0;
+    this.loadStage(this.currentStageIdx, true);
+    if (hadCheckpoint && this.level.checkpointX) {
+      this.checkpointReached = true;
+      this.player.x = this.level.checkpointX;
+      this.player.y = (this.level.checkpointY || 420) - 80;
+      this.player.respawnX = this.level.checkpointX;
+      this.player.respawnY = (this.level.checkpointY || 420) - 80;
+      this.player.food = Math.max(savedFood, Math.ceil(this.player.foodGoal * 0.55));
+      this.player.axeAmmo = Math.max(this.player.axeAmmo, 6);
+      this.addFloatingText(this.player.x - 30, this.player.y - 25, '체크포인트에서 재도전!', '#ffcb5c', 60);
+    }
   }
 
   nextStage() {
@@ -253,6 +280,7 @@ class GoindolGame {
   update() {
     this.time++;
     if (this.screenShake > 0) this.screenShake--;
+    if (this.gameOverTimer > 0) this.gameOverTimer--;
 
     if (this.state !== 'PLAYING') {
       this.justPressed = {};
@@ -299,12 +327,15 @@ class GoindolGame {
       p.y += p.standingPlat.dy || 0;
     }
 
-    // Horizontal Movement
+    // Horizontal Movement (preserve knockback velocity while knockbackTimer > 0)
     const moveLeft = this.keys['ArrowLeft'] || this.keys['KeyA'];
     const moveRight = this.keys['ArrowRight'] || this.keys['KeyD'];
     const speed = 4.4;
 
-    if (moveLeft) {
+    if (p.knockbackTimer > 0) {
+      p.knockbackTimer--;
+      p.vx *= 0.92;
+    } else if (moveLeft) {
       p.vx = -speed;
       p.facing = -1;
     } else if (moveRight) {
@@ -405,6 +436,7 @@ class GoindolGame {
       window.soundEngine.playerHurt();
       if (p.hp <= 0) {
         this.state = 'GAME_OVER';
+        this.gameOverTimer = 36;
         window.soundEngine.stopBGM();
         return;
       }
@@ -412,7 +444,7 @@ class GoindolGame {
       p.x = this.checkpointReached ? p.respawnX : Math.max(80, p.x - 200);
       p.y = 180;
       p.vy = 0;
-      p.invulnTimer = 70;
+      p.invulnTimer = 85;
       this.addFloatingText(p.x, p.y, '앗! 낙하 주의!', '#ff3b30', 45);
     }
 
@@ -428,12 +460,12 @@ class GoindolGame {
         this.spawnParticles(hitX, p.y + p.h, '#d6b27c', 8);
       }
 
-      if (!p.hasHitThisSwing && p.attackTimer <= 10 && p.attackTimer >= 4) {
+      if (!p.hasHitThisSwing && p.attackTimer <= 11 && p.attackTimer >= 3) {
         const clubBox = {
-          x: p.facing === 1 ? p.x + p.w - 4 : p.x - 54,
-          y: p.y - 10,
-          w: 58,
-          h: p.h + 18
+          x: p.facing === 1 ? p.x + p.w - 6 : p.x - 66,
+          y: p.y - 12,
+          w: 72,
+          h: p.h + 20
         };
 
         // 1. Check Secret Smashable Spots
@@ -479,7 +511,7 @@ class GoindolGame {
         // 3. Check Boss
         if (this.boss && this.boss.hp > 0 && this.rectsOverlap(clubBox, this.boss)) {
           p.hasHitThisSwing = true;
-          this.damageBoss(2);
+          this.damageBoss(2, p.facing);
         }
       }
     }
@@ -508,7 +540,7 @@ class GoindolGame {
           }
         }
         if (!hit && this.boss && this.boss.hp > 0 && this.rectsOverlap(projBox, this.boss)) {
-          this.damageBoss(1);
+          this.damageBoss(1, Math.sign(proj.vx));
           hit = true;
         }
         if (hit || proj.y > this.height + 40) {
@@ -516,9 +548,9 @@ class GoindolGame {
         }
       } else {
         // Boss shockwave rock
-        const projBox = { x: proj.x - 14, y: proj.y - 14, w: 28, h: 28 };
+        const projBox = { x: proj.x - 12, y: proj.y - 12, w: 24, h: 24 };
         if (this.rectsOverlap(projBox, p)) {
-          this.hurtPlayer();
+          this.hurtPlayer(proj.x);
           this.projectiles.splice(i, 1);
         } else if (proj.y > this.height + 40 || proj.x < 0 || proj.x > this.level.width) {
           this.projectiles.splice(i, 1);
@@ -593,7 +625,7 @@ class GoindolGame {
           p.vy = -10.5;
           this.damageEnemy(e, 1, p.facing);
         } else {
-          this.hurtPlayer();
+          this.hurtPlayer(e.x + e.w / 2);
         }
       }
     }
@@ -602,8 +634,12 @@ class GoindolGame {
     if (this.boss && this.boss.hp > 0) {
       const b = this.boss;
       if (b.hurtTimer > 0) b.hurtTimer--;
+      if (b.stunTimer > 0) {
+        b.stunTimer--;
+      } else {
+        b.x += b.vx;
+      }
 
-      b.x += b.vx;
       if (b.x <= b.minX) {
         b.x = b.minX;
         b.vx = Math.abs(b.vx);
@@ -615,11 +651,11 @@ class GoindolGame {
       }
 
       // Boss Jump & Ground Slam Shockwave
-      b.actionTimer--;
-      if (b.actionTimer <= 0 && b.onGround) {
+      if (b.stunTimer <= 0) b.actionTimer--;
+      if (b.actionTimer <= 0 && b.onGround && b.stunTimer <= 0) {
         b.vy = -12.5;
         b.onGround = false;
-        b.actionTimer = b.enraged ? 80 : 125;
+        b.actionTimer = b.enraged ? 95 : 135;
         window.soundEngine.bossRoar();
       }
 
@@ -634,17 +670,29 @@ class GoindolGame {
           window.soundEngine.groundSlam();
           this.spawnParticles(b.x + b.w / 2, 420, '#ff5e1a', 20);
 
-          // Spawn shockwave rocks left and right
+          // Spawn shockwave rocks left and right with high arc so melee players can react
           const rType = b.rockType || 'rock';
           this.projectiles.push(
-            { type: rType, x: b.x, y: 400, vx: -6.5, vy: -3.5, rot: 0, fromPlayer: false },
-            { type: rType, x: b.x + b.w, y: 400, vx: 6.5, vy: -3.5, rot: 0, fromPlayer: false }
+            { type: rType, x: b.x - 10, y: 392, vx: -5.8, vy: -5.2, rot: 0, fromPlayer: false },
+            { type: rType, x: b.x + b.w + 10, y: 392, vx: 5.8, vy: -5.2, rot: 0, fromPlayer: false }
           );
         }
       }
 
-      if (this.rectsOverlap(p, b)) {
-        this.hurtPlayer();
+      // Forgiving inner hurtbox for boss contact + head stomp support
+      const bossHurtBox = {
+        x: b.x + 18,
+        y: b.y + 14,
+        w: Math.max(40, b.w - 36),
+        h: Math.max(40, b.h - 14)
+      };
+      if (this.rectsOverlap(p, bossHurtBox)) {
+        if (p.vy > 1 && p.y + p.h - p.vy <= b.y + 28) {
+          p.vy = -11.8;
+          this.damageBoss(1, p.facing);
+        } else if (b.stunTimer <= 0) {
+          this.hurtPlayer(b.x + b.w / 2);
+        }
       }
     }
 
@@ -720,11 +768,16 @@ class GoindolGame {
     }
   }
 
-  damageBoss(dmg) {
+  damageBoss(dmg, dir = 0) {
     const b = this.boss;
     if (!b || b.hurtTimer > 0) return;
     b.hp -= dmg;
     b.hurtTimer = 14;
+    if (dmg >= 2) {
+      b.stunTimer = 20;
+      const pushDir = dir || (this.player && this.player.x < b.x + b.w / 2 ? 1 : -1);
+      b.x = Math.max(b.minX, Math.min(b.maxX - b.w, b.x + pushDir * 24));
+    }
     this.screenShake = 9;
     window.soundEngine.enemyBonk();
     this.spawnParticles(b.x + b.w / 2, b.y + b.h / 2, '#ff5e1a', 16);
@@ -733,7 +786,8 @@ class GoindolGame {
 
     if (b.hp <= b.maxHp / 2 && !b.enraged) {
       b.enraged = true;
-      b.vx = Math.sign(b.vx) * 3.6;
+      b.vx = Math.sign(b.vx) * 3.1;
+      b.stunTimer = Math.max(b.stunTimer, 24);
       window.soundEngine.bossRoar();
       this.addFloatingText(b.x, b.y - 25, '맘모스 분노 모드 발동!', '#ff3b30', 65);
     }
@@ -757,13 +811,15 @@ class GoindolGame {
     }
   }
 
-  hurtPlayer() {
+  hurtPlayer(sourceX = null) {
     const p = this.player;
     if (p.invulnTimer > 0) return;
     p.hp--;
-    p.invulnTimer = 65;
-    p.vy = -7.5;
-    p.vx = -p.facing * 5;
+    p.invulnTimer = 85;
+    p.knockbackTimer = 14;
+    p.vy = -7.2;
+    const kbDir = sourceX !== null ? (p.x + p.w / 2 < sourceX ? -1 : 1) : -p.facing;
+    p.vx = kbDir * 6.2;
     this.screenShake = 10;
     window.soundEngine.playerHurt();
     this.spawnParticles(p.x + p.w / 2, p.y + p.h / 2, '#ff3b30', 14);
@@ -771,6 +827,7 @@ class GoindolGame {
 
     if (p.hp <= 0) {
       this.state = 'GAME_OVER';
+      this.gameOverTimer = 36;
       window.soundEngine.stopBGM();
     }
   }
@@ -1067,12 +1124,18 @@ class GoindolGame {
 
       ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
-      ctx.fillText('배고픈 원시인 샘이 쓰러졌습니다...', this.width / 2, my + 155);
+      ctx.fillText(
+        this.checkpointReached
+          ? `STAGE ${this.currentStageIdx + 1} 체크포인트에서 다시 도전할 수 있습니다!`
+          : `STAGE ${this.currentStageIdx + 1} 시작 지점에서 다시 도전할 수 있습니다!`,
+        this.width / 2,
+        my + 155
+      );
       ctx.fillStyle = '#ffcf40';
       ctx.fillText(`SCORE: ${this.score} PTS`, this.width / 2, my + 195);
 
       ctx.fillStyle = '#4cd964';
-      ctx.fillText('▶ PRESS [SPACE / ENTER] OR CLICK TO RETRY ◀', this.width / 2, my + 265);
+      ctx.fillText('▶ PRESS [SPACE / ENTER] OR CLICK TO RETRY STAGE ◀', this.width / 2, my + 265);
     } else if (this.state === 'PAUSED') {
       ctx.font = 'bold 30px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#ffae00';
@@ -1100,6 +1163,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const btnSound = document.getElementById('btnToggleSound');
   if (btnSound) {
     btnSound.addEventListener('click', () => {
+      btnSound.blur();
       const muted = window.soundEngine.toggleMute();
       btnSound.textContent = muted ? '사운드 OFF' : '사운드 ON';
       btnSound.classList.toggle('active', !muted);
@@ -1110,6 +1174,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const crtOverlay = document.getElementById('crtOverlay');
   if (btnCRT && crtOverlay) {
     btnCRT.addEventListener('click', () => {
+      btnCRT.blur();
       crtOverlay.classList.toggle('hidden');
       const isOn = !crtOverlay.classList.contains('hidden');
       btnCRT.textContent = isOn ? 'CRT 필터 ON' : 'CRT 필터 OFF';
@@ -1120,7 +1185,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const btnRestart = document.getElementById('btnRestart');
   if (btnRestart) {
     btnRestart.addEventListener('click', () => {
-      game.loadStage(game.currentStageIdx, true);
+      btnRestart.blur();
+      game.retryCurrentStage();
     });
   }
 
@@ -1128,6 +1194,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const screenWrapper = document.querySelector('.screen-wrapper');
   if (btnFullscreen && screenWrapper) {
     btnFullscreen.addEventListener('click', () => {
+      btnFullscreen.blur();
       if (!document.fullscreenElement) {
         screenWrapper.requestFullscreen().catch(() => {});
       } else {
@@ -1139,6 +1206,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Stage quick jump buttons
   document.querySelectorAll('[data-stage-btn]').forEach((btn) => {
     btn.addEventListener('click', () => {
+      btn.blur();
       const idx = Number(btn.getAttribute('data-stage-btn'));
       game.loadStage(idx, true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
