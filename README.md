@@ -1,26 +1,26 @@
 <div align="center">
 
-# 🪨 고인돌 (GOINDOL : Prehistorik Web Arcade)
+# 🪨 STONE AGE ODYSSEY : 고인돌 (Prehistorik 16-Bit Web Arcade)
 
 **추억의 1991/1993년 DOS 명작 원시인 액션 플랫포머 《고인돌 (Prehistorik)》 웹 아케이드 6대 스테이지 확장판**  
 외부 라이브러리 없이 **HTML5 Canvas 16비트 픽셀 아트, 6종 테마 배경과 Web Audio API 칩튠 신디사이저**로 구현한 브라우저 즉시 실행 게임 & 랜딩 페이지입니다.
 
-[![Live Demo](https://img.shields.io/badge/🕹️_LIVE_DEMO-Play_in_Browser-ffae00?style=for-the-badge&logo=googlechrome&logoColor=black)](https://jeiel85.github.io/goindol/)
+[![Live Demo](https://img.shields.io/badge/🕹️_LIVE_DEMO-Play_in_Browser-ffae00?style=for-the-badge&logo=googlechrome&logoColor=black)](https://jeiel85.github.io/stone-age-odyssey/)
 [![HTML5 Canvas](https://img.shields.io/badge/HTML5-Canvas_2D-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 [![Web Audio API](https://img.shields.io/badge/Audio-Web_Audio_Chiptune-4cd964?style=for-the-badge)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 [![Stages](https://img.shields.io/badge/Campaign-6_Stages_%2B_2_Bosses-ff5e1a?style=for-the-badge)]()
 
 <br />
 
-<img src="./assets/hero_banner.png" alt="고인돌 (Goindol) 16-Bit 아케이드 키 아트" width="860" />
+<img src="./assets/hero_banner.png" alt="Stone Age Odyssey (고인돌) 16-Bit 아케이드 키 아트" width="860" />
 
 <br />
 
-<img src="./assets/gameplay_preview.png" alt="고인돌 (Goindol) 인게임 플레이 화면" width="860" />
+<img src="./assets/gameplay_preview.png" alt="Stone Age Odyssey (고인돌) 인게임 플레이 화면" width="860" />
 
 <br />
 
-👉 **[라이브 데모 바로 플레이하기 (https://jeiel85.github.io/goindol/)](https://jeiel85.github.io/goindol/)** 👈
+👉 **[라이브 데모 바로 플레이하기 (https://jeiel85.github.io/stone-age-odyssey/)](https://jeiel85.github.io/stone-age-odyssey/)** 👈
 
 </div>
 
@@ -79,7 +79,7 @@
 ## 🏗️ 프로젝트 구조 (Project Structure)
 
 ```text
-goindol/
+stone-age-odyssey/
 ├── index.html             # 아케이드 캐비닛 라이브 데모 & 6대 월드맵/도감 랜딩 페이지
 ├── css/
 │   └── style.css          # 레트로 아케이드 테마, 6종 스테이지 카드, CRT 필터, 반응형 터치 UI
@@ -116,8 +116,8 @@ goindol/
 
 ```bash
 # 저장소 클론
-git clone https://github.com/jeiel85/goindol.git
-cd goindol
+git clone https://github.com/jeiel85/stone-age-odyssey.git
+cd stone-age-odyssey
 
 # 브라우저에서 index.html 바로 열기 (또는 로컬 정적 서버 실행)
 npx serve .

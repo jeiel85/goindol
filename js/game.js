@@ -1053,12 +1053,12 @@ class GoindolGame {
       ctx.shadowColor = '#1a100b';
       ctx.shadowOffsetY = 4;
       ctx.shadowBlur = 0;
-      ctx.font = 'bold 42px "Press Start 2P", "DungGeunMo", monospace';
+      ctx.font = 'bold 36px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#ffcb5c';
-      ctx.fillText('고인돌 : GOINDOL', this.width / 2, 78);
+      ctx.fillText('STONE AGE ODYSSEY', this.width / 2, 76);
       ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
-      ctx.fillText('6개 스테이지 확장판 · 원시인 액션 어드벤처', this.width / 2, 111);
+      ctx.fillText('고인돌 (PREHISTORIK) · 6개 스테이지 원시 대모험', this.width / 2, 111);
       ctx.font = '13px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillText('이동: ← → / 점프: SPACE / 몽둥이: X / 돌도끼: C', this.width / 2, this.height - 72);
       if (Math.floor(this.time / 25) % 2 === 0) {
