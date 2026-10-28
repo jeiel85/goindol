@@ -45,10 +45,10 @@ const LEVELS = [
       { x: 2455, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 315, y: 256, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '🍖', '🍎'] },
-      { x: 1210, y: 246, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🧀', '💎'] },
-      { x: 2300, y: 241, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '🪓', '🍖'] },
-      { x: 2930, y: 241, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '❤️', '🍔'] }
+      { x: 315, y: 256, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '🛡️', '🍎'] },
+      { x: 1210, y: 246, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🧲', '💎'] },
+      { x: 2300, y: 241, w: 54, h: 54, hitsLeft: 3, rewards: ['🌶️', '🪓', '🍖'] },
+      { x: 2930, y: 241, w: 54, h: 54, hitsLeft: 3, rewards: ['👑', '❤️', '🍔'] }
     ],
     foods: [
       { x: 280, y: 270, emoji: '🍎', food: 12, score: 150 },
@@ -117,10 +117,10 @@ const LEVELS = [
       { x: 2535, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 560, y: 151, w: 54, h: 54, hitsLeft: 3, rewards: ['🐟', '🍔', '🪓'] },
-      { x: 1230, y: 236, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '🐟', '🍖'] },
-      { x: 2380, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '❤️', '🪓'] },
-      { x: 3020, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🐟', '💎', '🍔'] }
+      { x: 560, y: 151, w: 54, h: 54, hitsLeft: 3, rewards: ['🐟', '⚡', '🪓'] },
+      { x: 1230, y: 236, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '🛡️', '🍖'] },
+      { x: 2380, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🧲', '❤️', '🪓'] },
+      { x: 3020, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['👑', '💣', '🍔'] }
     ],
     foods: [
       { x: 280, y: 255, emoji: '🐟', food: 20, score: 280 },
@@ -188,10 +188,10 @@ const LEVELS = [
       { x: 2150, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 570, y: 146, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🍔', '💎'] },
-      { x: 1250, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍔', '❤️'] },
-      { x: 1990, y: 226, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '🍖', '🍔'] },
-      { x: 3170, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '❤️', '🍔'] }
+      { x: 570, y: 146, w: 54, h: 54, hitsLeft: 3, rewards: ['🌶️', '🍔', '💎'] },
+      { x: 1250, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🛡️', '❤️'] },
+      { x: 1990, y: 226, w: 54, h: 54, hitsLeft: 3, rewards: ['💣', '🍖', '🧲'] },
+      { x: 3170, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['👑', '❤️', '⚡'] }
     ],
     foods: [
       { x: 280, y: 250, emoji: '🧀', food: 16, score: 200 },
@@ -256,10 +256,10 @@ const LEVELS = [
       { x: 3270, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 600, y: 141, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '🐟', '🪓'] },
-      { x: 1610, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '❤️', '🍨'] },
-      { x: 2590, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🐟', '❤️'] },
-      { x: 3110, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍔', '🍖'] }
+      { x: 600, y: 141, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '🛡️', '🪓'] },
+      { x: 1610, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '❤️', '⚡'] },
+      { x: 2590, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['🌶️', '🛡️', '❤️'] },
+      { x: 3110, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['💣', '👑', '🍖'] }
     ],
     foods: [
       { x: 310, y: 250, emoji: '🍨', food: 25, score: 400 },
@@ -292,11 +292,83 @@ const LEVELS = [
   },
 
   // =========================================================================
-  // STAGE 5: 용암 화구 성채 (Magma Caldera Fortress)
+  // STAGE 5: 메마른 공룡 사막과 고대 유적 (Bone Desert & Sandstorm Ruins)
   // =========================================================================
   {
     id: 5,
-    name: 'STAGE 5: 용암 화구 성채 (Magma Fortress)',
+    name: 'STAGE 5: 메마른 공룡 사막 (Bone Desert Ruins)',
+    theme: 'desert',
+    bgm: 'desert',
+    width: 3700,
+    foodGoal: 145,
+    startX: 90,
+    startY: 360,
+    checkpointX: 1840,
+    checkpointY: 420,
+    exitX: 3520,
+    exitY: 420,
+    platforms: [
+      { x: 0, y: 420, w: 760, h: 120, type: 'ground' },
+      { x: 1120, y: 420, w: 860, h: 120, type: 'ground' },
+      { x: 2340, y: 420, w: 580, h: 120, type: 'ground' },
+      { x: 3040, y: 420, w: 660, h: 120, type: 'ground' },
+
+      // Crumbling Ancient Sandstone Bridges over Quicksand Chasms
+      { x: 800, y: 390, w: 130, h: 24, type: 'crumble' },
+      { x: 960, y: 365, w: 130, h: 24, type: 'crumble' },
+      { x: 2020, y: 380, w: 130, h: 24, type: 'crumble' },
+      { x: 2180, y: 355, w: 130, h: 24, type: 'crumble' },
+
+      // Moving Sandstone Slab
+      { x: 2925, y: 320, w: 110, h: 26, type: 'moving', vy: 2.1, minY: 200, maxY: 390 },
+
+      // Fossil Canyon Ledges
+      { x: 250, y: 295, w: 200, h: 28, type: 'ledge' },
+      { x: 520, y: 195, w: 200, h: 28, type: 'ledge' },
+      { x: 1220, y: 285, w: 220, h: 28, type: 'ledge' },
+      { x: 1520, y: 185, w: 220, h: 28, type: 'ledge' },
+      { x: 2420, y: 285, w: 220, h: 28, type: 'ledge' },
+      { x: 2680, y: 190, w: 200, h: 28, type: 'ledge' },
+      { x: 3140, y: 280, w: 220, h: 28, type: 'ledge' },
+
+      // Bouncy Desert Mushrooms
+      { x: 460, y: 388, w: 48, h: 32, type: 'spring' },
+      { x: 1455, y: 388, w: 48, h: 32, type: 'spring' },
+      { x: 2620, y: 388, w: 48, h: 32, type: 'spring' }
+    ],
+    secretSpots: [
+      { x: 580, y: 141, w: 54, h: 54, hitsLeft: 3, rewards: ['🌶️', '🍗', '🧲'] },
+      { x: 1590, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['👑', '🛡️', '🪓'] },
+      { x: 2490, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['⚡', '🍔', '💣'] },
+      { x: 3210, y: 226, w: 54, h: 54, hitsLeft: 3, rewards: ['👑', '❤️', '🍗'] }
+    ],
+    foods: [
+      { x: 290, y: 250, emoji: '🍖', food: 22, score: 300 },
+      { x: 850, y: 340, emoji: '⚡', food: 15, score: 450, buff: 'speed' },
+      { x: 1280, y: 240, emoji: '🍔', food: 25, score: 350 },
+      { x: 1360, y: 240, emoji: '🧲', food: 15, score: 450, buff: 'magnet' },
+      { x: 2070, y: 330, emoji: '💎', food: 25, score: 800 },
+      { x: 2730, y: 145, emoji: '👑', food: 35, score: 1500 },
+      { x: 3180, y: 375, emoji: '🍗', food: 25, score: 350 }
+    ],
+    enemies: [
+      { x: 360, y: 380, type: 'saber', minX: 180, maxX: 720, speed: 3.1, hp: 2 },
+      { x: 920, y: 155, type: 'ptero', minX: 720, maxX: 1350, speed: 2.8, hp: 1 },
+      { x: 1300, y: 380, type: 'boar', minX: 1140, maxX: 1780, speed: 3.2, hp: 2 },
+      { x: 1620, y: 380, type: 'dino', minX: 1180, maxX: 1940, speed: 2.8, hp: 2 },
+      { x: 2460, y: 380, type: 'lava_dino', minX: 2360, maxX: 2880, speed: 2.9, hp: 3 },
+      { x: 2700, y: 145, type: 'ptero', minX: 2340, maxX: 2920, speed: 2.9, hp: 1 },
+      { x: 3180, y: 380, type: 'saber', minX: 3060, maxX: 3480, speed: 3.3, hp: 2 }
+    ],
+    boss: null
+  },
+
+  // =========================================================================
+  // STAGE 6: 용암 화구 성채 (Magma Caldera Fortress)
+  // =========================================================================
+  {
+    id: 6,
+    name: 'STAGE 6: 용암 화구 성채 (Magma Fortress)',
     theme: 'volcano',
     bgm: 'volcano',
     width: 3800,
@@ -335,19 +407,19 @@ const LEVELS = [
       { x: 3220, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 570, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🍗', '🍔', '🪓'] },
-      { x: 1520, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '❤️', '🍗'] },
-      { x: 2340, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍗', '🍔'] },
-      { x: 3060, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['❤️', '💎', '🍗'] },
-      { x: 3350, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '🪓', '🍖'] }
+      { x: 570, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🌶️', '🍔', '🪓'] },
+      { x: 1520, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '🛡️', '🍗'] },
+      { x: 2340, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['💣', '🍗', '🧲'] },
+      { x: 3060, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['❤️', '👑', '🍗'] },
+      { x: 3350, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['⚡', '🪓', '🍖'] }
     ],
     foods: [
       { x: 290, y: 245, emoji: '🍗', food: 25, score: 350 },
       { x: 880, y: 305, emoji: '🍔', food: 25, score: 350 },
-      { x: 1220, y: 240, emoji: '🍗', food: 25, score: 350 },
+      { x: 1220, y: 240, emoji: '🌶️', food: 20, score: 500, buff: 'fury' },
       { x: 1300, y: 240, emoji: '🪓', food: 5, score: 250, axeAmmo: 6 },
       { x: 2080, y: 240, emoji: '🍗', food: 25, score: 350 },
-      { x: 2680, y: 290, emoji: '💎', food: 25, score: 800 },
+      { x: 2680, y: 290, emoji: '👑', food: 35, score: 1500 },
       { x: 3150, y: 375, emoji: '🍔', food: 25, score: 350 },
       { x: 3450, y: 375, emoji: '🍗', food: 25, score: 350 }
     ],
@@ -365,11 +437,88 @@ const LEVELS = [
   },
 
   // =========================================================================
-  // STAGE 6: 대고인돌 제단 - 거대 맘모스 대왕 최종 결전 (Final Boss Arena)
+  // STAGE 7: 천공의 부유 거석 유적 (Sky Megalith Floating Ruins)
   // =========================================================================
   {
-    id: 6,
-    name: 'STAGE 6: 대고인돌 제단 - 맘모스 대왕 최종 결전',
+    id: 7,
+    name: 'STAGE 7: 천공의 부유 거석 유적 (Sky Megalith Ruins)',
+    theme: 'sky',
+    bgm: 'sky',
+    width: 3800,
+    foodGoal: 155,
+    startX: 90,
+    startY: 360,
+    checkpointX: 1880,
+    checkpointY: 420,
+    exitX: 3600,
+    exitY: 420,
+    platforms: [
+      { x: 0, y: 420, w: 680, h: 120, type: 'ground' },
+      { x: 1120, y: 420, w: 920, h: 120, type: 'ground' },
+      { x: 2480, y: 420, w: 1320, h: 120, type: 'ground' },
+
+      // Floating Cloud-Stone Bridges & Crumbling Sky Slabs
+      { x: 730, y: 375, w: 140, h: 26, type: 'moving', vx: 2.6, minX: 700, maxX: 1090 },
+      { x: 2090, y: 365, w: 140, h: 26, type: 'moving', vx: 2.7, minX: 2060, maxX: 2450 },
+      { x: 920, y: 260, w: 130, h: 24, type: 'crumble' },
+      { x: 2240, y: 250, w: 130, h: 24, type: 'crumble' },
+
+      // High-Altitude Sky Temple Ledges
+      { x: 240, y: 290, w: 200, h: 28, type: 'ledge' },
+      { x: 500, y: 185, w: 200, h: 28, type: 'ledge' },
+      { x: 1240, y: 280, w: 220, h: 28, type: 'ledge' },
+      { x: 1540, y: 180, w: 230, h: 28, type: 'ledge' },
+      { x: 2620, y: 275, w: 220, h: 28, type: 'ledge' },
+      { x: 3120, y: 275, w: 220, h: 28, type: 'ledge' },
+
+      // Bouncy Sky Mushrooms
+      { x: 440, y: 388, w: 48, h: 32, type: 'spring' },
+      { x: 1475, y: 388, w: 48, h: 32, type: 'spring' },
+      { x: 2550, y: 388, w: 48, h: 32, type: 'spring' },
+      { x: 3370, y: 388, w: 48, h: 32, type: 'spring' }
+    ],
+    secretSpots: [
+      { x: 560, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['⚡', '🍨', '🛡️'] },
+      { x: 1610, y: 126, w: 54, h: 54, hitsLeft: 3, rewards: ['👑', '🧲', '❤️'] },
+      { x: 2690, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['🌶️', '🪓', '💣'] },
+      { x: 3190, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['👑', '🍗', '❤️'] }
+    ],
+    foods: [
+      { x: 290, y: 245, emoji: '🍨', food: 28, score: 450 },
+      { x: 960, y: 215, emoji: '👑', food: 35, score: 1500 },
+      { x: 1310, y: 235, emoji: '🍔', food: 25, score: 350 },
+      { x: 1390, y: 235, emoji: '⚡', food: 15, score: 450, buff: 'speed' },
+      { x: 2280, y: 205, emoji: '🛡️', food: 15, score: 500, buff: 'shield' },
+      { x: 2920, y: 375, emoji: '🍗', food: 25, score: 350 }
+    ],
+    enemies: [
+      { x: 360, y: 380, type: 'saber', minX: 180, maxX: 650, speed: 3.2, hp: 2 },
+      { x: 820, y: 150, type: 'ptero', minX: 640, maxX: 1200, speed: 3.0, hp: 1 },
+      { x: 1320, y: 380, type: 'lava_dino', minX: 1140, maxX: 1820, speed: 3.0, hp: 3 },
+      { x: 1680, y: 145, type: 'ptero', minX: 1300, maxX: 2020, speed: 3.1, hp: 1 },
+      { x: 2200, y: 140, type: 'ptero', minX: 2000, maxX: 2560, speed: 3.1, hp: 1 }
+    ],
+    boss: {
+      name: '천공의 수호자 : 고대 설원 맘모스 (SKY GUARDIAN)',
+      spriteType: 'frost_boss',
+      rockType: 'ice_rock',
+      x: 3050,
+      y: 310,
+      w: 115,
+      h: 110,
+      hp: 18,
+      maxHp: 18,
+      minX: 2540,
+      maxX: 3360
+    }
+  },
+
+  // =========================================================================
+  // STAGE 8: 대고인돌 제단 - 거대 맘모스 대왕 최종 결전 (Final Boss Arena)
+  // =========================================================================
+  {
+    id: 8,
+    name: 'STAGE 8: 대고인돌 제단 - 맘모스 대왕 최종 결전',
     theme: 'boss',
     bgm: 'boss',
     width: 1500,
@@ -389,14 +538,14 @@ const LEVELS = [
       { x: 1390, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 230, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '❤️', '🍗'] },
-      { x: 720, y: 201, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍔', '❤️'] },
-      { x: 1210, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '💎', '🍖'] }
+      { x: 230, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🌶️', '❤️', '🛡️'] },
+      { x: 720, y: 201, w: 54, h: 54, hitsLeft: 3, rewards: ['💣', '👑', '❤️'] },
+      { x: 1210, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['⚡', '💎', '🍖'] }
     ],
     foods: [
       { x: 460, y: 125, emoji: '🪓', food: 10, score: 250, axeAmmo: 6 },
-      { x: 520, y: 125, emoji: '🍗', food: 25, score: 350 },
-      { x: 735, y: 125, emoji: '🍔', food: 25, score: 350 }
+      { x: 520, y: 125, emoji: '🌶️', food: 20, score: 500, buff: 'fury' },
+      { x: 735, y: 125, emoji: '🛡️', food: 20, score: 500, buff: 'shield' }
     ],
     enemies: [
       { x: 520, y: 110, type: 'ptero', minX: 180, maxX: 1320, speed: 2.7, hp: 1 },
@@ -410,8 +559,8 @@ const LEVELS = [
       y: 310,
       w: 115,
       h: 110,
-      hp: 24,
-      maxHp: 24,
+      hp: 26,
+      maxHp: 26,
       minX: 160,
       maxX: 1240
     }

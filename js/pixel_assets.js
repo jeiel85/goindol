@@ -9,7 +9,9 @@
     swamp: 'bg_swamp.png',
     cave: 'bg_cave.png',
     ice: 'bg_ice.png',
+    desert: 'bg_desert.png',
     volcano: 'bg_volcano.png',
+    sky: 'bg_sky.png',
     boss: 'bg_boss.png',
     hero: 'hero_banner.png',
     worldMap: 'world_map.png'
@@ -444,6 +446,39 @@
         poly(c, [[8,1],[14,5],[12,13],[8,15],[4,13],[2,5]], '#ff9d1a');
         poly(c, [[8,3],[12,6],[10,11],[6,11],[4,6]], '#ffe680', null);
         rect(c, 7,5, 2, 3, '#ffffff');
+      } else if (kind === 'chili') {
+        poly(c, [[3,12],[6,6],[11,3],[14,5],[12,10],[7,14]], '#e62e25');
+        rect(c, 6,7, 3, 2, '#ff9478');
+        rect(c, 12,2, 2, 3, '#4ab547');
+      } else if (kind === 'shield') {
+        poly(c, [[8,1],[14,4],[13,11],[8,15],[3,11],[2,4]], '#2e9e6b');
+        poly(c, [[8,3],[12,5],[11,10],[8,13],[5,10],[4,5]], '#64e3a1', null);
+        rect(c, 7,5, 2, 5, '#ffe07d');
+      } else if (kind === 'magnet') {
+        poly(c, [[3,3],[7,3],[7,9],[9,9],[9,3],[13,3],[13,11],[10,14],[6,14],[3,11]], '#d9383a');
+        rect(c, 3,3, 4, 3, '#c7d4e0'); rect(c, 9,3, 4, 3, '#c7d4e0');
+      } else if (kind === 'feather') {
+        poly(c, [[3,13],[7,5],[13,1],[14,5],[10,11],[5,14]], '#ffcf33');
+        rect(c, 7,6, 4, 3, '#fff7b8');
+      } else if (kind === 'bomb') {
+        poly(c, [[4,6],[8,4],[12,6],[14,10],[12,14],[4,14],[2,10]], '#2e2b36');
+        rect(c, 5,7, 3, 3, '#6e687d');
+        rect(c, 8,2, 2, 3, '#d49a59');
+        rect(c, 10,1, 3, 2, '#ff6a26');
+      } else if (kind === 'golden_egg') {
+        poly(c, [[8,1],[12,4],[14,9],[12,14],[4,14],[2,9],[4,4]], '#f5b027');
+        rect(c, 5,4, 4, 5, '#ffe885');
+        speckle(c, [[6,10],[10,8],[9,12]], '#d47a19');
+      } else if (kind === 'spear_proj') {
+        rect(c, 1,7, 10, 2, '#9e6236');
+        poly(c, [[10,4],[15,8],[10,12]], '#dce8f2');
+      } else if (kind === 'hammer_proj') {
+        rect(c, 2,7, 8, 2, '#8c4f27');
+        poly(c, [[8,2],[14,2],[15,14],[8,14]], '#8c8f99');
+        rect(c, 9,4, 4, 4, '#c7ced6');
+      } else if (kind === 'fireball_proj') {
+        poly(c, [[2,8],[6,3],[12,3],[15,8],[12,13],[6,13]], '#ff551a');
+        poly(c, [[5,8],[8,5],[13,6],[13,10],[8,11]], '#ffdf4d', null);
       }
     });
   }
@@ -517,6 +552,20 @@
         poly(c, [[1,2],[62,2],[60,9],[54,13],[48,9],[32,13],[22,9],[12,13],[4,9]], '#74b9eb');
         rect(c, 2,2, 60, 3, '#e8f7ff');
         rect(c, 8,5, 48, 2, '#a9d8fa');
+      } else if (theme === 'desert') {
+        // Ancient Sandstone & Bone Slab
+        poly(c, [[1,2],[62,2],[60,12],[4,12]], '#b87d3e');
+        rect(c, 2,2, 60, 3, '#f2c97d');
+        for (let x = 8; x < 56; x += 14) {
+          rect(c, x, 6, 8, 3, '#fff0d4');
+        }
+      } else if (theme === 'sky') {
+        // Golden Cloud-Rune Floating Altar Slab
+        poly(c, [[1,2],[62,2],[59,12],[5,12]], '#5c789e');
+        rect(c, 2,2, 60, 3, '#f7d560');
+        for (let x = 10; x < 56; x += 12) {
+          rect(c, x, 6, 6, 3, '#64f5ff');
+        }
       } else {
         // Carved Obsidian & Glowing Magma Rune Slab
         poly(c, [[1,2],[62,2],[60,12],[4,12]], '#3d2c35');
@@ -529,6 +578,20 @@
     });
   }
 
+  // Crumbling Ancient Slab Platform Sprite per Biome
+  function crumblePlatform(theme = 'jungle') {
+    return canvas(64, 14, c => {
+      const topCol = theme === 'ice' ? '#bce6ff' : theme === 'desert' ? '#f5cf87' : theme === 'sky' ? '#ffe680' : '#b89f7d';
+      const bodyCol = theme === 'ice' ? '#4f82ad' : theme === 'desert' ? '#9e6330' : theme === 'sky' ? '#4d658c' : '#6e5a4f';
+      poly(c, [[1,2],[62,2],[59,12],[54,9],[47,13],[38,9],[31,13],[22,9],[14,13],[5,11]], bodyCol);
+      rect(c, 2,2, 60, 3, topCol);
+      // Deep warning fault cracks across slab
+      poly(c, [[18,2],[21,7],[19,12]], ink);
+      poly(c, [[42,2],[39,7],[43,12]], ink);
+      rect(c, 29,4, 6, 2, '#ff7b29');
+    });
+  }
+
   function tile(theme) {
     return canvas(16, 16, c => {
       const palettes = {
@@ -536,7 +599,9 @@
         swamp:   ['#24332c','#394f43','#597865','#3b8f6e','#76e0b8'],
         cave:    ['#332b41','#51435c','#77647d','#725c87','#dd643f'],
         ice:     ['#2a4466','#436894','#749ec9','#b8d8f8','#ffffff'],
+        desert:  ['#54331c','#875429','#ba7c3d','#deb059','#fff1bd'],
         volcano: ['#26191b','#472926','#6e3c32','#b84627','#ff9d3b'],
+        sky:     ['#2a3954','#465f87','#7192bf','#d9b650','#fff3b0'],
         boss:    ['#29272c','#4d3b3b','#795149','#9a4735','#ef6a37']
       };
       const colors = palettes[theme] || palettes.jungle;
@@ -555,9 +620,13 @@
 
   const sprites = {
     sam: { idle: [sam('idle', 0), sam('idle', 1)], run: [0,1,2,3].map(i => sam('run', i)), jump: sam('jump'), fall: sam('fall'), windup: sam('windup'), attack: sam('attack'), hurt: sam('hurt') },
+    uga: { idle: [sam('idle', 0), sam('idle', 1)], run: [0,1,2,3].map(i => sam('run', i)), jump: sam('jump'), fall: sam('fall'), windup: sam('windup'), attack: sam('attack'), hurt: sam('hurt') },
+    brok: { idle: [sam('idle', 0), sam('idle', 1)], run: [0,1,2,3].map(i => sam('run', i)), jump: sam('jump'), fall: sam('fall'), windup: sam('windup'), attack: sam('attack'), hurt: sam('hurt') },
+    tara: { idle: [sam('idle', 0), sam('idle', 1)], run: [0,1,2,3].map(i => sam('run', i)), jump: sam('jump'), fall: sam('fall'), windup: sam('windup'), attack: sam('attack'), hurt: sam('hurt') },
     dino: { walk: [dinosaur(0, false, 'green'), dinosaur(1, false, 'green')], stunned: dinosaur(0, true, 'green') },
     lava_dino: { walk: [dinosaur(0, false, 'lava'), dinosaur(1, false, 'lava')], stunned: dinosaur(0, true, 'lava') },
     croc: { walk: [croc(0, false), croc(1, false)], stunned: croc(0, true) },
+    gator: { walk: [croc(0, false), croc(1, false)], stunned: croc(0, true) },
     saber: { walk: [saber(0, false), saber(1, false)], stunned: saber(0, true) },
     boar: { walk: [boar(0), boar(1)], stunned: boar(0, true) },
     ptero: { fly: [ptero(0), ptero(1)] },
@@ -566,23 +635,28 @@
   };
 
   const items = {};
-  ['heart','emptyHeart','axe','rock','ice_rock','meat','apple','banana','cheese','burger','icecream','fish','roast','amber'].forEach(key => { items[key] = icon(key); });
+  ['heart','emptyHeart','axe','rock','ice_rock','spear_proj','hammer_proj','fireball_proj','meat','apple','banana','cheese','burger','icecream','fish','roast','amber','chili','shield','magnet','feather','bomb','golden_egg'].forEach(key => { items[key] = icon(key); });
   Object.entries({
     '❤️':'heart', '❤':'heart', '🖤':'emptyHeart',
     '🪓':'axe', '🪨':'rock', '❄️':'ice_rock',
+    '🔱':'spear_proj', '🔨':'hammer_proj', '🔥':'fireball_proj',
     '🍖':'meat', '🍎':'apple', '🍌':'banana', '🧀':'cheese', '🍔':'burger', '🍨':'icecream',
-    '🐟':'fish', '🍗':'roast', '💎':'amber'
+    '🐟':'fish', '🍗':'roast', '💎':'amber',
+    '🌶️':'chili', '🌶':'chili', '🛡️':'shield', '🛡':'shield',
+    '🧲':'magnet', '⚡':'feather', '💣':'bomb', '👑':'golden_egg'
   }).forEach(([symbol, key]) => { items[symbol] = items[key]; });
 
-  const themes = ['jungle', 'swamp', 'cave', 'ice', 'volcano', 'boss'];
+  const themes = ['jungle', 'swamp', 'cave', 'ice', 'desert', 'volcano', 'sky', 'boss'];
   const totemByTheme = {};
   const mushroomByTheme = {};
   const movingByTheme = {};
+  const crumbleByTheme = {};
   const tiles = {};
   themes.forEach(t => {
     totemByTheme[t] = [totem(0, t), totem(1, t), totem(2, t)];
     mushroomByTheme[t] = mushroom(t);
     movingByTheme[t] = movingPlatform(t);
+    crumbleByTheme[t] = crumblePlatform(t);
     tiles[t] = tile(t);
   });
 
@@ -592,7 +666,8 @@
     totemByTheme,
     mushroom: mushroomByTheme.jungle,
     mushroomByTheme,
-    movingByTheme
+    movingByTheme,
+    crumbleByTheme
   };
 
   function draw(ctx, asset, x, y, w = asset.width, h = asset.height) {
@@ -853,5 +928,89 @@
   };
   sheetProps.src = 'assets/props_sheet.png';
 
-  window.PixelAssets = { images, sprites, items, environment, tiles, draw };
+  // Load 16-bit Heroes Sheet (uga, brok, tara - 128x112 each)
+  const sheetHeroes = new Image();
+  sheetHeroes.onload = () => {
+    const hFrames = sliceGridFrames(sheetHeroes, 3, 128, 112);
+    const heroDefs = [
+      { key: 'uga', arcPrimary: '#47f5ff', arcSecondary: '#ffffff' },
+      { key: 'brok', arcPrimary: '#ff881a', arcSecondary: '#ffe866' },
+      { key: 'tara', arcPrimary: '#d946ef', arcSecondary: '#67e8f9' }
+    ];
+    heroDefs.forEach((def, idx) => {
+      const base = hFrames[idx];
+      if (!base) return;
+
+      const makePose = (dx, dy, scaleW, scaleH, effectMode) => {
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 112;
+        const ctx = c.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(base, 0, 0, 128, 112, dx, dy, scaleW, scaleH);
+
+        if (effectMode === 'attack') {
+          // Draw crisp 16-bit weapon slash / spear thrust / magic burst arc in front of hero
+          ctx.fillStyle = def.arcPrimary;
+          ctx.beginPath();
+          ctx.moveTo(76, 22);
+          ctx.quadraticCurveTo(124, 48, 116, 92);
+          ctx.quadraticCurveTo(100, 62, 76, 22);
+          ctx.fill();
+
+          ctx.fillStyle = def.arcSecondary;
+          ctx.beginPath();
+          ctx.moveTo(86, 30);
+          ctx.quadraticCurveTo(120, 52, 112, 84);
+          ctx.quadraticCurveTo(100, 58, 86, 30);
+          ctx.fill();
+        }
+        return c;
+      };
+
+      const idle0 = base;
+      const idle1 = makePose(0, 2, 128, 110, null);
+      const run0 = makePose(3, -3, 124, 112, null);
+      const run1 = makePose(-2, 1, 126, 110, null);
+      const jump0 = makePose(0, -5, 126, 112, null);
+      const windup = makePose(-4, -2, 126, 112, null);
+      const attack = makePose(6, 1, 122, 111, 'attack');
+
+      sprites[def.key] = {
+        idle: [idle0, idle1],
+        run: [run0, idle0, run1, idle1],
+        jump: jump0,
+        fall: jump0,
+        hurt: windup,
+        windup,
+        attack
+      };
+    });
+    refreshBestiaryDom();
+  };
+  sheetHeroes.src = 'assets/heroes_sheet.png';
+
+  // Load 16-bit Power-Up Items Sheet (chili, shield, magnet, feather, bomb, golden_egg - 64x64 each)
+  const sheetPowerups = new Image();
+  sheetPowerups.onload = () => {
+    const pFrames = sliceGridFrames(sheetPowerups, 6, 64, 64);
+    const powerDefs = [
+      { key: 'chili', emojis: ['🌶️', '🌶'] },
+      { key: 'shield', emojis: ['🛡️', '🛡'] },
+      { key: 'magnet', emojis: ['🧲'] },
+      { key: 'feather', emojis: ['⚡'] },
+      { key: 'bomb', emojis: ['💣'] },
+      { key: 'golden_egg', emojis: ['👑'] }
+    ];
+    powerDefs.forEach((def, idx) => {
+      const iconCanvas = pFrames[idx];
+      if (!iconCanvas) return;
+      items[def.key] = iconCanvas;
+      def.emojis.forEach((em) => { items[em] = iconCanvas; });
+    });
+    refreshItemsDom();
+  };
+  sheetPowerups.src = 'assets/powerups_sheet.png';
+
+  window.PixelAssets = { images, sprites, items, environment, tiles, draw, refreshBestiaryDom, refreshItemsDom };
 })();

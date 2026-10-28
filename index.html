@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STONE AGE ODYSSEY : 고인돌 (Prehistorik 16-Bit Arcade)</title>
-  <meta name="description" content="추억의 DOS 명작 액션 플랫포머 고인돌(Prehistorik)을 6개 스테이지 확장판과 16비트 픽셀아트, Web Audio 칩튠 사운드로 완벽 재현한 Stone Age Odyssey 웹 게임 데모입니다." />
+  <title>STONE AGE ODYSSEY : 고인돌 (Prehistorik 16-Bit Arcade · 8 Stages & 4 Heroes)</title>
+  <meta name="description" content="추억의 DOS 명작 액션 플랫포머 고인돌(Prehistorik)을 8개 스테이지 확장판, 4명의 플레이어블 영웅, 6종 파워업 유물, 16비트 픽셀아트, Web Audio 칩튠 사운드로 완벽 재현한 Stone Age Odyssey 웹 게임입니다." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -17,13 +17,13 @@
     <div class="nav-container">
       <a href="#" class="brand">
         <span>고인돌 <small>STONE AGE ODYSSEY</small></span>
-        <span class="brand-badge">6 STAGES EXPANDED</span>
+        <span class="brand-badge">8 STAGES · 4 HEROES</span>
       </a>
       <ul class="nav-links">
         <li><a href="#play">게임 플레이</a></li>
-        <li><a href="#stages">6대 월드맵</a></li>
+        <li><a href="#stages">8대 월드맵</a></li>
         <li><a href="#features">핵심 기믹</a></li>
-        <li><a href="#bestiary">몬스터 & 식량 도감</a></li>
+        <li><a href="#bestiary">영웅 & 몬스터 도감</a></li>
         <li><a href="https://github.com/jeiel85/stone-age-odyssey" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
     </div>
@@ -32,10 +32,10 @@
   <!-- Main Arcade Live Demo Section -->
   <main id="play" class="arcade-section">
     <div class="hero-banner">
-      <span class="hero-tag">A PREHISTORIC ARCADE ADVENTURE · 6 STAGES</span>
+      <span class="hero-tag">A PREHISTORIC ARCADE ADVENTURE · 8 STAGES & 4 PLAYABLE HEROES</span>
       <h1 class="hero-title">고인돌 <span>STONE AGE ODYSSEY</span></h1>
       <p class="hero-subtitle">
-        배고픈 원시인 <strong>샘(Sam)</strong>이 되어 원시림·거대늪지·화산동굴·빙하설원·용암성채·대고인돌 제단까지 펼쳐진 <strong>6개 스테이지</strong>를 돌파하세요!
+        <strong>샘·우가·브록·타라</strong> 4인의 원시 영웅을 선택하여 원시림·거대늪지·화산동굴·빙하설원·공룡사막·용암성채·천공유적·대고인돌 제단까지 펼쳐진 <strong>8개 스테이지</strong>를 정복하세요!
       </p>
       <a class="hero-cta" href="#arcade">게임 시작 <span aria-hidden="true">↓</span></a>
     </div>
@@ -44,15 +44,55 @@
       <!-- Top Control Bar -->
       <div class="cabinet-topbar">
         <div class="cabinet-status">
-          <span><span class="status-dot"></span> SELECT YOUR STAGE (총 6개 스테이지 즉시 플레이 가능)</span>
+          <span><span class="status-dot"></span> SELECT HERO (숫자키 1~4 또는 클릭으로 실시간 영웅 교체 가능)</span>
+        </div>
+        <div class="hero-selector-bar">
+          <button class="retro-btn hero-btn active" data-hero-btn="sam">
+            <canvas class="bestiary-icon hero-mini-icon" data-sprite="sam" width="52" height="52"></canvas>
+            <div class="hero-btn-info">
+              <span>[1] BALANCED WARRIOR</span>
+              <strong>원시인 샘 (HP 5)</strong>
+              <small>가시 몽둥이 · 돌도끼</small>
+            </div>
+          </button>
+          <button class="retro-btn hero-btn" data-hero-btn="uga">
+            <canvas class="bestiary-icon hero-mini-icon" data-sprite="uga" width="52" height="52"></canvas>
+            <div class="hero-btn-info">
+              <span>[2] DOUBLE JUMP HUNTER</span>
+              <strong>사냥꾼 우가 (HP 4)</strong>
+              <small>2단 점프 · 고속 투창</small>
+            </div>
+          </button>
+          <button class="retro-btn hero-btn" data-hero-btn="brok">
+            <canvas class="bestiary-icon hero-mini-icon" data-sprite="brok" width="52" height="52"></canvas>
+            <div class="hero-btn-info">
+              <span>[3] HEAVY CRUSHER</span>
+              <strong>괴력의 브록 (HP 7)</strong>
+              <small>공격력 2배 · 상자 즉시파괴</small>
+            </div>
+          </button>
+          <button class="retro-btn hero-btn" data-hero-btn="tara">
+            <canvas class="bestiary-icon hero-mini-icon" data-sprite="tara" width="52" height="52"></canvas>
+            <div class="hero-btn-info">
+              <span>[4] MYSTIC SHAMAN</span>
+              <strong>주술사 타라 (HP 4)</strong>
+              <small>공중 활공 · 화염구 자동충전</small>
+            </div>
+          </button>
+        </div>
+
+        <div class="cabinet-status" style="margin-top: 0.25rem;">
+          <span><span class="status-dot"></span> SELECT YOUR STAGE (총 8개 스테이지 즉시 플레이 가능)</span>
         </div>
         <div class="stage-selector-bar">
           <button class="retro-btn stage-btn stage-jungle active" data-stage-btn="0"><span>STAGE 01</span><strong>신석기 원시림</strong></button>
           <button class="retro-btn stage-btn stage-swamp" data-stage-btn="1"><span>STAGE 02</span><strong>거대 고목 늪지</strong></button>
           <button class="retro-btn stage-btn stage-cave" data-stage-btn="2"><span>STAGE 03</span><strong>화산 동굴 협곡</strong></button>
           <button class="retro-btn stage-btn stage-ice" data-stage-btn="3"><span>STAGE 04</span><strong>빙하기 설원</strong></button>
-          <button class="retro-btn stage-btn stage-volcano" data-stage-btn="4"><span>STAGE 05</span><strong>용암 화구 성채</strong></button>
-          <button class="retro-btn stage-btn stage-boss" data-stage-btn="5"><span>STAGE 06</span><strong>맘모스 대왕 결전</strong></button>
+          <button class="retro-btn stage-btn stage-desert" data-stage-btn="4"><span>STAGE 05</span><strong>메마른 공룡 사막</strong></button>
+          <button class="retro-btn stage-btn stage-volcano" data-stage-btn="5"><span>STAGE 06</span><strong>용암 화구 성채</strong></button>
+          <button class="retro-btn stage-btn stage-sky" data-stage-btn="6"><span>STAGE 07</span><strong>천공의 부유 유적</strong></button>
+          <button class="retro-btn stage-btn stage-boss" data-stage-btn="7"><span>STAGE 08</span><strong>맘모스 대왕 결전</strong></button>
         </div>
         <div class="cabinet-actions">
           <button id="btnToggleSound" class="retro-btn active">사운드 ON</button>
@@ -71,19 +111,22 @@
       <!-- Keyboard Guide Strip -->
       <div class="controls-strip">
         <div class="key-group">
-          <kbd>←</kbd><kbd>→</kbd> <span>또는</span> <kbd>A</kbd><kbd>D</kbd> <span>이동</span>
+          <kbd>←</kbd><kbd>→</kbd> <span>이동</span>
         </div>
         <div class="key-group">
-          <kbd>SPACE</kbd> / <kbd>Z</kbd> / <kbd>↑</kbd> <span>점프</span>
+          <kbd>SPACE</kbd> / <kbd>Z</kbd> <span>점프 (2단점프·활공)</span>
         </div>
         <div class="key-group">
-          <kbd>X</kbd> / <kbd>J</kbd> / <kbd>ENTER</kbd> <span>몽둥이 내려치기 (바위 타격)</span>
+          <kbd>X</kbd> / <kbd>J</kbd> <span>근접 타격 (상자 파괴)</span>
         </div>
         <div class="key-group">
-          <kbd>C</kbd> / <kbd>K</kbd> <span>돌도끼 투척</span>
+          <kbd>C</kbd> / <kbd>K</kbd> <span>원거리 무기</span>
         </div>
         <div class="key-group">
-          <kbd>P</kbd> <span>일시정지</span>
+          <kbd>V</kbd> / <kbd>SHIFT</kbd> <span>전방 회피 대시</span>
+        </div>
+        <div class="key-group">
+          <kbd>1</kbd>~<kbd>4</kbd> <span>영웅 교체</span>
         </div>
       </div>
 
@@ -94,8 +137,9 @@
           <button id="btnRight" class="touch-btn" aria-label="오른쪽 이동">▶</button>
         </div>
         <div class="action-group">
-          <button id="btnAxe" class="touch-btn action-axe" aria-label="돌도끼 던지기">AXE</button>
-          <button id="btnClub" class="touch-btn action-club" aria-label="몽둥이 공격">몽둥이</button>
+          <button id="btnDash" class="touch-btn action-dash" aria-label="전방 대시">DASH</button>
+          <button id="btnAxe" class="touch-btn action-axe" aria-label="원거리 무기">SHOT</button>
+          <button id="btnClub" class="touch-btn action-club" aria-label="근접 공격">타격</button>
           <button id="btnJump" class="touch-btn action-jump" aria-label="점프">JUMP</button>
         </div>
       </div>
@@ -105,17 +149,17 @@
   <!-- Landing & Encyclopedia Sections -->
   <div class="content-container">
 
-    <!-- 6 Stages World Map Showcase -->
+    <!-- 8 Stages World Map Showcase -->
     <section id="stages">
-      <h2 class="section-title">6대 원시 대륙 월드맵 & 스테이지 가이드</h2>
+      <h2 class="section-title">8대 원시 대륙 월드맵 & 스테이지 가이드</h2>
       <div class="world-map-banner">
-        <img src="assets/world_map.png" alt="고인돌 6대 원시 대륙 월드맵" loading="lazy" />
+        <img src="assets/world_map.png" alt="고인돌 원시 대륙 월드맵" loading="lazy" />
       </div>
-      <div class="grid-3">
+      <div class="grid-4">
         <div class="stone-card">
           <span class="card-number">STAGE 01 · JUNGLE</span>
           <h3>신석기 원시림 (Prehistoric Jungle)</h3>
-          <p>거대 고사리 나무와 고인돌 유적이 펼쳐진 원시림. 통통 버섯을 밟아 고지대에 오르고 통나무 뗏목 다리를 건너 숨겨진 식량을 확보하세요.</p>
+          <p>거대 고사리 나무와 고인돌 유적이 펼쳐진 원시림. 통통 버섯을 밟아 고지대에 오르고 통나무 뗏목 다리를 건너 숨겨진 보물상자를 여세요.</p>
           <div class="badge-list">
             <span class="mini-badge">통나무 뗏목 다리</span>
             <span class="mini-badge">중간 세이브 고인돌</span>
@@ -125,20 +169,20 @@
         <div class="stone-card">
           <span class="card-number">STAGE 02 · SWAMP</span>
           <h3>거대 고목 늪지대 (Ancient Swamp)</h3>
-          <p>발광 버섯과 수몰된 고인돌이 신비롭게 빛나는 늪지대. 늪을 지키는 <strong>늪지 악어(Swamp Gator)</strong>와 보라 익룡 편대의 습격을 돌파하세요.</p>
+          <p>발광 버섯과 수몰된 고인돌이 빛나는 늪지대. <strong>늪지 악어(Swamp Gator)</strong>와 익룡 편대를 물리치고 등껍질 방패와 자석 토템을 획득하세요.</p>
           <div class="badge-list">
-            <span class="mini-badge">신규 몬스터: 늪지 악어</span>
-            <span class="mini-badge">특산 식량: 원시 연어</span>
+            <span class="mini-badge">몬스터: 늪지 악어</span>
+            <span class="mini-badge">유물: 등껍질 방패 · 자석</span>
           </div>
         </div>
 
         <div class="stone-card">
           <span class="card-number">STAGE 03 · CAVE</span>
           <h3>화산 동굴과 공룡 협곡 (Volcanic Cave)</h3>
-          <p>지하 종유석과 용암 균열이 흐르는 동굴 협곡. 상하로 움직이는 흑요석 승강기 발판을 타고 동굴 상층부의 비밀 보물 토템을 타격하세요.</p>
+          <p>지하 종유석과 용암 균열이 흐르는 동굴 협곡. 밟으면 흔들리다 무너지는 <strong>고대 균열 석판(Crumble Slab)</strong>과 수직 승강기를 돌파하세요.</p>
           <div class="badge-list">
-            <span class="mini-badge">수직 승강기 발판</span>
-            <span class="mini-badge">황금 호박 보석</span>
+            <span class="mini-badge">기믹: 무너지는 고대 석판</span>
+            <span class="mini-badge">유물: 화산 폭탄 · 고추</span>
           </div>
         </div>
 
@@ -147,23 +191,43 @@
           <h3>빙하기 설원 협곡 (Glacial Gorge)</h3>
           <p>오로라가 빛나는 설원! 날렵한 <strong>빙하 검치호(Sabertooth)</strong>를 물리치고 설원 끝에 도달하면 중간 보스 <strong>빙하 설원 수호자(Frost Mammoth)</strong>가 등장합니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">신규 몬스터: 빙하 검치호</span>
+            <span class="mini-badge">몬스터: 빙하 검치호</span>
             <span class="mini-badge">중간 보스: 설원 맘모스</span>
           </div>
         </div>
 
         <div class="stone-card">
-          <span class="card-number">STAGE 05 · VOLCANO</span>
-          <h3>용암 화구 성채 (Magma Fortress)</h3>
-          <p>화산 분화구로 향하는 험난한 최종 관문! 용암 폭포 위의 마그마 부유석과 체력이 강화된 <strong>용암 갑옷 공룡(Magma Rex, HP 3)</strong>들을 제압하세요.</p>
+          <span class="card-number">STAGE 05 · DESERT</span>
+          <h3>메마른 공룡 사막 (Bone Desert Ruins)</h3>
+          <p>거대한 공룡 화석 갈비뼈와 모래폭풍 피라미드가 솟은 사막 유적! 무너지는 사암 다리와 모래 협곡을 <strong>전방 대시(V/Shift)</strong>와 2단 점프로 넘으세요.</p>
           <div class="badge-list">
-            <span class="mini-badge">신규 몬스터: 용암 갑옷 공룡</span>
+            <span class="mini-badge">신규 지역: 공룡 화석 사막</span>
+            <span class="mini-badge">유물: 황금 공룡 알</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <span class="card-number">STAGE 06 · VOLCANO</span>
+          <h3>용암 화구 성채 (Magma Fortress)</h3>
+          <p>화산 분화구로 향하는 험난한 성채! 용암 폭포 위의 마그마 부유석과 체력이 강화된 <strong>용암 갑옷 공룡(Magma Rex, HP 3)</strong>들을 제압하세요.</p>
+          <div class="badge-list">
+            <span class="mini-badge">몬스터: 용암 갑옷 공룡</span>
             <span class="mini-badge">특산 식량: 화산 통구이</span>
           </div>
         </div>
 
         <div class="stone-card">
-          <span class="card-number">STAGE 06 · FINAL BOSS</span>
+          <span class="card-number">STAGE 07 · SKY RUINS</span>
+          <h3>천공의 부유 거석 유적 (Sky Megalith)</h3>
+          <p>구름 바다 위에 떠 있는 고대 황금 거석 신전! 부유 제단 사이를 오가는 승강기와 균열 석판을 건너며 익룡 군단을 격추하세요.</p>
+          <div class="badge-list">
+            <span class="mini-badge">신규 지역: 천공 부유섬</span>
+            <span class="mini-badge">추천 영웅: 우가 · 타라</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <span class="card-number">STAGE 08 · FINAL BOSS</span>
           <h3>대고인돌 제단 (King Mammoth Arena)</h3>
           <p>붉은 블러드문 아래 펼쳐지는 최종 결전! 상공의 이동 발판과 버섯 점프대를 활용해 <strong>거대 맘모스 대왕(HP 24)</strong>의 대지 충격파를 피하고 승리하세요!</p>
           <div class="badge-list">
@@ -176,40 +240,40 @@
 
     <!-- Features Section -->
     <section id="features">
-      <h2 class="section-title">원시 시대에서 살아남는 법</h2>
+      <h2 class="section-title">원시 시대에서 살아남는 핵심 시스템</h2>
       <div class="grid-3">
         <div class="stone-card">
-          <span class="card-number">01 / ATTACK</span>
-          <h3>찰진 몽둥이 내려치기 & 화면 진동</h3>
+          <span class="card-number">01 / 4 HEROES & DASH</span>
+          <h3>4인의 개성 넘치는 원시 영웅 & 회피 대시</h3>
           <p>
-            원시인 샘의 트레이드마크인 거대 참나무 몽둥이! 바닥을 내리칠 때마다 묵직한 타격음과 화면 흔들림(Screen Shake)이 발생하며 공룡들을 단숨에 기절시킵니다.
+            균형형 <strong>샘</strong>, 2단 점프 창술사 <strong>우가</strong>, HP 7 해머 분쇄자 <strong>브록</strong>, 공중 활공 주술사 <strong>타라</strong>까지 4명의 캐릭터를 자유롭게 선택하고 <strong>전방 대시(V/Shift)</strong>로 위기를 돌파하세요!
           </p>
           <div class="badge-list">
-            <span class="mini-badge">근접 몽둥이 스매시</span>
-            <span class="mini-badge">원거리 돌도끼 투척</span>
+            <span class="mini-badge">4인 영웅 실시간 교체</span>
+            <span class="mini-badge">무적 회피 대시 & 콤보 배율</span>
           </div>
         </div>
 
         <div class="stone-card">
-          <span class="card-number">02 / DISCOVER</span>
-          <h3>수상한 바위 타격 & 중간 세이브 고인돌</h3>
+          <span class="card-number">02 / 6 POWER-UP RELICS</span>
+          <h3>고대 보물상자 & 6종 특수 파워업 유물</h3>
           <p>
-            <strong>바이옴별 고대 토템 바위(석조·빙하·흑요석)</strong>를 몽둥이로 내려치면 숨겨진 고기와 황금 호박 보석이 솟구치며, 중반부 <strong>CHECKPOINT 고인돌</strong>에서 안전하게 부활합니다.
+            보물상자를 타격하면 식량뿐 아니라 <strong>화염 고추(공격 2배)</strong>, <strong>거북 방패(피격 방어)</strong>, <strong>자석 토템(아이템 흡입)</strong>, <strong>번개 깃털(신속)</strong>, <strong>화산 폭탄(광역 폭발)</strong>이 쏟아집니다!
           </p>
           <div class="badge-list">
-            <span class="mini-badge">식량 게이지 50% 이상 시 출구 개방</span>
-            <span class="mini-badge">체크포인트 부활</span>
+            <span class="mini-badge">6종 특수 버프 유물</span>
+            <span class="mini-badge">무너지는 석판 & 체크포인트</span>
           </div>
         </div>
 
         <div class="stone-card">
-          <span class="card-number">03 / LISTEN</span>
-          <h3>6종 테마별 AdLib Web Audio 사운드트랙</h3>
+          <span class="card-number">03 / 8 CHIPTUNE TRACKS</span>
+          <h3>8종 테마별 AdLib Web Audio 사운드트랙</h3>
           <p>
-            외부 음원 파일 없이 순수 <strong>Web Audio API 신디사이저</strong>로 실시간 합성되는 6개 스테이지 전용 배경음악(원시림·늪지·동굴·설원·화산·보스전)과 레트로 효과음을 제공합니다.
+            외부 음원 파일 없이 순수 <strong>Web Audio API 신디사이저</strong>로 실시간 합성되는 8개 스테이지 전용 배경음악(원시림·늪지·동굴·설원·사막·화산·천공·보스전)과 찰진 효과음을 제공합니다.
           </p>
           <div class="badge-list">
-            <span class="mini-badge">6종 전용 BGM</span>
+            <span class="mini-badge">8종 전용 BGM</span>
             <span class="mini-badge">CRT 스캔라인 필터</span>
           </div>
         </div>
@@ -218,22 +282,52 @@
 
     <!-- Bestiary & Items Section -->
     <section id="bestiary">
-      <h2 class="section-title">주인공 & 원시 시대 몬스터 도감 (9종)</h2>
+      <h2 class="section-title">플레이어블 영웅 (4인) & 원시 몬스터 도감 (8종)</h2>
       <div class="grid-4">
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="sam" width="96" height="96" aria-hidden="true"></canvas>
           <h3>원시인 샘 (Sam the Caveman)</h3>
-          <p>야성적인 검은 장발과 호탕한 미소, 호피 튜닉을 입은 주인공! 거대한 철침 참나무 몽둥이와 돌도끼로 공룡과 맘모스를 제압합니다.</p>
+          <p>호피 튜닉을 입은 균형형 주인공! 묵직한 철침 참나무 몽둥이와 포물선 돌도끼 투척으로 어떤 지형에서도 안정적인 전투를 펼칩니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">주인공 (PLAYABLE)</span>
+            <span class="mini-badge">영웅 1 · HP 5</span>
             <span class="mini-badge">무기: 철침 몽둥이 & 돌도끼</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <canvas class="bestiary-icon" data-sprite="uga" width="96" height="96" aria-hidden="true"></canvas>
+          <h3>사냥꾼 우가 (Uga the Hunter)</h3>
+          <p>날렵한 몸놀림을 지닌 부족 최고의 여사냥꾼! 공중에서 한 번 더 도약하는 <strong>2단 점프</strong>와 긴 사거리의 부싯돌 창·고속 투창을 구사합니다.</p>
+          <div class="badge-list">
+            <span class="mini-badge">영웅 2 · 2단 점프</span>
+            <span class="mini-badge">무기: 부싯돌 장창 & 투창</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <canvas class="bestiary-icon" data-sprite="brok" width="96" height="96" aria-hidden="true"></canvas>
+          <h3>괴력의 브록 (Brok the Crusher)</h3>
+          <p>공룡 해골 견갑을 두른 거석 전사! <strong>최대 체력 7 HP</strong>와 2배의 근접 공격력을 자랑하며, 보물상자를 단 한 번의 타격으로 완전 분쇄합니다.</p>
+          <div class="badge-list">
+            <span class="mini-badge">영웅 3 · HP 7 & 공격 2배</span>
+            <span class="mini-badge">특기: 지면 충격파 & 상자 1타 파괴</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <canvas class="bestiary-icon" data-sprite="tara" width="96" height="96" aria-hidden="true"></canvas>
+          <h3>주술사 타라 (Tara the Shaman)</h3>
+          <p>고대 태양석 지팡이를 다루는 신비로운 주술사! 점프 키를 누르고 있으면 <strong>공중 활공(Glide)</strong>하며, 직선으로 날아가는 화염구가 자동 충전됩니다.</p>
+          <div class="badge-list">
+            <span class="mini-badge">영웅 4 · 공중 활공</span>
+            <span class="mini-badge">특기: 화염구 자동충전 & 식량 +25%</span>
           </div>
         </div>
 
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="dino" width="96" height="96" aria-hidden="true"></canvas>
           <h3>초록 공룡 (Raptor)</h3>
-          <p>신석기 원시림과 동굴을 순찰하는 공룡입니다. 몽둥이로 두 번 내려치거나 위에서 밟으면 고기를 떨어뜨립니다.</p>
+          <p>신석기 원시림과 동굴을 순찰하는 공룡입니다. 근접 무기로 내려치거나 위에서 밟으면 고기를 떨어뜨립니다.</p>
           <div class="badge-list">
             <span class="mini-badge">출현: STAGE 1·3</span>
             <span class="mini-badge">HP: 2</span>
@@ -241,11 +335,11 @@
         </div>
 
         <div class="stone-card">
-          <canvas class="bestiary-icon" data-sprite="croc" width="96" height="96" aria-hidden="true"></canvas>
+          <canvas class="bestiary-icon" data-sprite="gator" width="96" height="96" aria-hidden="true"></canvas>
           <h3>늪지 악어 (Swamp Gator)</h3>
           <p>거대 고목 늪지대에 서식하는 파충류! 낮은 자세로 날카로운 이빨을 드러내며 수변 지형을 빠르게 배회합니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">출현: STAGE 2</span>
+            <span class="mini-badge">출현: STAGE 2·5</span>
             <span class="mini-badge">HP: 2</span>
           </div>
         </div>
@@ -253,7 +347,7 @@
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="boar" width="96" height="96" aria-hidden="true"></canvas>
           <h3>돌진 멧돼지 (Wild Boar)</h3>
-          <p>날카로운 어금니를 세우고 빠른 속도로 돌진합니다. 점프로 피하거나 타이밍을 맞춰 몽둥이로 제압하세요.</p>
+          <p>날카로운 어금니를 세우고 빠른 속도로 돌진합니다. 점프로 피하거나 타이밍을 맞춰 무기로 제압하세요.</p>
           <div class="badge-list">
             <span class="mini-badge">출현: 전 지역</span>
             <span class="mini-badge">HP: 2~3</span>
@@ -263,19 +357,19 @@
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="ptero" width="96" height="96" aria-hidden="true"></canvas>
           <h3>보라 익룡 (Pterodactyl)</h3>
-          <p>공중에서 물결 궤적을 그리며 날아다닙니다. 통통 버섯을 밟고 점프해서 치거나 <strong>돌도끼(C키)</strong>를 던져 격추하세요!</p>
+          <p>공중에서 물결 궤적을 그리며 날아다닙니다. 버섯 점프대를 밟고 타격하거나 <strong>원거리 무기(C키)</strong>로 격추하세요!</p>
           <div class="badge-list">
             <span class="mini-badge">출현: 전 지역 상공</span>
-            <span class="mini-badge">약점: 돌도끼 투척</span>
+            <span class="mini-badge">약점: 원거리 투척 무기</span>
           </div>
         </div>
 
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="saber" width="96" height="96" aria-hidden="true"></canvas>
           <h3>빙하 검치호 (Sabertooth)</h3>
-          <p>빙하기 설원 협곡을 지배하는 거대 송곳니 맹수! 일반 공룡보다 훨씬 날렵한 속도로 설원 절벽을 질주합니다.</p>
+          <p>빙하기 설원과 사막·천공 유적을 질주하는 거대 송곳니 맹수! 일반 공룡보다 훨씬 날렵한 속도로 절벽을 순찰합니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">출현: STAGE 4</span>
+            <span class="mini-badge">출현: STAGE 4·5·7</span>
             <span class="mini-badge">특징: 초고속 질주</span>
           </div>
         </div>
@@ -283,9 +377,9 @@
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="lava_dino" width="96" height="96" aria-hidden="true"></canvas>
           <h3>용암 갑옷 공룡 (Magma Rex)</h3>
-          <p>용암 화구 성채의 열기를 견디는 흑요석 비늘 공룡! 일반 공룡보다 단단한 체력(HP 3)을 지닌 후반부 정예 몬스터입니다.</p>
+          <p>사막과 화산 성채의 열기를 견디는 흑요석 비늘 공룡! 일반 공룡보다 단단한 체력(HP 3)을 지닌 후반부 정예 몬스터입니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">출현: STAGE 5</span>
+            <span class="mini-badge">출현: STAGE 5·6·7</span>
             <span class="mini-badge">HP: 3 (정예)</span>
           </div>
         </div>
@@ -303,25 +397,29 @@
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="boss" width="96" height="96" aria-hidden="true"></canvas>
           <h3>거대 맘모스 대왕 (FINAL BOSS)</h3>
-          <p>스테이지 6 대고인돌 제단의 최종 보스! 압도적인 체력과 분노 모드, 대지 충격파로 무장한 원시 대륙의 지배자입니다.</p>
+          <p>스테이지 8 대고인돌 제단의 최종 보스! 압도적인 체력과 분노 모드, 대지 충격파로 무장한 원시 대륙의 지배자입니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">출현: STAGE 6 최종보스</span>
+            <span class="mini-badge">출현: STAGE 8 최종보스</span>
             <span class="mini-badge">HP: 24</span>
           </div>
         </div>
       </div>
 
-      <!-- Pixel Art Food & Item Showcase Strip -->
+      <!-- Pixel Art Food & Power-Up Relics Showcase Strip -->
       <div class="item-showcase-box">
-        <h3>원시 시대 특산 식량 & 보물 아이템 (16-Bit Pixel Icons)</h3>
+        <h3>원시 시대 특산 식량 & 6종 신규 파워업 유물 (16-Bit Pixel Icons)</h3>
         <div class="item-strip">
+          <div class="item-chip"><canvas data-item="chili" width="48" height="48"></canvas><span>화염고추 (8초 공격2배)</span></div>
+          <div class="item-chip"><canvas data-item="shield" width="48" height="48"></canvas><span>등껍질방패 (1회 방어)</span></div>
+          <div class="item-chip"><canvas data-item="magnet" width="48" height="48"></canvas><span>자석토템 (아이템흡입)</span></div>
+          <div class="item-chip"><canvas data-item="feather" width="48" height="48"></canvas><span>번개깃털 (초고속·점프)</span></div>
+          <div class="item-chip"><canvas data-item="bomb" width="48" height="48"></canvas><span>화산폭탄 (광역폭발)</span></div>
+          <div class="item-chip"><canvas data-item="golden_egg" width="48" height="48"></canvas><span>황금공룡알 (+1500점)</span></div>
           <div class="item-chip"><canvas data-item="meat" width="48" height="48"></canvas><span>공룡갈비 (+22%)</span></div>
           <div class="item-chip"><canvas data-item="burger" width="48" height="48"></canvas><span>원시햄버거 (+25%)</span></div>
-          <div class="item-chip"><canvas data-item="fish" width="48" height="48"></canvas><span>늪지/설원연어 (+20%)</span></div>
+          <div class="item-chip"><canvas data-item="fish" width="48" height="48"></canvas><span>원시연어 (+20%)</span></div>
           <div class="item-chip"><canvas data-item="roast" width="48" height="48"></canvas><span>화산통구이 (+25%)</span></div>
-          <div class="item-chip"><canvas data-item="icecream" width="48" height="48"></canvas><span>대형아이스크림 (+28%)</span></div>
           <div class="item-chip"><canvas data-item="amber" width="48" height="48"></canvas><span>황금호박보석 (+800점)</span></div>
-          <div class="item-chip"><canvas data-item="axe" width="48" height="48"></canvas><span>돌도끼 탄약 (+5~6발)</span></div>
           <div class="item-chip"><canvas data-item="heart" width="48" height="48"></canvas><span>생명 하트 (+1 HP)</span></div>
         </div>
       </div>
@@ -331,7 +429,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p><strong>STONE AGE ODYSSEY : 고인돌 (Prehistorik 16-Bit Web Edition - 6 Stages Expanded)</strong> · Built with HTML5 Canvas & Web Audio API</p>
+    <p><strong>STONE AGE ODYSSEY : 고인돌 (Prehistorik 16-Bit Web Edition · 8 Stages & 4 Heroes)</strong> · Built with HTML5 Canvas & Web Audio API</p>
     <p style="margin-top: 0.4rem;">
       Inspired by classic 1991/1993 Titus Interactive DOS game <em>Prehistorik</em> ·
       <a href="https://github.com/jeiel85/stone-age-odyssey" target="_blank" rel="noopener">GitHub Repository</a>

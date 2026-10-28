@@ -7,7 +7,9 @@ const SpriteRenderer = {
       swamp: '#172b28',
       cave: '#21142b',
       ice: '#1b314d',
+      desert: '#4a2916',
       volcano: '#2d1210',
+      sky: '#1d2d4e',
       boss: '#35100e'
     };
     ctx.fillStyle = bgColors[theme] || '#283e38';
@@ -69,6 +71,16 @@ const SpriteRenderer = {
       assets.draw(ctx, movSprite, x, y, w, h);
       return;
     }
+    if (type === 'crumble') {
+      if (plat.broken) return;
+      const shakeX = plat.crumbleTimer > 0 ? Math.sin(plat.crumbleTimer * 1.9) * 3 : 0;
+      const crumSprite = (assets.environment.crumbleByTheme && assets.environment.crumbleByTheme[theme]) || assets.environment.crumbleByTheme.jungle;
+      ctx.save();
+      if (plat.crumbleTimer > 0 && plat.crumbleTimer < 10) ctx.globalAlpha = 0.65;
+      assets.draw(ctx, crumSprite, x + shakeX, y, w, h);
+      ctx.restore();
+      return;
+    }
     // Clip full tiles rather than stretching a texture at the edges.
     ctx.save();
     ctx.beginPath();
@@ -95,25 +107,73 @@ const SpriteRenderer = {
   },
 
   drawCaveman(ctx, player, time) {
-    const sam = window.PixelAssets.sprites.sam;
+    const heroSprites = window.PixelAssets.sprites[player.charId || 'sam'] || window.PixelAssets.sprites.sam;
     let frame;
     if (player.attackTimer > 0) {
-      frame = player.attackTimer > player.attackDuration * 0.55 ? sam.windup : sam.attack;
-    } else if (player.invulnTimer > 0) {
-      frame = sam.hurt;
+      frame = player.attackTimer > player.attackDuration * 0.55 ? heroSprites.windup : heroSprites.attack;
+    } else if (player.invulnTimer > 0 && player.dashTimer <= 0) {
+      frame = heroSprites.hurt;
     } else if (!player.onGround) {
-      frame = player.vy < 0 ? sam.jump : sam.fall;
+      frame = player.vy < 0 ? heroSprites.jump : heroSprites.fall;
     } else if (Math.abs(player.vx) > 0.2) {
-      frame = sam.run[Math.floor(time / 6) % sam.run.length];
+      frame = heroSprites.run[Math.floor(time / 6) % heroSprites.run.length];
     } else {
-      frame = sam.idle[Math.floor(time / 22) % sam.idle.length];
+      frame = heroSprites.idle[Math.floor(time / 22) % heroSprites.idle.length];
     }
+
+    const cx = player.x + player.w / 2;
+    const cy = player.y + player.h / 2;
+
+    // Dash afterimage trail
+    if (player.dashTimer > 0) {
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.translate(cx - player.facing * 20, player.y + player.h);
+      ctx.scale(player.facing, 1);
+      window.PixelAssets.draw(ctx, frame, -48, -94, 112, 98);
+      ctx.restore();
+    }
+
     ctx.save();
-    if (player.invulnTimer > 0 && Math.floor(player.invulnTimer / 3) % 2 === 0) ctx.globalAlpha = 0.5;
-    ctx.translate(player.x + player.w / 2, player.y + player.h);
+    if (player.invulnTimer > 0 && player.dashTimer <= 0 && Math.floor(player.invulnTimer / 3) % 2 === 0) {
+      ctx.globalAlpha = 0.5;
+    }
+    ctx.translate(cx, player.y + player.h);
     ctx.scale(player.facing, 1);
     window.PixelAssets.draw(ctx, frame, -48, -94, 112, 98);
     ctx.restore();
+
+    // Active Power-Up Auras (Shield / Chili Fury / Magnet / Feather Speed)
+    if (player. furyTimer > 0) {
+      ctx.save();
+      ctx.strokeStyle = time % 6 < 3 ? '#ff591a' : '#ffdf4d';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy - 4, 34 + Math.sin(time * 0.3) * 3, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+    if (player.hasShield) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(100, 245, 255, 0.85)';
+      ctx.fillStyle = 'rgba(72, 229, 194, 0.14)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy - 4, 38 + Math.sin(time * 0.15) * 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+    if (player.magnetTimer > 0) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 115, 179, 0.75)';
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(cx, cy - 4, 44 + (time % 14), 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
   },
 
   drawEnemy(ctx, enemy, time) {
