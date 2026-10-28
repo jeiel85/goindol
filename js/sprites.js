@@ -119,7 +119,7 @@ const SpriteRenderer = {
     ctx.save();
     ctx.translate(enemy.x + enemy.w / 2, enemy.y + enemy.h);
     ctx.scale(enemy.vx >= 0 ? 1 : -1, 1);
-    window.PixelAssets.draw(ctx, frame, -32, -48, 64, 48);
+    window.PixelAssets.draw(ctx, frame, -38, -56, 76, 56);
     ctx.restore();
   },
 
@@ -133,14 +133,14 @@ const SpriteRenderer = {
     if (boss.hurtTimer > 0 && Math.floor(boss.hurtTimer / 2) % 2 === 0) ctx.globalAlpha = 0.55;
     ctx.translate(boss.x + boss.w / 2, boss.y + boss.h);
     ctx.scale(boss.facing, 1);
-    window.PixelAssets.draw(ctx, frame, -64, -128, 128, 128);
+    window.PixelAssets.draw(ctx, frame, -76, -134, 152, 134);
     ctx.restore();
   },
 
   drawFood(ctx, item, time) {
     const icon = window.PixelAssets.items[item.emoji] || window.PixelAssets.items.meat;
     const bob = Math.round(Math.sin(time * 0.1 + item.x) * 3);
-    window.PixelAssets.draw(ctx, icon, item.x, item.y + bob, 32, 32);
+    window.PixelAssets.draw(ctx, icon, item.x - 3, item.y + bob - 4, 38, 38);
   }
 };
 

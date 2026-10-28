@@ -599,12 +599,10 @@
     ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(asset, Math.round(x), Math.round(y), Math.round(w), Math.round(h)); ctx.restore();
   }
 
-  // Slice 128x112 RGBA transparent frames from pre-normalized sam_idle_run.png (512x112)
-  // and sam_attack.png (256x112) using pure drawImage so it works on both file:// and https://.
-  function extractSheetFrames(img, expectedCount) {
+  // Slice cells from pre-normalized RGBA transparent PNG sheets using pure drawImage
+  // so it works seamlessly on both file:// and https:// without canvas tainting.
+  function sliceGridFrames(img, expectedCount, cellW, cellH) {
     const frames = [];
-    const cellW = 128;
-    const cellH = 112;
     for (let i = 0; i < expectedCount; i++) {
       const out = document.createElement('canvas');
       out.width = cellW;
@@ -617,6 +615,32 @@
     return frames;
   }
 
+  function refreshBestiaryDom() {
+    document.querySelectorAll('.bestiary-icon').forEach((canvasEl) => {
+      const entry = sprites[canvasEl.dataset.sprite];
+      const sprite = entry && (entry.walk || entry.fly || entry.idle)[0];
+      if (!sprite) return;
+      const context = canvasEl.getContext('2d');
+      context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+      context.imageSmoothingEnabled = false;
+      const scale = Math.min(canvasEl.width / sprite.width, canvasEl.height / sprite.height);
+      const width = Math.round(sprite.width * scale);
+      const height = Math.round(sprite.height * scale);
+      context.drawImage(sprite, Math.round((canvasEl.width - width) / 2), Math.round((canvasEl.height - height) / 2), width, height);
+    });
+  }
+
+  function refreshItemsDom() {
+    document.querySelectorAll('canvas[data-item]').forEach((canvasEl) => {
+      const sprite = items[canvasEl.dataset.item];
+      if (!sprite) return;
+      const context = canvasEl.getContext('2d');
+      context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+      context.imageSmoothingEnabled = false;
+      context.drawImage(sprite, 2, 2, canvasEl.width - 4, canvasEl.height - 4);
+    });
+  }
+
   const sheetIdleRun = new Image();
   const sheetAttack = new Image();
   let idleRunFrames = null;
@@ -625,7 +649,6 @@
   function applyExtractedSamSprites() {
     if (idleRunFrames && idleRunFrames.length >= 4) {
       const [idle0, run0, run1, jump0] = idleRunFrames;
-      // Subtle 2px breathing bob for idle1
       const idle1 = document.createElement('canvas');
       idle1.width = idle0.width;
       idle1.height = idle0.height;
@@ -641,26 +664,152 @@
       sprites.sam.windup = attackFrames[0];
       sprites.sam.attack = attackFrames[1];
     }
-    // Refresh any bestiary preview canvas showing Sam
-    document.querySelectorAll('.bestiary-icon[data-sprite="sam"]').forEach((canvasEl) => {
-      const sprite = sprites.sam.idle[0];
-      const context = canvasEl.getContext('2d');
-      context.clearRect(0, 0, canvasEl.width, canvasEl.height);
-      context.imageSmoothingEnabled = false;
-      context.drawImage(sprite, 0, 0, canvasEl.width, canvasEl.height);
-    });
+    refreshBestiaryDom();
   }
 
   sheetIdleRun.onload = () => {
-    idleRunFrames = extractSheetFrames(sheetIdleRun, 4);
+    idleRunFrames = sliceGridFrames(sheetIdleRun, 4, 128, 112);
     applyExtractedSamSprites();
   };
   sheetAttack.onload = () => {
-    attackFrames = extractSheetFrames(sheetAttack, 2);
+    attackFrames = sliceGridFrames(sheetAttack, 2, 128, 112);
     applyExtractedSamSprites();
   };
   sheetIdleRun.src = 'assets/sam_idle_run.png';
   sheetAttack.src = 'assets/sam_attack.png';
+
+  // Load 16-bit Monsters Sheet (dino, boar, ptero, gator, saber, lava_dino - 96x72 each)
+  const sheetMonsters = new Image();
+  sheetMonsters.onload = () => {
+    const mFrames = sliceGridFrames(sheetMonsters, 6, 96, 72);
+    const keys = ['dino', 'boar', 'ptero', 'gator', 'saber', 'lava_dino'];
+    keys.forEach((key, idx) => {
+      const f0 = mFrames[idx];
+      if (!f0) return;
+
+      // Second animation frame (stride/flap bounce)
+      const f1 = document.createElement('canvas');
+      f1.width = 96;
+      f1.height = 72;
+      const ctx1 = f1.getContext('2d');
+      ctx1.imageSmoothingEnabled = false;
+      if (key === 'ptero') {
+        ctx1.drawImage(f0, 0, 0, 96, 72, 2, 6, 92, 62);
+      } else {
+        ctx1.drawImage(f0, 0, 0, 96, 72, 1, 3, 94, 69);
+      }
+
+      // Stunned frame with golden dizzy stars
+      const st = document.createElement('canvas');
+      st.width = 96;
+      st.height = 72;
+      const stCtx = st.getContext('2d');
+      stCtx.imageSmoothingEnabled = false;
+      stCtx.drawImage(f0, 0, 0, 96, 72, 2, 8, 92, 64);
+      stCtx.fillStyle = '#ffe066';
+      stCtx.fillRect(30, 4, 6, 6);
+      stCtx.fillRect(48, 2, 6, 6);
+      stCtx.fillRect(64, 5, 6, 6);
+
+      if (key === 'ptero') {
+        sprites[key] = { fly: [f0, f1], stunned: st };
+      } else {
+        sprites[key] = { walk: [f0, f1], stunned: st };
+      }
+    });
+    refreshBestiaryDom();
+  };
+  sheetMonsters.src = 'assets/monsters_sheet.png';
+
+  // Load 16-bit Bosses Sheet (frost_boss, boss - 160x140 each)
+  const sheetBosses = new Image();
+  sheetBosses.onload = () => {
+    const bFrames = sliceGridFrames(sheetBosses, 2, 160, 140);
+    const bossKeys = ['frost_boss', 'boss'];
+    bossKeys.forEach((key, idx) => {
+      const f0 = bFrames[idx];
+      if (!f0) return;
+
+      const f1 = document.createElement('canvas');
+      f1.width = 160;
+      f1.height = 140;
+      const ctx1 = f1.getContext('2d');
+      ctx1.imageSmoothingEnabled = false;
+      ctx1.drawImage(f0, 0, 0, 160, 140, 2, 4, 156, 136);
+
+      const makeEnraged = (src) => {
+        const e = document.createElement('canvas');
+        e.width = 160;
+        e.height = 140;
+        const ectx = e.getContext('2d');
+        ectx.imageSmoothingEnabled = false;
+        ectx.drawImage(src, 0, 0);
+        ectx.globalCompositeOperation = 'source-atop';
+        ectx.fillStyle = key === 'frost_boss' ? 'rgba(255, 70, 120, 0.28)' : 'rgba(255, 50, 0, 0.30)';
+        ectx.fillRect(0, 0, 160, 140);
+        return e;
+      };
+
+      const jmp = document.createElement('canvas');
+      jmp.width = 160;
+      jmp.height = 140;
+      const jctx = jmp.getContext('2d');
+      jctx.imageSmoothingEnabled = false;
+      jctx.drawImage(f0, 0, -4);
+
+      sprites[key] = {
+        walk: [f0, f1],
+        enraged: [makeEnraged(f0), makeEnraged(f1)],
+        jump: jmp
+      };
+    });
+    refreshBestiaryDom();
+  };
+  sheetBosses.src = 'assets/bosses_sheet.png';
+
+  // Load 16-bit Items Sheet (11 items - 64x64 each)
+  const sheetItems = new Image();
+  sheetItems.onload = () => {
+    const iFrames = sliceGridFrames(sheetItems, 11, 64, 64);
+    const itemDefs = [
+      { key: 'meat', emoji: '🍖' },
+      { key: 'burger', emoji: '🍔' },
+      { key: 'apple', emoji: '🍎' },
+      { key: 'banana', emoji: '🍌' },
+      { key: 'cheese', emoji: '🧀' },
+      { key: 'icecream', emoji: '🍨' },
+      { key: 'fish', emoji: '🐟' },
+      { key: 'roast', emoji: '🍗' },
+      { key: 'amber', emoji: '💎' },
+      { key: 'axe', emoji: '🪓' },
+      { key: 'heart', emoji: '❤️' }
+    ];
+    itemDefs.forEach((def, idx) => {
+      const icon = iFrames[idx];
+      if (!icon) return;
+      items[def.key] = icon;
+      items[def.emoji] = icon;
+    });
+
+    // Build dimmed emptyHeart from the 16-bit ruby heart
+    if (items.heart) {
+      const eh = document.createElement('canvas');
+      eh.width = 64;
+      eh.height = 64;
+      const ectx = eh.getContext('2d');
+      ectx.imageSmoothingEnabled = false;
+      ectx.globalAlpha = 0.38;
+      ectx.drawImage(items.heart, 0, 0);
+      ectx.globalCompositeOperation = 'source-atop';
+      ectx.globalAlpha = 1;
+      ectx.fillStyle = 'rgba(30, 22, 18, 0.65)';
+      ectx.fillRect(0, 0, 64, 64);
+      items.emptyHeart = eh;
+    }
+
+    refreshItemsDom();
+  };
+  sheetItems.src = 'assets/items_sheet.png';
 
   window.PixelAssets = { images, sprites, items, environment, tiles, draw };
 })();
