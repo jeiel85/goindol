@@ -1,7 +1,7 @@
 /**
  * Goindol (Prehistorik) Expanded 6-Stage Campaign Definitions
  * Includes multi-tier platforms, moving bridges/elevators, spring mushrooms,
- * mid-stage checkpoint dolmens, secret smashable food totems, enemies, food, and Bosses
+ * mid-stage checkpoint dolmens, secret smashable food totems, biome-specific enemies, food, and Bosses
  */
 const LEVELS = [
   // =========================================================================
@@ -21,16 +21,15 @@ const LEVELS = [
     exitX: 3220,
     exitY: 420,
     platforms: [
-      // Ground sections
       { x: 0, y: 420, w: 920, h: 120, type: 'ground' },
       { x: 1020, y: 420, w: 820, h: 120, type: 'ground' },
       { x: 2140, y: 420, w: 540, h: 120, type: 'ground' },
       { x: 2780, y: 420, w: 620, h: 120, type: 'ground' },
 
-      // Moving Stone Bridge over wide chasm (1840..2140)
+      // Moving Log Raft Bridge over wide chasm (1840..2140)
       { x: 1880, y: 390, w: 130, h: 26, type: 'moving', vx: 2.0, minX: 1850, maxX: 2120 },
 
-      // Elevated ledges (Multi-tier exploration)
+      // Elevated ledges
       { x: 250, y: 310, w: 190, h: 28, type: 'ledge' },
       { x: 510, y: 225, w: 220, h: 28, type: 'ledge' },
       { x: 820, y: 300, w: 160, h: 28, type: 'ledge' },
@@ -47,7 +46,7 @@ const LEVELS = [
     ],
     secretSpots: [
       { x: 315, y: 256, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '🍖', '🍎'] },
-      { x: 1210, y: 246, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🧀', '🍨'] },
+      { x: 1210, y: 246, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🧀', '💎'] },
       { x: 2300, y: 241, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '🪓', '🍖'] },
       { x: 2930, y: 241, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '❤️', '🍔'] }
     ],
@@ -58,7 +57,7 @@ const LEVELS = [
       { x: 640, y: 185, emoji: '🧀', food: 16, score: 200 },
       { x: 865, y: 255, emoji: '🍔', food: 25, score: 350 },
       { x: 1180, y: 375, emoji: '🍎', food: 12, score: 150 },
-      { x: 1480, y: 165, emoji: '🍨', food: 28, score: 450 },
+      { x: 1480, y: 165, emoji: '💎', food: 20, score: 800 },
       { x: 1565, y: 165, emoji: '🪓', food: 5, score: 200, axeAmmo: 5 },
       { x: 1960, y: 335, emoji: '🍖', food: 22, score: 300 },
       { x: 2560, y: 155, emoji: '🍔', food: 25, score: 350 },
@@ -94,13 +93,12 @@ const LEVELS = [
     exitX: 3320,
     exitY: 420,
     platforms: [
-      // Ground sections separated by deep swamp water gaps
       { x: 0, y: 420, w: 740, h: 120, type: 'ground' },
       { x: 1060, y: 420, w: 840, h: 120, type: 'ground' },
       { x: 2220, y: 420, w: 520, h: 120, type: 'ground' },
       { x: 2860, y: 420, w: 640, h: 120, type: 'ground' },
 
-      // Moving Swamp Logs / Bridges
+      // Moving Swamp Log Rafts
       { x: 780, y: 385, w: 130, h: 26, type: 'moving', vx: 2.2, minX: 755, maxX: 1045 },
       { x: 1940, y: 365, w: 130, h: 26, type: 'moving', vx: 2.4, minX: 1915, maxX: 2205 },
 
@@ -113,36 +111,36 @@ const LEVELS = [
       { x: 2600, y: 195, w: 220, h: 28, type: 'ledge' },
       { x: 2940, y: 285, w: 230, h: 28, type: 'ledge' },
 
-      // Bouncy Glowing Mushrooms
+      // Bouncy Bioluminescent Swamp Mushrooms
       { x: 440, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 1400, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 2535, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 560, y: 151, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🍔', '🪓'] },
-      { x: 1230, y: 236, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '🧀', '🍖'] },
+      { x: 560, y: 151, w: 54, h: 54, hitsLeft: 3, rewards: ['🐟', '🍔', '🪓'] },
+      { x: 1230, y: 236, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '🐟', '🍖'] },
       { x: 2380, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '❤️', '🪓'] },
-      { x: 3020, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🍨', '🍔'] }
+      { x: 3020, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🐟', '💎', '🍔'] }
     ],
     foods: [
-      { x: 280, y: 255, emoji: '🍌', food: 14, score: 180 },
-      { x: 360, y: 255, emoji: '🍎', food: 14, score: 180 },
-      { x: 880, y: 310, emoji: '🍖', food: 22, score: 300 },
+      { x: 280, y: 255, emoji: '🐟', food: 20, score: 280 },
+      { x: 360, y: 255, emoji: '🍌', food: 14, score: 180 },
+      { x: 880, y: 310, emoji: '🐟', food: 20, score: 280 },
       { x: 1500, y: 145, emoji: '🍔', food: 25, score: 350 },
       { x: 1580, y: 145, emoji: '🪓', food: 5, score: 220, axeAmmo: 5 },
-      { x: 2040, y: 295, emoji: '🍨', food: 28, score: 450 },
+      { x: 2040, y: 295, emoji: '💎', food: 22, score: 800 },
       { x: 2640, y: 150, emoji: '🍖', food: 22, score: 300 },
-      { x: 2720, y: 150, emoji: '🧀', food: 18, score: 240 },
+      { x: 2720, y: 150, emoji: '🐟', food: 20, score: 280 },
       { x: 3120, y: 375, emoji: '🍔', food: 25, score: 350 }
     ],
     enemies: [
-      { x: 340, y: 380, type: 'dino', minX: 180, maxX: 690, speed: 2.1, hp: 2 },
+      { x: 340, y: 380, type: 'croc', minX: 180, maxX: 690, speed: 2.2, hp: 2 },
       { x: 860, y: 180, type: 'ptero', minX: 680, maxX: 1180, speed: 2.5, hp: 1 },
-      { x: 1250, y: 380, type: 'boar', minX: 1080, maxX: 1700, speed: 2.9, hp: 2 },
-      { x: 1550, y: 380, type: 'dino', minX: 1120, maxX: 1840, speed: 2.3, hp: 2 },
+      { x: 1250, y: 380, type: 'croc', minX: 1080, maxX: 1700, speed: 2.5, hp: 2 },
+      { x: 1550, y: 380, type: 'boar', minX: 1120, maxX: 1840, speed: 2.8, hp: 2 },
       { x: 2020, y: 165, type: 'ptero', minX: 1850, maxX: 2380, speed: 2.7, hp: 1 },
-      { x: 2360, y: 380, type: 'boar', minX: 2240, maxX: 2700, speed: 3.1, hp: 2 },
-      { x: 2960, y: 380, type: 'dino', minX: 2880, maxX: 3240, speed: 2.4, hp: 2 },
+      { x: 2360, y: 380, type: 'croc', minX: 2240, maxX: 2700, speed: 2.7, hp: 2 },
+      { x: 2960, y: 380, type: 'croc', minX: 2880, maxX: 3240, speed: 2.6, hp: 2 },
       { x: 3100, y: 150, type: 'ptero', minX: 2850, maxX: 3300, speed: 2.8, hp: 1 }
     ],
     boss: null
@@ -190,17 +188,17 @@ const LEVELS = [
       { x: 2150, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 570, y: 146, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🍔', '🍨'] },
+      { x: 570, y: 146, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🍔', '💎'] },
       { x: 1250, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍔', '❤️'] },
       { x: 1990, y: 226, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '🍖', '🍔'] },
-      { x: 3170, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '❤️', '🍔'] }
+      { x: 3170, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '❤️', '🍔'] }
     ],
     foods: [
       { x: 280, y: 250, emoji: '🧀', food: 16, score: 200 },
       { x: 350, y: 250, emoji: '🪓', food: 5, score: 200, axeAmmo: 5 },
       { x: 950, y: 240, emoji: '🍖', food: 22, score: 300 },
       { x: 1030, y: 240, emoji: '🍔', food: 25, score: 350 },
-      { x: 1550, y: 300, emoji: '🍨', food: 28, score: 450 },
+      { x: 1550, y: 300, emoji: '💎', food: 25, score: 800 },
       { x: 2250, y: 145, emoji: '🍖', food: 22, score: 300 },
       { x: 2580, y: 375, emoji: '🍔', food: 25, score: 350 },
       { x: 2800, y: 140, emoji: '🍨', food: 28, score: 450 },
@@ -239,7 +237,7 @@ const LEVELS = [
       { x: 1140, y: 420, w: 860, h: 120, type: 'ground' },
       { x: 2320, y: 420, w: 1280, h: 120, type: 'ground' },
 
-      // Moving Ice Floes across freezing canyons
+      // Moving Crystal Ice Floes across freezing canyons
       { x: 860, y: 380, w: 135, h: 26, type: 'moving', vx: 2.5, minX: 835, maxX: 1125 },
       { x: 2040, y: 365, w: 135, h: 26, type: 'moving', vx: 2.6, minX: 2015, maxX: 2305 },
 
@@ -251,35 +249,37 @@ const LEVELS = [
       { x: 2520, y: 275, w: 200, h: 28, type: 'ledge' },
       { x: 3040, y: 275, w: 200, h: 28, type: 'ledge' },
 
-      // Bouncy Mushrooms
+      // Bouncy Frost Mushrooms
       { x: 480, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 1475, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 2440, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 3270, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 600, y: 141, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '🍖', '🪓'] },
-      { x: 1610, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '❤️', '🍨'] },
-      { x: 2590, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍖', '❤️'] },
+      { x: 600, y: 141, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '🐟', '🪓'] },
+      { x: 1610, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '❤️', '🍨'] },
+      { x: 2590, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🐟', '❤️'] },
       { x: 3110, y: 221, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍔', '🍖'] }
     ],
     foods: [
       { x: 310, y: 250, emoji: '🍨', food: 25, score: 400 },
-      { x: 960, y: 310, emoji: '🍖', food: 22, score: 300 },
+      { x: 960, y: 310, emoji: '🐟', food: 22, score: 300 },
       { x: 1300, y: 240, emoji: '🍔', food: 25, score: 350 },
       { x: 1380, y: 240, emoji: '🪓', food: 5, score: 250, axeAmmo: 6 },
       { x: 2140, y: 295, emoji: '🍨', food: 28, score: 450 },
-      { x: 2800, y: 375, emoji: '🍖', food: 22, score: 300 }
+      { x: 2800, y: 375, emoji: '🐟', food: 22, score: 300 }
     ],
     enemies: [
-      { x: 420, y: 380, type: 'boar', minX: 180, maxX: 780, speed: 3.0, hp: 2 },
+      { x: 420, y: 380, type: 'saber', minX: 180, maxX: 780, speed: 3.1, hp: 2 },
       { x: 980, y: 160, type: 'ptero', minX: 780, maxX: 1320, speed: 2.7, hp: 1 },
-      { x: 1350, y: 380, type: 'dino', minX: 1160, maxX: 1760, speed: 2.6, hp: 2 },
-      { x: 1650, y: 380, type: 'boar', minX: 1200, maxX: 1950, speed: 3.2, hp: 2 },
+      { x: 1350, y: 380, type: 'saber', minX: 1160, maxX: 1760, speed: 3.2, hp: 2 },
+      { x: 1650, y: 380, type: 'boar', minX: 1200, maxX: 1950, speed: 3.1, hp: 2 },
       { x: 2150, y: 150, type: 'ptero', minX: 1950, maxX: 2500, speed: 2.8, hp: 1 }
     ],
     boss: {
       name: '빙하 설원 수호자 (FROST MAMMOTH)',
+      spriteType: 'frost_boss',
+      rockType: 'ice_rock',
       x: 2950,
       y: 310,
       w: 115,
@@ -328,38 +328,38 @@ const LEVELS = [
       { x: 2980, y: 285, w: 230, h: 28, type: 'ledge' },
       { x: 3280, y: 190, w: 210, h: 28, type: 'ledge' },
 
-      // Bouncy Mushrooms
+      // Bouncy Magma Mushrooms
       { x: 450, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 1390, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 2220, y: 388, w: 48, h: 32, type: 'spring' },
       { x: 3220, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 570, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🍖', '🍔', '🪓'] },
-      { x: 1520, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['🍨', '❤️', '🍔'] },
-      { x: 2340, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍖', '🍔'] },
-      { x: 3060, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['❤️', '🍨', '🍖'] },
+      { x: 570, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🍗', '🍔', '🪓'] },
+      { x: 1520, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['💎', '❤️', '🍗'] },
+      { x: 2340, y: 131, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍗', '🍔'] },
+      { x: 3060, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['❤️', '💎', '🍗'] },
       { x: 3350, y: 136, w: 54, h: 54, hitsLeft: 3, rewards: ['🍔', '🪓', '🍖'] }
     ],
     foods: [
-      { x: 290, y: 245, emoji: '🍖', food: 22, score: 300 },
+      { x: 290, y: 245, emoji: '🍗', food: 25, score: 350 },
       { x: 880, y: 305, emoji: '🍔', food: 25, score: 350 },
-      { x: 1220, y: 240, emoji: '🧀', food: 18, score: 250 },
+      { x: 1220, y: 240, emoji: '🍗', food: 25, score: 350 },
       { x: 1300, y: 240, emoji: '🪓', food: 5, score: 250, axeAmmo: 6 },
-      { x: 2080, y: 240, emoji: '🍖', food: 22, score: 300 },
-      { x: 2680, y: 290, emoji: '🍨', food: 28, score: 450 },
+      { x: 2080, y: 240, emoji: '🍗', food: 25, score: 350 },
+      { x: 2680, y: 290, emoji: '💎', food: 25, score: 800 },
       { x: 3150, y: 375, emoji: '🍔', food: 25, score: 350 },
-      { x: 3450, y: 375, emoji: '🍖', food: 22, score: 300 }
+      { x: 3450, y: 375, emoji: '🍗', food: 25, score: 350 }
     ],
     enemies: [
-      { x: 360, y: 380, type: 'boar', minX: 180, maxX: 680, speed: 3.1, hp: 3 },
+      { x: 360, y: 380, type: 'lava_dino', minX: 180, maxX: 680, speed: 2.8, hp: 3 },
       { x: 890, y: 160, type: 'ptero', minX: 700, maxX: 1250, speed: 2.9, hp: 1 },
-      { x: 1250, y: 380, type: 'dino', minX: 1080, maxX: 1700, speed: 2.7, hp: 3 },
+      { x: 1250, y: 380, type: 'lava_dino', minX: 1080, maxX: 1700, speed: 2.9, hp: 3 },
       { x: 1550, y: 380, type: 'boar', minX: 1100, maxX: 1710, speed: 3.3, hp: 2 },
-      { x: 2050, y: 380, type: 'dino', minX: 1880, maxX: 2480, speed: 2.8, hp: 3 },
+      { x: 2050, y: 380, type: 'lava_dino', minX: 1880, maxX: 2480, speed: 3.0, hp: 3 },
       { x: 2350, y: 135, type: 'ptero', minX: 1950, maxX: 2700, speed: 3.0, hp: 1 },
       { x: 3020, y: 380, type: 'boar', minX: 2880, maxX: 3540, speed: 3.4, hp: 3 },
-      { x: 3320, y: 380, type: 'dino', minX: 2900, maxX: 3560, speed: 2.9, hp: 3 }
+      { x: 3320, y: 380, type: 'lava_dino', minX: 2900, maxX: 3560, speed: 3.0, hp: 3 }
     ],
     boss: null
   },
@@ -389,13 +389,13 @@ const LEVELS = [
       { x: 1390, y: 388, w: 48, h: 32, type: 'spring' }
     ],
     secretSpots: [
-      { x: 230, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '❤️', '🍖'] },
+      { x: 230, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '❤️', '🍗'] },
       { x: 720, y: 201, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍔', '❤️'] },
-      { x: 1210, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '🍨', '🍖'] }
+      { x: 1210, y: 231, w: 54, h: 54, hitsLeft: 3, rewards: ['🪓', '💎', '🍖'] }
     ],
     foods: [
       { x: 460, y: 125, emoji: '🪓', food: 10, score: 250, axeAmmo: 6 },
-      { x: 520, y: 125, emoji: '🍖', food: 25, score: 300 },
+      { x: 520, y: 125, emoji: '🍗', food: 25, score: 350 },
       { x: 735, y: 125, emoji: '🍔', food: 25, score: 350 }
     ],
     enemies: [
@@ -404,6 +404,8 @@ const LEVELS = [
     ],
     boss: {
       name: '대고인돌 지배자 : 거대 맘모스 대왕 (KING MAMMOTH)',
+      spriteType: 'boss',
+      rockType: 'rock',
       x: 920,
       y: 310,
       w: 115,

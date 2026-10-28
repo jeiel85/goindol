@@ -635,9 +635,10 @@ class GoindolGame {
           this.spawnParticles(b.x + b.w / 2, 420, '#ff5e1a', 20);
 
           // Spawn shockwave rocks left and right
+          const rType = b.rockType || 'rock';
           this.projectiles.push(
-            { type: 'rock', x: b.x, y: 400, vx: -6.5, vy: -3.5, rot: 0, fromPlayer: false },
-            { type: 'rock', x: b.x + b.w, y: 400, vx: 6.5, vy: -3.5, rot: 0, fromPlayer: false }
+            { type: rType, x: b.x, y: 400, vx: -6.5, vy: -3.5, rot: 0, fromPlayer: false },
+            { type: rType, x: b.x + b.w, y: 400, vx: 6.5, vy: -3.5, rot: 0, fromPlayer: false }
           );
         }
       }
@@ -836,7 +837,7 @@ class GoindolGame {
 
     // Secret Smashable Rocks
     for (const spot of this.secretSpots) {
-      window.SpriteRenderer.drawSecretSpot(ctx, spot, this.time);
+      window.SpriteRenderer.drawSecretSpot(ctx, spot, this.time, this.level.theme);
     }
 
     // Foods
@@ -859,7 +860,7 @@ class GoindolGame {
       ctx.save();
       ctx.translate(proj.x, proj.y);
       ctx.rotate(proj.rot);
-      const icon = window.PixelAssets.items[proj.type === 'axe' ? 'axe' : 'rock'];
+      const icon = window.PixelAssets.items[proj.type] || window.PixelAssets.items.rock;
       window.PixelAssets.draw(ctx, icon, -16, -16, 32, 32);
       ctx.restore();
     }

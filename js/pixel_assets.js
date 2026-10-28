@@ -11,7 +11,8 @@
     ice: 'bg_ice.png',
     volcano: 'bg_volcano.png',
     boss: 'bg_boss.png',
-    hero: 'hero_banner.png'
+    hero: 'hero_banner.png',
+    worldMap: 'world_map.png'
   })) {
     images[key] = new Image();
     images[key].src = 'assets/' + path;
@@ -73,7 +74,7 @@
       rect(c, 10,5+hop, 5, 1, '#8e5438'); rect(c, 17,5+hop, 2, 1, '#8e5438');
       rect(c, 16,10+hop, 3, 3, '#fff4d8'); rect(c, 18,11+hop, 1, 2, '#241d1b');
       rect(c, 16,9+hop, 4, 1, '#4b2d24'); rect(c, 17,15+hop, 3, 1, pose === 'hurt' ? '#8c292c' : '#5d3327');
-      // Arm and club use distinct windup / smash silhouettes.
+      // Arm and club
       poly(c, [[17,17+hop],[20,17+hop],[23,20+hop],[22,22+hop],[19,21+hop],[17,20+hop]], '#e6a46b');
       if (pose === 'windup') {
         poly(c, [[20,18+hop],[19,8],[17,4],[20,2],[23,4],[23,8],[22,19+hop]], '#9a572b');
@@ -89,21 +90,74 @@
     });
   }
 
-  function dinosaur(frame, stunned) {
+  // Green Raptor / Lava Armored Raptor
+  function dinosaur(frame, stunned, variant = 'green') {
     return canvas(32, 24, c => {
       const step = frame ? 2 : 0;
-      poly(c, [[4,14],[1,10],[2,16],[7,18],[17,18],[20,14],[17,9],[9,9]], '#338650');
-      poly(c, [[8,10],[10,7],[15,7],[17,9],[22,8],[25,5],[29,6],[30,11],[28,13],[21,13],[19,18],[10,18]], '#55ae56');
-      poly(c, [[8,9],[10,6],[11,8],[13,5],[14,8],[16,6],[17,9]], '#b2cc5a');
-      rect(c, 11,13, 7, 4, '#a8c66a'); rect(c, 13,15, 5, 2, '#d6d47b');
-      rect(c, 24,7, 3, 3, '#f9f1cb'); rect(c, 26,8, 1, 2, '#282525');
+      const dark = variant === 'lava' ? '#3d2224' : '#338650';
+      const mid = variant === 'lava' ? '#7a332e' : '#55ae56';
+      const crest = variant === 'lava' ? '#ff7b29' : '#b2cc5a';
+      const belly = variant === 'lava' ? '#f59f42' : '#a8c66a';
+      const bellyHi = variant === 'lava' ? '#ffe07d' : '#d6d47b';
+
+      poly(c, [[4,14],[1,10],[2,16],[7,18],[17,18],[20,14],[17,9],[9,9]], dark);
+      poly(c, [[8,10],[10,7],[15,7],[17,9],[22,8],[25,5],[29,6],[30,11],[28,13],[21,13],[19,18],[10,18]], mid);
+      poly(c, [[8,9],[10,6],[11,8],[13,5],[14,8],[16,6],[17,9]], crest);
+      rect(c, 11,13, 7, 4, belly); rect(c, 13,15, 5, 2, bellyHi);
+      rect(c, 24,7, 3, 3, variant === 'lava' ? '#ffeb82' : '#f9f1cb');
+      rect(c, 26,8, 1, 2, variant === 'lava' ? '#b81d13' : '#282525');
       rect(c, 27,12, 2, 1, '#f5e9c8');
-      poly(c, [[10,17],[13,17],[13,21-step],[10,22-step],[8,22-step],[8,20-step]], '#357c48');
-      poly(c, [[17,17],[20,17],[20,20+step],[22,20+step],[22,22+step],[17,22+step]], '#2a7042');
-      speckle(c, [[8,12],[10,11],[13,10],[16,11],[18,10],[21,9]], '#8bc368');
+      poly(c, [[10,17],[13,17],[13,21-step],[10,22-step],[8,22-step],[8,20-step]], dark);
+      poly(c, [[17,17],[20,17],[20,20+step],[22,20+step],[22,22+step],[17,22+step]], dark);
+      speckle(c, [[8,12],[10,11],[13,10],[16,11],[18,10],[21,9]], crest);
       if (stunned) { star(c, 5, 2, '#ffe879'); star(c, 15, 1, '#ffe879'); star(c, 23, 2, '#ffe879'); }
     });
   }
+
+  // Stage 2 Swamp Gator (늪지 악어)
+  function croc(frame, stunned) {
+    return canvas(32, 24, c => {
+      const step = frame ? 2 : 0;
+      // Long armored tail & body
+      poly(c, [[1,16],[4,13],[10,11],[22,11],[30,12],[31,16],[29,18],[19,18],[4,18]], '#266e57');
+      poly(c, [[5,11],[7,8],[9,11],[11,8],[13,11],[15,8],[17,11]], '#6ee0a8');
+      // Belly & Jaws
+      rect(c, 9,15, 13, 3, '#b8e69c');
+      rect(c, 22,14, 8, 2, '#fff5d6'); // Sharp teeth row
+      rect(c, 20,9, 4, 3, '#ffea79');
+      rect(c, 22,10, 1, 2, '#1c1917');
+      // Feet
+      rect(c, 8,18, 4, 4-step, '#1c5240');
+      rect(c, 18,18, 4, 4+step, '#1c5240');
+      speckle(c, [[7,13],[12,13],[16,13],[20,13]], '#4cb888');
+      if (stunned) { star(c, 6, 3, '#ffe879'); star(c, 16, 2, '#ffe879'); star(c, 24, 3, '#ffe879'); }
+    });
+  }
+
+  // Stage 4 Ice Age Sabertooth Tiger (빙하 검치호)
+  function saber(frame, stunned) {
+    return canvas(32, 24, c => {
+      const step = frame ? 2 : 0;
+      // Sleek muscular feline body in frost-blue & snow-white
+      poly(c, [[2,11],[5,8],[9,10],[20,9],[25,6],[29,8],[30,13],[27,16],[22,17],[8,17],[4,14]], '#8cb8de');
+      poly(c, [[8,10],[20,9],[24,11],[22,16],[9,16]], '#e2f1ff');
+      // Ice stripes
+      rect(c, 11,10, 2, 4, '#476f99');
+      rect(c, 15,10, 2, 5, '#476f99');
+      rect(c, 19,10, 2, 4, '#476f99');
+      // Long curved ivory sabertooth fangs!
+      poly(c, [[26,13],[28,13],[28,19],[26,18]], '#fff9e6');
+      poly(c, [[29,13],[31,13],[30,18],[29,17]], '#fff9e6');
+      // Glowing amber eye
+      rect(c, 25,8, 3, 2, '#ffcf40');
+      rect(c, 27,8, 1, 2, '#1b1917');
+      // Paws
+      rect(c, 8,16, 4, 5-step, '#6b96bd');
+      rect(c, 19,16, 4, 5+step, '#6b96bd');
+      if (stunned) { star(c, 6, 2, '#ffe879'); star(c, 16, 1, '#ffe879'); star(c, 24, 2, '#ffe879'); }
+    });
+  }
+
   function boar(frame, stunned) {
     return canvas(32, 24, c => {
       const step = frame ? 2 : 0;
@@ -119,6 +173,7 @@
       if (stunned) { star(c, 7, 2, '#ffe879'); star(c, 16, 1, '#ffe879'); star(c, 24, 3, '#ffe879'); }
     });
   }
+
   function ptero(frame) {
     return canvas(32, 24, c => {
       if (frame) poly(c, [[13,12],[8,10],[3,5],[2,3],[1,13],[5,11],[8,17],[11,14]], '#a15bbb');
@@ -131,12 +186,24 @@
     });
   }
 
-  function mammoth(frame, airborne, angry) {
+  function mammoth(frame, airborne, angry, variant = 'king') {
     return canvas(64, 64, c => {
       const leg = airborne ? -3 : frame ? 3 : 0;
-      const dark = angry ? '#5d2726' : '#53362f';
-      const mid = angry ? '#a24b38' : '#966247';
-      const light = angry ? '#d7784a' : '#c28a5d';
+      let dark, mid, light, tuskColor, crownGem;
+      if (variant === 'frost') {
+        dark = angry ? '#2b4c7e' : '#2c4766';
+        mid = angry ? '#4d88c4' : '#4f7ca6';
+        light = angry ? '#9be4ff' : '#8ec2eb';
+        tuskColor = '#e3f8ff';
+        crownGem = angry ? '#ff4d6d' : '#64f5ff';
+      } else {
+        dark = angry ? '#5d2726' : '#53362f';
+        mid = angry ? '#a24b38' : '#966247';
+        light = angry ? '#d7784a' : '#c28a5d';
+        tuskColor = '#f6e8c7';
+        crownGem = angry ? '#ff522a' : '#68c7ad';
+      }
+
       poly(c, [[8,27],[11,18],[18,13],[36,14],[45,20],[48,31],[45,46],[39,51],[14,51],[8,46]], mid);
       poly(c, [[10,24],[14,18],[19,15],[34,16],[41,20],[43,26],[39,23],[37,28],[34,23],[31,29],[28,24],[25,29],[22,24],[19,29],[17,24],[13,28]], light);
       poly(c, [[12,45],[19,45],[20,55+leg],[18,58+leg],[10,58+leg],[9,55+leg]], dark);
@@ -145,10 +212,11 @@
       poly(c, [[30,22],[35,16],[43,16],[49,20],[51,28],[50,36],[47,40],[47,49],[51,51],[54,48],[55,51],[53,55],[48,56],[44,53],[42,41],[36,40]], mid);
       poly(c, [[31,24],[34,20],[39,20],[41,23],[39,33],[35,37],[31,33]], dark);
       rect(c, 33,23, 3, 8, light); rect(c, 46,38, 2, 11, light); rect(c, 48,50, 3, 1, light);
-      poly(c, [[42,36],[47,38],[53,38],[57,34],[58,29],[60,27],[60,35],[57,40],[53,42],[46,42],[42,40]], '#f6e8c7');
-      rect(c, 48,39, 6, 1, '#fff9df'); rect(c, 54,37, 2, 2, '#c8b898');
-      poly(c, [[34,20],[33,12],[36,14],[39,9],[42,14],[47,11],[48,20]], '#8e9290');
-      rect(c, 35,17, 12, 2, '#c4c3ad'); rect(c, 40,14, 2, 3, angry ? '#ff522a' : '#68c7ad');
+      poly(c, [[42,36],[47,38],[53,38],[57,34],[58,29],[60,27],[60,35],[57,40],[53,42],[46,42],[42,40]], tuskColor);
+      rect(c, 48,39, 6, 1, '#ffffff'); rect(c, 54,37, 2, 2, '#9bb8cc');
+      poly(c, [[34,20],[33,12],[36,14],[39,9],[42,14],[47,11],[48,20]], variant === 'frost' ? '#89c4f4' : '#8e9290');
+      rect(c, 35,17, 12, 2, variant === 'frost' ? '#dff4ff' : '#c4c3ad');
+      rect(c, 40,14, 2, 3, crownGem);
       rect(c, 43,24, 4, 4, angry ? '#ff5926' : '#f3d77d'); rect(c, 45,25, 2, 2, angry ? '#fff29b' : '#382326');
       speckle(c, [[15,31],[17,30],[20,33],[23,31],[26,34],[14,37],[16,39],[20,37],[24,39],[28,37],[18,43],[22,45],[27,43],[31,39]], light);
       speckle(c, [[16,32],[19,34],[22,32],[25,35],[15,40],[19,38],[23,40],[27,38]], dark);
@@ -169,6 +237,10 @@
         poly(c, [[2,5],[5,2],[11,2],[14,5],[14,11],[11,14],[4,13],[1,10]], '#6a6261');
         poly(c, [[3,5],[6,3],[10,3],[12,5],[8,7],[4,7]], '#a49a89', null);
         rect(c, 4,9, 4, 2, '#514c4d'); rect(c, 10,8, 2, 2, '#c5b19a');
+      } else if (kind === 'ice_rock') {
+        poly(c, [[2,5],[5,2],[11,2],[14,5],[14,11],[11,14],[4,13],[1,10]], '#4389c9');
+        poly(c, [[3,5],[6,3],[10,3],[12,5],[8,7],[4,7]], '#b8ecff', null);
+        rect(c, 4,9, 4, 2, '#2d5c8f'); rect(c, 10,8, 2, 2, '#ffffff');
       } else if (kind === 'meat') {
         poly(c, [[2,6],[4,3],[9,3],[12,5],[12,9],[9,12],[5,12],[2,10]], '#a84a32');
         rect(c, 4,5, 5, 2, '#ed9861'); rect(c, 3,8, 3, 2, '#d56b48');
@@ -193,6 +265,18 @@
         poly(c, [[4,8],[12,8],[10,14],[6,14]], '#bd8147'); rect(c, 6,10, 4, 1, '#e7b875');
         poly(c, [[3,8],[3,5],[5,3],[7,3],[8,1],[11,2],[13,4],[13,8]], '#f0a6aa');
         rect(c, 5,4, 4, 2, '#fff0df'); rect(c, 10,5, 2, 2, '#d6778e');
+      } else if (kind === 'fish') {
+        poly(c, [[1,8],[5,4],[11,4],[15,2],[14,8],[15,13],[11,11],[5,12]], '#5ca4d6');
+        rect(c, 5,6, 5, 3, '#bfe6ff');
+        rect(c, 3,7, 1, 1, '#1c1917');
+      } else if (kind === 'roast') {
+        poly(c, [[2,7],[5,3],[11,3],[13,7],[11,12],[5,12]], '#c95227');
+        rect(c, 5,5, 5, 3, '#ffad66');
+        rect(c, 12,8, 3, 2, '#f5e6c2');
+      } else if (kind === 'amber') {
+        poly(c, [[8,1],[14,5],[12,13],[8,15],[4,13],[2,5]], '#ff9d1a');
+        poly(c, [[8,3],[12,6],[10,11],[6,11],[4,6]], '#ffe680', null);
+        rect(c, 7,5, 2, 3, '#ffffff');
       }
     });
   }
@@ -222,26 +306,62 @@
       speckle(c, [[9,16],[16,20],[27,8],[39,19],[52,13],[13,32],[17,43],[48,28],[51,44]], '#555e58');
     });
   }
-  function totem(cracks) {
+
+  function totem(cracks, theme = 'jungle') {
     return canvas(32, 32, c => {
-      poly(c, [[5,29],[4,9],[8,4],[23,4],[28,9],[27,29]], '#777970');
-      poly(c, [[7,9],[10,6],[22,6],[25,9],[24,12],[8,12]], '#b1af98', null);
-      rect(c, 7,13, 2, 13, '#999b8a'); rect(c, 23,13, 2, 13, '#555d58');
-      rect(c, 10,17, 12, 3, '#d9caa1'); rect(c, 9,15, 3, 7, '#d9caa1'); rect(c, 20,15, 3, 7, '#d9caa1');
-      rect(c, 12,18, 8, 1, '#9a927c');
+      const base = theme === 'ice' ? '#5882ab' : theme === 'volcano' ? '#4a3130' : '#777970';
+      const top = theme === 'ice' ? '#bce0ff' : theme === 'volcano' ? '#8c533e' : '#b1af98';
+      const emblem = theme === 'ice' ? '#ffffff' : theme === 'volcano' ? '#ffae42' : '#d9caa1';
+      poly(c, [[5,29],[4,9],[8,4],[23,4],[28,9],[27,29]], base);
+      poly(c, [[7,9],[10,6],[22,6],[25,9],[24,12],[8,12]], top, null);
+      rect(c, 7,13, 2, 13, top); rect(c, 23,13, 2, 13, '#3c403d');
+      rect(c, 10,17, 12, 3, emblem); rect(c, 9,15, 3, 7, emblem); rect(c, 20,15, 3, 7, emblem);
+      rect(c, 12,18, 8, 1, '#857763');
       if (cracks > 0) { rect(c, 15,5, 1, 3, ink); rect(c, 16,8, 2, 1, ink); rect(c, 18,9, 1, 4, ink); }
       if (cracks > 1) { rect(c, 18,12, 2, 1, ink); rect(c, 20,13, 1, 3, ink); rect(c, 12,22, 1, 3, ink); rect(c, 10,25, 2, 1, ink); rect(c, 9,26, 1, 3, ink); }
-      speckle(c, [[6,11],[10,8],[21,9],[26,12],[7,24],[24,25],[16,27]], '#5a635e');
+      speckle(c, [[6,11],[10,8],[21,9],[26,12],[7,24],[24,25],[16,27]], '#3b423e');
     });
   }
-  function mushroom() {
+
+  function mushroom(theme = 'jungle') {
     return canvas(24, 16, c => {
+      const capColor = theme === 'swamp' ? '#24b8a0' : theme === 'ice' ? '#4aa3df' : theme === 'volcano' ? '#e85d26' : '#bb383a';
+      const spotColor = theme === 'swamp' ? '#b8fff0' : theme === 'ice' ? '#ffffff' : '#ffe4c2';
       poly(c, [[9,8],[15,8],[16,15],[8,15]], '#d9c29c'); rect(c, 10,10, 2, 4, '#fff0cb');
-      poly(c, [[1,8],[3,4],[6,2],[18,2],[21,4],[23,8],[22,10],[2,10]], '#bb383a');
-      rect(c, 4,4, 4, 2, '#ffe4c2'); rect(c, 14,3, 4, 2, '#ffe4c2'); rect(c, 9,7, 3, 2, '#f5c5ad');
-      rect(c, 3,9, 18, 1, '#792b30');
+      poly(c, [[1,8],[3,4],[6,2],[18,2],[21,4],[23,8],[22,10],[2,10]], capColor);
+      rect(c, 4,4, 4, 2, spotColor); rect(c, 14,3, 4, 2, spotColor); rect(c, 9,7, 3, 2, spotColor);
+      rect(c, 3,9, 18, 1, ink);
     });
   }
+
+  // Dedicated 16-bit Moving Platform Sprite per Biome
+  function movingPlatform(theme = 'jungle') {
+    return canvas(64, 14, c => {
+      if (theme === 'jungle' || theme === 'swamp') {
+        // Bound Prehistoric Log Raft with Vines
+        poly(c, [[1,3],[62,3],[63,11],[1,11]], '#78492a');
+        rect(c, 2,2, 60, 2, '#4ca65b');
+        for (let x = 8; x < 58; x += 14) {
+          rect(c, x, 2, 3, 10, '#3a6e3e');
+          rect(c, x + 4, 5, 6, 2, '#9e663c');
+        }
+      } else if (theme === 'ice') {
+        // Crystal Glacial Iceberg Floe with Icicles
+        poly(c, [[1,2],[62,2],[60,9],[54,13],[48,9],[32,13],[22,9],[12,13],[4,9]], '#74b9eb');
+        rect(c, 2,2, 60, 3, '#e8f7ff');
+        rect(c, 8,5, 48, 2, '#a9d8fa');
+      } else {
+        // Carved Obsidian & Glowing Magma Rune Slab
+        poly(c, [[1,2],[62,2],[60,12],[4,12]], '#3d2c35');
+        rect(c, 2,2, 60, 2, '#8c6d58');
+        for (let x = 10; x < 56; x += 12) {
+          rect(c, x, 6, 6, 3, '#ff6a26');
+          rect(c, x + 1, 7, 4, 1, '#ffe07d');
+        }
+      }
+    });
+  }
+
   function tile(theme) {
     return canvas(16, 16, c => {
       const palettes = {
@@ -268,27 +388,46 @@
 
   const sprites = {
     sam: { idle: [sam('idle', 0), sam('idle', 1)], run: [0,1,2,3].map(i => sam('run', i)), jump: sam('jump'), fall: sam('fall'), windup: sam('windup'), attack: sam('attack'), hurt: sam('hurt') },
-    dino: { walk: [dinosaur(0), dinosaur(1)], stunned: dinosaur(0, true) },
+    dino: { walk: [dinosaur(0, false, 'green'), dinosaur(1, false, 'green')], stunned: dinosaur(0, true, 'green') },
+    lava_dino: { walk: [dinosaur(0, false, 'lava'), dinosaur(1, false, 'lava')], stunned: dinosaur(0, true, 'lava') },
+    croc: { walk: [croc(0, false), croc(1, false)], stunned: croc(0, true) },
+    saber: { walk: [saber(0, false), saber(1, false)], stunned: saber(0, true) },
     boar: { walk: [boar(0), boar(1)], stunned: boar(0, true) },
     ptero: { fly: [ptero(0), ptero(1)] },
-    boss: { walk: [mammoth(0, false, false), mammoth(1, false, false)], jump: mammoth(0, true, false), enraged: [mammoth(0, false, true), mammoth(1, false, true)] }
+    boss: { walk: [mammoth(0, false, false, 'king'), mammoth(1, false, false, 'king')], jump: mammoth(0, true, false, 'king'), enraged: [mammoth(0, false, true, 'king'), mammoth(1, false, true, 'king')] },
+    frost_boss: { walk: [mammoth(0, false, false, 'frost'), mammoth(1, false, false, 'frost')], jump: mammoth(0, true, false, 'frost'), enraged: [mammoth(0, false, true, 'frost'), mammoth(1, false, true, 'frost')] }
   };
+
   const items = {};
-  ['heart','emptyHeart','axe','rock','meat','apple','banana','cheese','burger','icecream'].forEach(key => { items[key] = icon(key); });
-  Object.entries({ '❤️':'heart', '❤':'heart', '🖤':'emptyHeart', '🪓':'axe', '🪨':'rock', '🍖':'meat', '🍎':'apple', '🍌':'banana', '🧀':'cheese', '🍔':'burger', '🍨':'icecream' }).forEach(([symbol, key]) => { items[symbol] = items[key]; });
+  ['heart','emptyHeart','axe','rock','ice_rock','meat','apple','banana','cheese','burger','icecream','fish','roast','amber'].forEach(key => { items[key] = icon(key); });
+  Object.entries({
+    '❤️':'heart', '❤':'heart', '🖤':'emptyHeart',
+    '🪓':'axe', '🪨':'rock', '❄️':'ice_rock',
+    '🍖':'meat', '🍎':'apple', '🍌':'banana', '🧀':'cheese', '🍔':'burger', '🍨':'icecream',
+    '🐟':'fish', '🍗':'roast', '💎':'amber'
+  }).forEach(([symbol, key]) => { items[symbol] = items[key]; });
+
+  const themes = ['jungle', 'swamp', 'cave', 'ice', 'volcano', 'boss'];
+  const totemByTheme = {};
+  const mushroomByTheme = {};
+  const movingByTheme = {};
+  const tiles = {};
+  themes.forEach(t => {
+    totemByTheme[t] = [totem(0, t), totem(1, t), totem(2, t)];
+    mushroomByTheme[t] = mushroom(t);
+    movingByTheme[t] = movingPlatform(t);
+    tiles[t] = tile(t);
+  });
+
   const environment = {
     dolmen: { start: dolmen('start'), closed: dolmen('closed'), open: dolmen('open'), checkpoint: dolmen('checkpoint') },
-    totem: [totem(0), totem(1), totem(2)],
-    mushroom: mushroom()
+    totem: totemByTheme.jungle,
+    totemByTheme,
+    mushroom: mushroomByTheme.jungle,
+    mushroomByTheme,
+    movingByTheme
   };
-  const tiles = {
-    jungle: tile('jungle'),
-    swamp: tile('swamp'),
-    cave: tile('cave'),
-    ice: tile('ice'),
-    volcano: tile('volcano'),
-    boss: tile('boss')
-  };
+
   function draw(ctx, asset, x, y, w = asset.width, h = asset.height) {
     ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(asset, Math.round(x), Math.round(y), Math.round(w), Math.round(h)); ctx.restore();
   }

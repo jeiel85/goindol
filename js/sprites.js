@@ -56,7 +56,13 @@ const SpriteRenderer = {
     const { x, y, w, h, type } = plat;
     const assets = window.PixelAssets;
     if (type === 'spring') {
-      assets.draw(ctx, assets.environment.mushroom, x, y, w, h);
+      const mush = (assets.environment.mushroomByTheme && assets.environment.mushroomByTheme[theme]) || assets.environment.mushroom;
+      assets.draw(ctx, mush, x, y, w, h);
+      return;
+    }
+    if (type === 'moving') {
+      const movSprite = (assets.environment.movingByTheme && assets.environment.movingByTheme[theme]) || assets.environment.movingByTheme.jungle;
+      assets.draw(ctx, movSprite, x, y, w, h);
       return;
     }
     // Clip full tiles rather than stretching a texture at the edges.
@@ -73,19 +79,15 @@ const SpriteRenderer = {
         ctx.drawImage(tile, 0, 6, 32, 26, tx, ty, 32, 26);
       }
     }
-    if (type === 'moving') {
-      ctx.strokeStyle = '#ffcf40';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
-    }
     ctx.restore();
   },
 
-  drawSecretSpot(ctx, spot, time) {
+  drawSecretSpot(ctx, spot, time, theme = 'jungle') {
     if (spot.depleted) return;
     const shake = spot.hitTimer > 0 ? Math.sin(time * 2) * 3 : 0;
     const damage = Math.max(0, Math.min(2, 3 - spot.hitsLeft));
-    window.PixelAssets.draw(ctx, window.PixelAssets.environment.totem[damage], spot.x + shake, spot.y, spot.w, spot.h);
+    const totemSet = (window.PixelAssets.environment.totemByTheme && window.PixelAssets.environment.totemByTheme[theme]) || window.PixelAssets.environment.totem;
+    window.PixelAssets.draw(ctx, totemSet[damage], spot.x + shake, spot.y, spot.w, spot.h);
   },
 
   drawCaveman(ctx, player, time) {
@@ -111,7 +113,7 @@ const SpriteRenderer = {
   },
 
   drawEnemy(ctx, enemy, time) {
-    const sprites = window.PixelAssets.sprites[enemy.type];
+    const sprites = window.PixelAssets.sprites[enemy.type] || window.PixelAssets.sprites.dino;
     const frames = enemy.type === 'ptero' ? sprites.fly : sprites.walk;
     const frame = enemy.stunTimer > 0 && sprites.stunned ? sprites.stunned : frames[Math.floor(time / 9) % frames.length];
     ctx.save();
@@ -123,7 +125,8 @@ const SpriteRenderer = {
 
   drawBoss(ctx, boss, time) {
     if (!boss || boss.hp <= 0) return;
-    const sprites = window.PixelAssets.sprites.boss;
+    const spriteKey = boss.spriteType || 'boss';
+    const sprites = window.PixelAssets.sprites[spriteKey] || window.PixelAssets.sprites.boss;
     const frames = boss.enraged ? sprites.enraged : sprites.walk;
     const frame = !boss.onGround ? sprites.jump : frames[Math.floor(time / 10) % frames.length];
     ctx.save();
