@@ -651,3 +651,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid #ffde8d; outline-offs
 .stage-btn.stage-jungle { background-image: url('../assets/bg_jungle.png'); }
 .stage-btn.stage-cave { background-image: url('../assets/bg_cave.png'); }
 .stage-btn.stage-boss { background-image: url('../assets/bg_boss.png'); }
+
+/* 6-Stage Expansion Thumbnail Backgrounds */
+.stage-btn.stage-jungle { background-image: url('../assets/bg_jungle.png'); }
+.stage-btn.stage-swamp { background-image: url('../assets/bg_swamp.png'); }
+.stage-btn.stage-cave { background-image: url('../assets/bg_cave.png'); }
+.stage-btn.stage-ice { background-image: url('../assets/bg_ice.png'); }
+.stage-btn.stage-volcano { background-image: url('../assets/bg_volcano.png'); }
+.stage-btn.stage-boss { background-image: url('../assets/bg_boss.png'); }

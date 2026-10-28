@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>고인돌 (GOINDOL : Prehistorik Arcade) - 웹 라이브 데모</title>
-  <meta name="description" content="추억의 DOS 명작 액션 플랫포머 고인돌(Prehistorik)을 HTML5 Canvas와 Web Audio 칩튠 사운드로 완벽 재현한 웹 게임 데모입니다." />
+  <title>고인돌 (GOINDOL : Prehistorik Arcade) - 6대 스테이지 확장판</title>
+  <meta name="description" content="추억의 DOS 명작 액션 플랫포머 고인돌(Prehistorik)을 6개 스테이지 확장판과 16비트 픽셀아트, Web Audio 칩튠 사운드로 완벽 재현한 웹 게임 데모입니다." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -17,10 +17,11 @@
     <div class="nav-container">
       <a href="#" class="brand">
         <span>고인돌 <small>GOINDOL</small></span>
-        <span class="brand-badge">DOS 1991 TRIBUTE</span>
+        <span class="brand-badge">6 STAGES EXPANDED</span>
       </a>
       <ul class="nav-links">
         <li><a href="#play">게임 플레이</a></li>
+        <li><a href="#stages">6대 월드맵</a></li>
         <li><a href="#features">핵심 기믹</a></li>
         <li><a href="#bestiary">몬스터 도감</a></li>
         <li><a href="https://github.com/jeiel85/goindol" target="_blank" rel="noopener">GitHub</a></li>
@@ -31,10 +32,10 @@
   <!-- Main Arcade Live Demo Section -->
   <main id="play" class="arcade-section">
     <div class="hero-banner">
-      <span class="hero-tag">A PREHISTORIC ARCADE ADVENTURE</span>
+      <span class="hero-tag">A PREHISTORIC ARCADE ADVENTURE · 6 STAGES</span>
       <h1 class="hero-title">고인돌 <span>PREHISTORIK ARCADE</span></h1>
       <p class="hero-subtitle">
-        배고픈 원시인 <strong>샘(Sam)</strong>이 되어 몽둥이로 공룡을 물리치고, 수상한 바위를 두드려 숨겨진 식량을 찾아 고인돌 관문을 돌파하세요!
+        배고픈 원시인 <strong>샘(Sam)</strong>이 되어 원시림·거대늪지·화산동굴·빙하설원·용암성채·대고인돌 제단까지 펼쳐진 <strong>6개 스테이지</strong>를 돌파하세요!
       </p>
       <a class="hero-cta" href="#arcade">게임 시작 <span aria-hidden="true">↓</span></a>
     </div>
@@ -43,12 +44,15 @@
       <!-- Top Control Bar -->
       <div class="cabinet-topbar">
         <div class="cabinet-status">
-          <span><span class="status-dot"></span> SELECT YOUR STAGE</span>
+          <span><span class="status-dot"></span> SELECT YOUR STAGE (총 6개 스테이지 즉시 플레이 가능)</span>
         </div>
         <div class="stage-selector-bar">
-          <button class="retro-btn stage-btn stage-jungle active" data-stage-btn="0"><span>STAGE 01</span><strong>원시림</strong></button>
-          <button class="retro-btn stage-btn stage-cave" data-stage-btn="1"><span>STAGE 02</span><strong>화산동굴</strong></button>
-          <button class="retro-btn stage-btn stage-boss" data-stage-btn="2"><span>STAGE 03</span><strong>맘모스 보스전</strong></button>
+          <button class="retro-btn stage-btn stage-jungle active" data-stage-btn="0"><span>STAGE 01</span><strong>신석기 원시림</strong></button>
+          <button class="retro-btn stage-btn stage-swamp" data-stage-btn="1"><span>STAGE 02</span><strong>거대 고목 늪지</strong></button>
+          <button class="retro-btn stage-btn stage-cave" data-stage-btn="2"><span>STAGE 03</span><strong>화산 동굴 협곡</strong></button>
+          <button class="retro-btn stage-btn stage-ice" data-stage-btn="3"><span>STAGE 04</span><strong>빙하기 설원</strong></button>
+          <button class="retro-btn stage-btn stage-volcano" data-stage-btn="4"><span>STAGE 05</span><strong>용암 화구 성채</strong></button>
+          <button class="retro-btn stage-btn stage-boss" data-stage-btn="5"><span>STAGE 06</span><strong>맘모스 대왕 결전</strong></button>
         </div>
         <div class="cabinet-actions">
           <button id="btnToggleSound" class="retro-btn active">사운드 ON</button>
@@ -101,6 +105,72 @@
   <!-- Landing & Encyclopedia Sections -->
   <div class="content-container">
 
+    <!-- 6 Stages World Map Showcase -->
+    <section id="stages">
+      <h2 class="section-title">6대 원시 월드맵 & 스테이지 가이드</h2>
+      <div class="grid-3">
+        <div class="stone-card">
+          <span class="card-number">STAGE 01 · JUNGLE</span>
+          <h3>신석기 원시림 (Prehistoric Jungle)</h3>
+          <p>거대 고사리 나무와 고인돌 유적이 펼쳐진 원시림. 통통 버섯을 밟아 고지대에 오르고 움직이는 돌다리를 건너 숨겨진 식량을 확보하세요.</p>
+          <div class="badge-list">
+            <span class="mini-badge">이동식 돌다리</span>
+            <span class="mini-badge">중간 세이브 고인돌</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <span class="card-number">STAGE 02 · SWAMP</span>
+          <h3>거대 고목 늪지대 (Ancient Swamp)</h3>
+          <p>발광 버섯과 수몰된 고인돌이 신비롭게 빛나는 늪지대. 깊은 늪을 가로지르는 뗏목 발판과 보라 익룡 편대의 공중 습격을 돌파하세요.</p>
+          <div class="badge-list">
+            <span class="mini-badge">수상 이동 발판</span>
+            <span class="mini-badge">익룡 군집 출현</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <span class="card-number">STAGE 03 · CAVE</span>
+          <h3>화산 동굴과 공룡 협곡 (Volcanic Cave)</h3>
+          <p>지하 종유석과 용암 균열이 흐르는 동굴 협곡. 상하로 움직이는 승강기 바위를 타고 동굴 상층부의 비밀 보물 토템을 타격하세요.</p>
+          <div class="badge-list">
+            <span class="mini-badge">수직 승강기 발판</span>
+            <span class="mini-badge">고속 멧돼지 돌진</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <span class="card-number">STAGE 04 · ICE AGE</span>
+          <h3>빙하기 설원 협곡 (Glacial Gorge)</h3>
+          <p>오로라가 빛나는 빙하기 설원! 유빙 발판을 건너 설원 끝에 도달하면 중간 보스 <strong>빙하 설원 수호자(Frost Mammoth)</strong>가 관문을 가로막습니다.</p>
+          <div class="badge-list">
+            <span class="mini-badge">중간 보스전 (HP 14)</span>
+            <span class="mini-badge">빙하 유빙 브릿지</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <span class="card-number">STAGE 05 · VOLCANO</span>
+          <h3>용암 화구 성채 (Magma Fortress)</h3>
+          <p>화산 분화구로 향하는 험난한 최종 관문! 끓어오르는 용암 폭포 위를 가로지르는 흑요석 발판과 강화된 정예 공룡(HP 3)들을 제압하세요.</p>
+          <div class="badge-list">
+            <span class="mini-badge">정예 몬스터 출현</span>
+            <span class="mini-badge">비밀 토템 5곳</span>
+          </div>
+        </div>
+
+        <div class="stone-card">
+          <span class="card-number">STAGE 06 · FINAL BOSS</span>
+          <h3>대고인돌 제단 (King Mammoth Arena)</h3>
+          <p>붉은 블러드문 아래 펼쳐지는 최종 결전! 상공의 이동 발판과 버섯 점프대를 활용해 <strong>거대 맘모스 대왕(HP 24)</strong>의 대지 충격파를 피하고 승리하세요!</p>
+          <div class="badge-list">
+            <span class="mini-badge">최종 보스전 (HP 24)</span>
+            <span class="mini-badge">분노 모드 & 충격파</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Features Section -->
     <section id="features">
       <h2 class="section-title">원시 시대에서 살아남는 법</h2>
@@ -119,24 +189,24 @@
 
         <div class="stone-card">
           <span class="card-number">02 / DISCOVER</span>
-          <h3>수상한 바위 타격 & 비밀 식량 폭포</h3>
+          <h3>수상한 바위 타격 & 중간 세이브 고인돌</h3>
           <p>
-            원작에서 허공이나 바위를 두드리면 음식이 쏟아지던 기믹을 재현했습니다! <strong>뼈 문양이 새겨진 고대 바위</strong>를 몽둥이로 내려치면 숨겨진 고기와 햄버거가 솟구쳐 오릅니다.
+            <strong>뼈 문양이 새겨진 고대 토템 바위</strong>를 몽둥이로 내려치면 숨겨진 고기와 햄버거가 솟구쳐 오르며, 스테이지 중반의 <strong>CHECKPOINT 고인돌</strong>을 지나면 낙하 시에도 안전하게 부활합니다.
           </p>
           <div class="badge-list">
             <span class="mini-badge">식량 게이지 50% 이상 시 출구 개방</span>
-            <span class="mini-badge">보너스 스코어</span>
+            <span class="mini-badge">체크포인트 부활</span>
           </div>
         </div>
 
         <div class="stone-card">
           <span class="card-number">03 / LISTEN</span>
-          <h3>AdLib 감성 Web Audio 사운드트랙</h3>
+          <h3>6종 테마별 AdLib Web Audio 사운드트랙</h3>
           <p>
-            외부 음원 파일 없이 순수 <strong>Web Audio API 신디사이저</strong>로 실시간 합성되는 8비트/FM풍 배경음악(원시림, 화산동굴, 보스전)과 경쾌한 레트로 효과음을 제공합니다.
+            외부 음원 파일 없이 순수 <strong>Web Audio API 신디사이저</strong>로 실시간 합성되는 6개 스테이지 전용 배경음악(원시림·늪지·동굴·설원·화산·보스전)과 레트로 효과음을 제공합니다.
           </p>
           <div class="badge-list">
-            <span class="mini-badge">Web Audio 사운드</span>
+            <span class="mini-badge">6종 전용 BGM</span>
             <span class="mini-badge">CRT 스캔라인 필터</span>
           </div>
         </div>
@@ -152,7 +222,7 @@
           <h3>초록 공룡 (Raptor)</h3>
           <p>원시림과 협곡을 순찰하는 가장 흔한 공룡입니다. 몽둥이로 두 번 내려치거나 위에서 밟으면 고기를 떨어뜨립니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">HP: 2</span>
+            <span class="mini-badge">HP: 2~3</span>
             <span class="mini-badge">드랍: 공룡갈비</span>
           </div>
         </div>
@@ -162,7 +232,7 @@
           <h3>돌진 멧돼지 (Wild Boar)</h3>
           <p>날카로운 어금니를 세우고 빠른 속도로 돌진합니다. 점프로 피하거나 타이밍을 맞춰 몽둥이로 제압하세요.</p>
           <div class="badge-list">
-            <span class="mini-badge">HP: 2</span>
+            <span class="mini-badge">HP: 2~3</span>
             <span class="mini-badge">특징: 고속 지상 돌진</span>
           </div>
         </div>
@@ -180,9 +250,9 @@
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="boss" width="96" height="96" aria-hidden="true"></canvas>
           <h3>거대 맘모스 대왕 (BOSS)</h3>
-          <p>스테이지 3 대고인돌 제단을 지키는 보스! 점프 후 착지할 때 양옆으로 충격파 바위를 날리며 체력이 절반 이하가 되면 분노합니다.</p>
+          <p>스테이지 4 설원 수호자(HP 14)와 스테이지 6 대고인돌 제단 최종 보스(HP 24)! 점프 착지 시 양옆으로 대지 충격파 바위를 날립니다.</p>
           <div class="badge-list">
-            <span class="mini-badge">HP: 18</span>
+            <span class="mini-badge">HP: 14 / 24</span>
             <span class="mini-badge">패턴: 대지 충격파</span>
           </div>
         </div>
@@ -193,7 +263,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p><strong>고인돌 (GOINDOL: Prehistorik Web Edition)</strong> · Built with HTML5 Canvas & Web Audio API</p>
+    <p><strong>고인돌 (GOINDOL: Prehistorik Web Edition - 6 Stages Expanded)</strong> · Built with HTML5 Canvas & Web Audio API</p>
     <p style="margin-top: 0.4rem;">
       Inspired by classic 1991/1993 Titus Interactive DOS game <em>Prehistorik</em> ·
       <a href="https://github.com/jeiel85/goindol" target="_blank" rel="noopener">GitHub Repository</a>

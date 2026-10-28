@@ -4,7 +4,15 @@
   'use strict';
 
   const images = {};
-  for (const [key, path] of Object.entries({ jungle: 'bg_jungle.png', cave: 'bg_cave.png', boss: 'bg_boss.png', hero: 'hero_banner.png' })) {
+  for (const [key, path] of Object.entries({
+    jungle: 'bg_jungle.png',
+    swamp: 'bg_swamp.png',
+    cave: 'bg_cave.png',
+    ice: 'bg_ice.png',
+    volcano: 'bg_volcano.png',
+    boss: 'bg_boss.png',
+    hero: 'hero_banner.png'
+  })) {
     images[key] = new Image();
     images[key].src = 'assets/' + path;
   }
@@ -17,9 +25,6 @@
     const c = small.getContext('2d');
     c.imageSmoothingEnabled = false;
     paint(c);
-    // Canvas paths can introduce partially transparent edge pixels even on an
-    // integer grid. Snap their coverage before enlarging to keep the silhouettes
-    // as hard-edged pixels on every browser.
     const pixels = c.getImageData(0, 0, w, h);
     for (let i = 3; i < pixels.data.length; i += 4) {
       pixels.data[i] = pixels.data[i] >= 128 ? 255 : 0;
@@ -132,20 +137,16 @@
       const dark = angry ? '#5d2726' : '#53362f';
       const mid = angry ? '#a24b38' : '#966247';
       const light = angry ? '#d7784a' : '#c28a5d';
-      // Huge body and shaggy fringe.
       poly(c, [[8,27],[11,18],[18,13],[36,14],[45,20],[48,31],[45,46],[39,51],[14,51],[8,46]], mid);
       poly(c, [[10,24],[14,18],[19,15],[34,16],[41,20],[43,26],[39,23],[37,28],[34,23],[31,29],[28,24],[25,29],[22,24],[19,29],[17,24],[13,28]], light);
       poly(c, [[12,45],[19,45],[20,55+leg],[18,58+leg],[10,58+leg],[9,55+leg]], dark);
       poly(c, [[31,45],[39,45],[40,55-leg],[38,58-leg],[30,58-leg],[29,55-leg]], dark);
       rect(c, 11,54+leg, 6, 2, mid); rect(c, 31,54-leg, 6, 2, mid);
-      // Ear, head and long curling trunk.
       poly(c, [[30,22],[35,16],[43,16],[49,20],[51,28],[50,36],[47,40],[47,49],[51,51],[54,48],[55,51],[53,55],[48,56],[44,53],[42,41],[36,40]], mid);
       poly(c, [[31,24],[34,20],[39,20],[41,23],[39,33],[35,37],[31,33]], dark);
       rect(c, 33,23, 3, 8, light); rect(c, 46,38, 2, 11, light); rect(c, 48,50, 3, 1, light);
-      // Ivory tusks, deliberately curved as stepped pixel silhouettes.
       poly(c, [[42,36],[47,38],[53,38],[57,34],[58,29],[60,27],[60,35],[57,40],[53,42],[46,42],[42,40]], '#f6e8c7');
       rect(c, 48,39, 6, 1, '#fff9df'); rect(c, 54,37, 2, 2, '#c8b898');
-      // Crown, stones and rivets.
       poly(c, [[34,20],[33,12],[36,14],[39,9],[42,14],[47,11],[48,20]], '#8e9290');
       rect(c, 35,17, 12, 2, '#c4c3ad'); rect(c, 40,14, 2, 3, angry ? '#ff522a' : '#68c7ad');
       rect(c, 43,24, 4, 4, angry ? '#ff5926' : '#f3d77d'); rect(c, 45,25, 2, 2, angry ? '#fff29b' : '#382326');
@@ -205,15 +206,18 @@
       poly(c, [[3,8],[9,3],[52,3],[61,8],[59,22],[5,22]], '#858a7d');
       poly(c, [[7,8],[12,5],[51,5],[57,9],[55,11],[8,11]], '#b1b19d', null);
       rect(c, 12,4, 15, 2, '#74955d'); rect(c, 33,4, 13, 2, '#71905b');
-      poly(c, [[21,22],[43,22],[43,52],[21,52]], state === 'open' ? '#235a55' : '#34383a');
+      poly(c, [[21,22],[43,22],[43,52],[21,52]], state === 'open' ? '#235a55' : state === 'checkpoint' ? '#3a3219' : '#34383a');
       if (state === 'open') {
         rect(c, 24,25, 16, 24, '#398c7a'); rect(c, 27,27, 10, 20, '#67c9a2');
         star(c, 29,30, '#d9ffd6'); star(c, 34,40, '#c9ffce');
+      } else if (state === 'checkpoint') {
+        rect(c, 24,25, 16, 24, '#8c6222'); rect(c, 27,27, 10, 20, '#ffcb5c');
+        star(c, 29,31, '#fff8d6'); star(c, 34,39, '#fff8d6');
       } else {
         rect(c, 23,25, 18, 2, '#6f716a'); rect(c, 23,37, 18, 2, '#6f716a');
         rect(c, 30,25, 2, 26, '#5e615e');
       }
-      const rune = state === 'open' ? '#aaffc9' : state === 'start' ? '#efcf82' : '#c2af88';
+      const rune = state === 'open' ? '#aaffc9' : state === 'checkpoint' ? '#ffe082' : state === 'start' ? '#efcf82' : '#c2af88';
       for (let x = 13; x < 53; x += 9) { rect(c,x,14, 1, 4,rune); rect(c,x+1,15, 2, 1,rune); rect(c,x+2,16, 1, 2,rune); }
       speckle(c, [[9,16],[16,20],[27,8],[39,19],[52,13],[13,32],[17,43],[48,28],[51,44]], '#555e58');
     });
@@ -223,7 +227,6 @@
       poly(c, [[5,29],[4,9],[8,4],[23,4],[28,9],[27,29]], '#777970');
       poly(c, [[7,9],[10,6],[22,6],[25,9],[24,12],[8,12]], '#b1af98', null);
       rect(c, 7,13, 2, 13, '#999b8a'); rect(c, 23,13, 2, 13, '#555d58');
-      // carved bone, not a font glyph
       rect(c, 10,17, 12, 3, '#d9caa1'); rect(c, 9,15, 3, 7, '#d9caa1'); rect(c, 20,15, 3, 7, '#d9caa1');
       rect(c, 12,18, 8, 1, '#9a927c');
       if (cracks > 0) { rect(c, 15,5, 1, 3, ink); rect(c, 16,8, 2, 1, ink); rect(c, 18,9, 1, 4, ink); }
@@ -241,13 +244,24 @@
   }
   function tile(theme) {
     return canvas(16, 16, c => {
-      const colors = theme === 'jungle' ? ['#563d31','#75523a','#a37a4a','#528c4c','#8fc070'] : theme === 'cave' ? ['#332b41','#51435c','#77647d','#725c87','#dd643f'] : ['#29272c','#4d3b3b','#795149','#9a4735','#ef6a37'];
+      const palettes = {
+        jungle:  ['#563d31','#75523a','#a37a4a','#528c4c','#8fc070'],
+        swamp:   ['#24332c','#394f43','#597865','#3b8f6e','#76e0b8'],
+        cave:    ['#332b41','#51435c','#77647d','#725c87','#dd643f'],
+        ice:     ['#2a4466','#436894','#749ec9','#b8d8f8','#ffffff'],
+        volcano: ['#26191b','#472926','#6e3c32','#b84627','#ff9d3b'],
+        boss:    ['#29272c','#4d3b3b','#795149','#9a4735','#ef6a37']
+      };
+      const colors = palettes[theme] || palettes.jungle;
       rect(c, 0,0, 16,16, colors[0]);
       rect(c, 0,3, 15,5, colors[1]); rect(c, 1,9, 7,6, colors[1]); rect(c, 9,9, 7,6, colors[1]);
       rect(c, 0,3, 14,1, colors[2]); rect(c, 1,9, 6,1, colors[2]); rect(c, 9,9, 7,1, colors[2]);
       rect(c, 0,0, 16,3, colors[3]); rect(c, 1,0, 5,1, colors[4]); rect(c, 9,1, 5,1, colors[4]);
-      if (theme === 'jungle') { rect(c, 2,3, 3,2, colors[3]); rect(c, 10,3, 2,2, colors[3]); }
-      else { rect(c, 5,6, 4,1, colors[4]); rect(c, 8,7, 1,2, colors[4]); rect(c, 11,12, 4,1, colors[4]); }
+      if (theme === 'jungle' || theme === 'swamp' || theme === 'ice') {
+        rect(c, 2,3, 3,2, colors[3]); rect(c, 10,3, 2,2, colors[3]);
+      } else {
+        rect(c, 5,6, 4,1, colors[4]); rect(c, 8,7, 1,2, colors[4]); rect(c, 11,12, 4,1, colors[4]);
+      }
       speckle(c, [[2,6],[11,5],[4,12],[6,14],[10,11],[14,14]], colors[2]);
     });
   }
@@ -262,8 +276,19 @@
   const items = {};
   ['heart','emptyHeart','axe','rock','meat','apple','banana','cheese','burger','icecream'].forEach(key => { items[key] = icon(key); });
   Object.entries({ '❤️':'heart', '❤':'heart', '🖤':'emptyHeart', '🪓':'axe', '🪨':'rock', '🍖':'meat', '🍎':'apple', '🍌':'banana', '🧀':'cheese', '🍔':'burger', '🍨':'icecream' }).forEach(([symbol, key]) => { items[symbol] = items[key]; });
-  const environment = { dolmen: { start: dolmen('start'), closed: dolmen('closed'), open: dolmen('open') }, totem: [totem(0), totem(1), totem(2)], mushroom: mushroom() };
-  const tiles = { jungle: tile('jungle'), cave: tile('cave'), boss: tile('boss') };
+  const environment = {
+    dolmen: { start: dolmen('start'), closed: dolmen('closed'), open: dolmen('open'), checkpoint: dolmen('checkpoint') },
+    totem: [totem(0), totem(1), totem(2)],
+    mushroom: mushroom()
+  };
+  const tiles = {
+    jungle: tile('jungle'),
+    swamp: tile('swamp'),
+    cave: tile('cave'),
+    ice: tile('ice'),
+    volcano: tile('volcano'),
+    boss: tile('boss')
+  };
   function draw(ctx, asset, x, y, w = asset.width, h = asset.height) {
     ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(asset, Math.round(x), Math.round(y), Math.round(w), Math.round(h)); ctx.restore();
   }

@@ -1,8 +1,16 @@
 /** Canvas renderer backed by the pre-rendered pixel-art atlas. */
 const SpriteRenderer = {
   drawBackground(ctx, cameraX, canvasW, canvasH, theme = 'jungle') {
-    const image = window.PixelAssets.images[theme];
-    ctx.fillStyle = theme === 'jungle' ? '#283e38' : theme === 'cave' ? '#21142b' : '#35100e';
+    const image = window.PixelAssets.images[theme] || window.PixelAssets.images.jungle;
+    const bgColors = {
+      jungle: '#283e38',
+      swamp: '#172b28',
+      cave: '#21142b',
+      ice: '#1b314d',
+      volcano: '#2d1210',
+      boss: '#35100e'
+    };
+    ctx.fillStyle = bgColors[theme] || '#283e38';
     ctx.fillRect(0, 0, canvasW, canvasH);
     if (!image || !image.complete || !image.naturalWidth) return;
 
@@ -27,14 +35,20 @@ const SpriteRenderer = {
   },
 
   drawDolmen(ctx, x, y, scale = 1, label = '고인돌') {
-    const state = label === 'START' ? 'start' : label.includes('OPEN') ? 'open' : 'closed';
-    const sprite = window.PixelAssets.environment.dolmen[state];
+    const state = label === 'START'
+      ? 'start'
+      : label === 'CHECKPOINT ON'
+        ? 'checkpoint'
+        : label.includes('OPEN')
+          ? 'open'
+          : 'closed';
+    const sprite = window.PixelAssets.environment.dolmen[state] || window.PixelAssets.environment.dolmen.closed;
     window.PixelAssets.draw(ctx, sprite, x - 64 * scale, y - 112 * scale, 128 * scale, 112 * scale);
     ctx.save();
     ctx.textAlign = 'center';
     ctx.font = `bold ${Math.max(8, Math.round(9 * scale))}px monospace`;
-    ctx.fillStyle = state === 'open' ? '#baffdc' : '#f0d6a1';
-    ctx.fillText(state.toUpperCase(), x, y - 78 * scale);
+    ctx.fillStyle = state === 'open' ? '#baffdc' : state === 'checkpoint' ? '#ffe082' : '#f0d6a1';
+    ctx.fillText(label, x, y - 78 * scale);
     ctx.restore();
   },
 
@@ -50,7 +64,7 @@ const SpriteRenderer = {
     ctx.beginPath();
     ctx.rect(x, y, w, h);
     ctx.clip();
-    const tile = assets.tiles[theme];
+    const tile = assets.tiles[theme] || assets.tiles.jungle;
     ctx.imageSmoothingEnabled = false;
     for (let tx = x; tx < x + w; tx += 32) {
       assets.draw(ctx, tile, tx, y, 32, 32);
@@ -58,6 +72,11 @@ const SpriteRenderer = {
       for (let ty = y + 32; ty < y + h; ty += 26) {
         ctx.drawImage(tile, 0, 6, 32, 26, tx, ty, 32, 26);
       }
+    }
+    if (type === 'moving') {
+      ctx.strokeStyle = '#ffcf40';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
     }
     ctx.restore();
   },

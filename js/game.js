@@ -1,6 +1,7 @@
 /**
  * Goindol (Prehistorik) Main Game Engine
- * 60fps Arcade Platformer with Club Smash, Secret Food Spots, Stone Axe Throw & Boss Battle
+ * 60fps Arcade Platformer with 6 Stages, Moving Platforms, Checkpoints,
+ * Club Smash, Secret Food Spots, Stone Axe Throw & Boss Battles
  */
 class GoindolGame {
   constructor(canvasId) {
@@ -33,6 +34,7 @@ class GoindolGame {
     this.particles = [];
     this.floatingTexts = [];
     this.boss = null;
+    this.checkpointReached = false;
     this.cameraX = 0;
 
     this.bindInput();
@@ -130,7 +132,11 @@ class GoindolGame {
     const raw = window.LEVELS[stageIndex] || window.LEVELS[0];
     this.level = JSON.parse(JSON.stringify(raw));
 
-    this.platforms = this.level.platforms;
+    this.platforms = this.level.platforms.map(plat => ({
+      ...plat,
+      dx: 0,
+      dy: 0
+    }));
     this.secretSpots = this.level.secretSpots.map(s => ({
       ...s,
       hitTimer: 0,
@@ -154,7 +160,7 @@ class GoindolGame {
     if (this.level.boss) {
       this.boss = {
         ...this.level.boss,
-        vx: -2.2,
+        vx: -2.3,
         vy: 0,
         facing: -1,
         hurtTimer: 0,
@@ -166,15 +172,20 @@ class GoindolGame {
       this.boss = null;
     }
 
+    this.checkpointReached = false;
+
     this.player = {
       x: this.level.startX,
       y: this.level.startY,
+      respawnX: this.level.startX,
+      respawnY: 200,
       w: 36,
       h: 46,
       vx: 0,
       vy: 0,
       facing: 1,
       onGround: false,
+      standingPlat: null,
       hp: 5,
       maxHp: 5,
       food: 0,
@@ -250,6 +261,44 @@ class GoindolGame {
 
     const p = this.player;
 
+    // 0. Update Moving Platforms
+    for (const plat of this.platforms) {
+      plat.dx = 0;
+      plat.dy = 0;
+      if (plat.type === 'moving') {
+        if (plat.vx) {
+          const prevX = plat.x;
+          plat.x += plat.vx;
+          if (plat.x <= plat.minX) {
+            plat.x = plat.minX;
+            plat.vx = Math.abs(plat.vx);
+          } else if (plat.x + plat.w >= plat.maxX) {
+            plat.x = plat.maxX - plat.w;
+            plat.vx = -Math.abs(plat.vx);
+          }
+          plat.dx = plat.x - prevX;
+        }
+        if (plat.vy) {
+          const prevY = plat.y;
+          plat.y += plat.vy;
+          if (plat.y <= plat.minY) {
+            plat.y = plat.minY;
+            plat.vy = Math.abs(plat.vy);
+          } else if (plat.y >= plat.maxY) {
+            plat.y = plat.maxY;
+            plat.vy = -Math.abs(plat.vy);
+          }
+          plat.dy = plat.y - prevY;
+        }
+      }
+    }
+
+    // Carry player if standing on a moving platform
+    if (p.onGround && p.standingPlat) {
+      p.x += p.standingPlat.dx || 0;
+      p.y += p.standingPlat.dy || 0;
+    }
+
     // Horizontal Movement
     const moveLeft = this.keys['ArrowLeft'] || this.keys['KeyA'];
     const moveRight = this.keys['ArrowRight'] || this.keys['KeyD'];
@@ -271,6 +320,7 @@ class GoindolGame {
     if (jumpPressed && p.onGround) {
       p.vy = -12.6;
       p.onGround = false;
+      p.standingPlat = null;
       window.soundEngine.jump();
       this.spawnParticles(p.x + p.w / 2, p.y + p.h, '#d6c3a5', 6);
     }
@@ -310,13 +360,14 @@ class GoindolGame {
     const prevBottom = p.y + p.h;
     p.y += p.vy;
     p.onGround = false;
+    p.standingPlat = null;
 
     // Platform Collisions
     for (const plat of this.platforms) {
       if (
         p.x + p.w > plat.x + 4 &&
         p.x < plat.x + plat.w - 4 &&
-        prevBottom <= plat.y + 12 &&
+        prevBottom <= plat.y + 16 &&
         p.y + p.h >= plat.y &&
         p.vy >= 0
       ) {
@@ -330,7 +381,21 @@ class GoindolGame {
           p.y = plat.y - p.h;
           p.vy = 0;
           p.onGround = true;
+          p.standingPlat = plat;
         }
+      }
+    }
+
+    // Mid-Stage Checkpoint Dolmen Check
+    if (this.level.checkpointX && !this.checkpointReached) {
+      if (p.x + p.w >= this.level.checkpointX - 30) {
+        this.checkpointReached = true;
+        p.respawnX = this.level.checkpointX;
+        p.respawnY = (this.level.checkpointY || 420) - 80;
+        this.addScore(500);
+        window.soundEngine.secretFound();
+        this.spawnParticles(this.level.checkpointX, (this.level.checkpointY || 420) - 40, '#ffcb5c', 16);
+        this.addFloatingText(this.level.checkpointX - 40, (this.level.checkpointY || 420) - 90, '중간 세이브 완료! +500', '#ffcb5c', 55);
       }
     }
 
@@ -343,8 +408,8 @@ class GoindolGame {
         window.soundEngine.stopBGM();
         return;
       }
-      // Respawn at safe spot
-      p.x = Math.max(80, p.x - 160);
+      // Respawn at checkpoint or last safe spot
+      p.x = this.checkpointReached ? p.respawnX : Math.max(80, p.x - 200);
       p.y = 180;
       p.vy = 0;
       p.invulnTimer = 70;
@@ -371,7 +436,7 @@ class GoindolGame {
           h: p.h + 18
         };
 
-        // 1. Check Secret Smashable Spots (고인돌 전통 비기: 바위 두드려서 숨겨진 음식 꺼내기!)
+        // 1. Check Secret Smashable Spots
         for (const spot of this.secretSpots) {
           if (!spot.depleted && this.rectsOverlap(clubBox, spot)) {
             p.hasHitThisSwing = true;
@@ -524,7 +589,6 @@ class GoindolGame {
       }
 
       if (this.rectsOverlap(p, e)) {
-        // Player can also stomp stunned enemies or take damage
         if (p.vy > 1 && p.y + p.h - p.vy <= e.y + 14) {
           p.vy = -10.5;
           this.damageEnemy(e, 1, p.facing);
@@ -534,7 +598,7 @@ class GoindolGame {
       }
     }
 
-    // Update Boss (Stage 3)
+    // Update Boss (Stage 4 Mid-Boss & Stage 6 Final Boss)
     if (this.boss && this.boss.hp > 0) {
       const b = this.boss;
       if (b.hurtTimer > 0) b.hurtTimer--;
@@ -555,7 +619,7 @@ class GoindolGame {
       if (b.actionTimer <= 0 && b.onGround) {
         b.vy = -12.5;
         b.onGround = false;
-        b.actionTimer = b.enraged ? 85 : 130;
+        b.actionTimer = b.enraged ? 80 : 125;
         window.soundEngine.bossRoar();
       }
 
@@ -638,7 +702,6 @@ class GoindolGame {
     if (enemy.hp <= 0) {
       this.addScore(500);
       this.addFloatingText(enemy.x, enemy.y, '쿵! BONK! +500', '#4cd964', 45);
-      // Drop bonus meat!
       this.foods.push({
         x: enemy.x,
         y: enemy.y - 10,
@@ -671,7 +734,7 @@ class GoindolGame {
       b.enraged = true;
       b.vx = Math.sign(b.vx) * 3.6;
       window.soundEngine.bossRoar();
-      this.addFloatingText(b.x, b.y - 25, '맘모스 대왕 분노 모드!', '#ff3b30', 65);
+      this.addFloatingText(b.x, b.y - 25, '맘모스 분노 모드 발동!', '#ff3b30', 65);
     }
 
     if (b.hp <= 0) {
@@ -744,8 +807,19 @@ class GoindolGame {
     ctx.save();
     ctx.translate(-Math.floor(this.cameraX), 0);
 
-    // Start Marker Dolmen & Exit Dolmen
+    // Start Marker Dolmen, Mid-Stage Checkpoint Dolmen & Exit Dolmen
     window.SpriteRenderer.drawDolmen(ctx, this.level.startX + 20, 420, 0.72, 'START');
+
+    if (this.level.checkpointX) {
+      window.SpriteRenderer.drawDolmen(
+        ctx,
+        this.level.checkpointX,
+        this.level.checkpointY || 420,
+        0.78,
+        this.checkpointReached ? 'CHECKPOINT ON' : 'CHECKPOINT'
+      );
+    }
+
     const canExit = (!this.boss || this.boss.hp <= 0) && this.player.food >= this.player.foodGoal * 0.5;
     window.SpriteRenderer.drawDolmen(
       ctx,
@@ -869,7 +943,7 @@ class GoindolGame {
 
     // Stage & Score
     ctx.fillStyle = '#f7efe2';
-    ctx.fillText(`STAGE ${this.currentStageIdx + 1}/3`, 490, 23);
+    ctx.fillText(`STAGE ${this.currentStageIdx + 1}/${window.LEVELS.length}`, 490, 23);
     ctx.fillStyle = '#b8a993';
     ctx.fillText(pct >= 50 ? '출구 개방 완료!' : '50% 이상 채우세요', 490, 44);
 
@@ -879,9 +953,9 @@ class GoindolGame {
     ctx.fillStyle = '#a39581';
     ctx.fillText(`HI ${String(this.highScore).padStart(6, '0')}`, this.width - 20, 44);
 
-    // Boss HP Bar if Stage 3
+    // Boss HP Bar if Stage has Boss
     if (this.boss && this.boss.hp > 0) {
-      const bw = 380;
+      const bw = 420;
       const bx = (this.width - bw) / 2;
       const by = 68;
       ctx.textAlign = 'center';
@@ -926,7 +1000,7 @@ class GoindolGame {
       ctx.fillText('고인돌 : GOINDOL', this.width / 2, 78);
       ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
-      ctx.fillText('추억의 DOS 원시인 액션 어드벤처', this.width / 2, 111);
+      ctx.fillText('6개 스테이지 확장판 · 원시인 액션 어드벤처', this.width / 2, 111);
       ctx.font = '13px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillText('이동: ← → / 점프: SPACE / 몽둥이: X / 돌도끼: C', this.width / 2, this.height - 72);
       if (Math.floor(this.time / 25) % 2 === 0) {
@@ -959,7 +1033,7 @@ class GoindolGame {
     if (this.state === 'STAGE_CLEAR') {
       ctx.font = 'bold 30px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#4cd964';
-      ctx.fillText('STAGE CLEAR!', this.width / 2, my + 95);
+      ctx.fillText(`STAGE ${this.currentStageIdx + 1} CLEAR!`, this.width / 2, my + 95);
 
       ctx.font = '16px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
@@ -972,7 +1046,7 @@ class GoindolGame {
     } else if (this.state === 'VICTORY') {
       ctx.font = 'bold 28px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#ffae00';
-      ctx.fillText('ALL STAGES CLEARED!', this.width / 2, my + 85);
+      ctx.fillText('ALL 6 STAGES CLEARED!', this.width / 2, my + 85);
 
       ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
