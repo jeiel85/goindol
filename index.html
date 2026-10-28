@@ -16,14 +16,14 @@
   <header class="site-header">
     <div class="nav-container">
       <a href="#" class="brand">
-        <span>🪨 고인돌 : GOINDOL</span>
+        <span>고인돌 <small>GOINDOL</small></span>
         <span class="brand-badge">DOS 1991 TRIBUTE</span>
       </a>
       <ul class="nav-links">
-        <li><a href="#play">🕹️ 게임 플레이</a></li>
-        <li><a href="#features">✨ 핵심 기믹</a></li>
-        <li><a href="#bestiary">🦖 몬스터 & 식량 도감</a></li>
-        <li><a href="https://github.com/jeiel85/goindol" target="_blank" rel="noopener">⭐ GitHub</a></li>
+        <li><a href="#play">게임 플레이</a></li>
+        <li><a href="#features">핵심 기믹</a></li>
+        <li><a href="#bestiary">몬스터 도감</a></li>
+        <li><a href="https://github.com/jeiel85/goindol" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
     </div>
   </header>
@@ -31,29 +31,30 @@
   <!-- Main Arcade Live Demo Section -->
   <main id="play" class="arcade-section">
     <div class="hero-banner">
-      <span class="hero-tag">🕹️ PLAYABLE IN BROWSER · ZERO DEPENDENCIES</span>
-      <h1 class="hero-title">고인돌 : PREHISTORIK ARCADE</h1>
+      <span class="hero-tag">A PREHISTORIC ARCADE ADVENTURE</span>
+      <h1 class="hero-title">고인돌 <span>PREHISTORIK ARCADE</span></h1>
       <p class="hero-subtitle">
         배고픈 원시인 <strong>샘(Sam)</strong>이 되어 몽둥이로 공룡을 물리치고, 수상한 바위를 두드려 숨겨진 식량을 찾아 고인돌 관문을 돌파하세요!
       </p>
+      <a class="hero-cta" href="#arcade">게임 시작 <span aria-hidden="true">↓</span></a>
     </div>
 
-    <div class="cabinet-frame">
+    <div id="arcade" class="cabinet-frame">
       <!-- Top Control Bar -->
       <div class="cabinet-topbar">
         <div class="cabinet-status">
-          <span><span class="status-dot"></span> 60FPS ARCADE ENGINE</span>
+          <span><span class="status-dot"></span> SELECT YOUR STAGE</span>
         </div>
         <div class="stage-selector-bar">
-          <button class="retro-btn active" data-stage-btn="0">🌲 STAGE 1: 원시림</button>
-          <button class="retro-btn" data-stage-btn="1">🌋 STAGE 2: 화산동굴</button>
-          <button class="retro-btn" data-stage-btn="2">🦣 STAGE 3: 맘모스 보스전</button>
+          <button class="retro-btn stage-btn stage-jungle active" data-stage-btn="0"><span>STAGE 01</span><strong>원시림</strong></button>
+          <button class="retro-btn stage-btn stage-cave" data-stage-btn="1"><span>STAGE 02</span><strong>화산동굴</strong></button>
+          <button class="retro-btn stage-btn stage-boss" data-stage-btn="2"><span>STAGE 03</span><strong>맘모스 보스전</strong></button>
         </div>
         <div class="cabinet-actions">
-          <button id="btnToggleSound" class="retro-btn active">🔊 사운드 ON</button>
-          <button id="btnToggleCRT" class="retro-btn active">📺 CRT 필터 ON</button>
-          <button id="btnRestart" class="retro-btn">🔄 스테이지 재시작</button>
-          <button id="btnFullscreen" class="retro-btn">⛶ 전체화면</button>
+          <button id="btnToggleSound" class="retro-btn active">사운드 ON</button>
+          <button id="btnToggleCRT" class="retro-btn active">CRT 필터 ON</button>
+          <button id="btnRestart" class="retro-btn">스테이지 재시작</button>
+          <button id="btnFullscreen" class="retro-btn">전체화면</button>
         </div>
       </div>
 
@@ -89,7 +90,7 @@
           <button id="btnRight" class="touch-btn" aria-label="오른쪽 이동">▶</button>
         </div>
         <div class="action-group">
-          <button id="btnAxe" class="touch-btn action-axe" aria-label="돌도끼 던지기">🪓</button>
+          <button id="btnAxe" class="touch-btn action-axe" aria-label="돌도끼 던지기">AXE</button>
           <button id="btnClub" class="touch-btn action-club" aria-label="몽둥이 공격">몽둥이</button>
           <button id="btnJump" class="touch-btn action-jump" aria-label="점프">JUMP</button>
         </div>
@@ -102,10 +103,10 @@
 
     <!-- Features Section -->
     <section id="features">
-      <h2 class="section-title">🪨 원작 고인돌(Prehistorik)의 핵심 재미 요소</h2>
+      <h2 class="section-title">원시 시대에서 살아남는 법</h2>
       <div class="grid-3">
         <div class="stone-card">
-          <span class="card-icon">🔨</span>
+          <span class="card-number">01 / ATTACK</span>
           <h3>찰진 몽둥이 내려치기 & 화면 진동</h3>
           <p>
             원시인 샘의 트레이드마크인 거대 참나무 몽둥이! 바닥을 내리칠 때마다 묵직한 타격음과 화면 흔들림(Screen Shake)이 발생하며 공룡들을 단숨에 기절시킵니다.
@@ -117,10 +118,10 @@
         </div>
 
         <div class="stone-card">
-          <span class="card-icon">🍖</span>
+          <span class="card-number">02 / DISCOVER</span>
           <h3>수상한 바위 타격 & 비밀 식량 폭포</h3>
           <p>
-            원작에서 허공이나 바위를 두드리면 음식이 쏟아지던 기믹을 재현했습니다! <strong>🍖? 문양이 새겨진 고대 바위</strong>를 몽둥이로 내려치면 숨겨진 고기와 햄버거가 솟구쳐 오릅니다.
+            원작에서 허공이나 바위를 두드리면 음식이 쏟아지던 기믹을 재현했습니다! <strong>뼈 문양이 새겨진 고대 바위</strong>를 몽둥이로 내려치면 숨겨진 고기와 햄버거가 솟구쳐 오릅니다.
           </p>
           <div class="badge-list">
             <span class="mini-badge">식량 게이지 50% 이상 시 출구 개방</span>
@@ -129,13 +130,13 @@
         </div>
 
         <div class="stone-card">
-          <span class="card-icon">🎵</span>
+          <span class="card-number">03 / LISTEN</span>
           <h3>AdLib 감성 Web Audio 사운드트랙</h3>
           <p>
             외부 음원 파일 없이 순수 <strong>Web Audio API 신디사이저</strong>로 실시간 합성되는 8비트/FM풍 배경음악(원시림, 화산동굴, 보스전)과 경쾌한 레트로 효과음을 제공합니다.
           </p>
           <div class="badge-list">
-            <span class="mini-badge">Zero External Assets</span>
+            <span class="mini-badge">Web Audio 사운드</span>
             <span class="mini-badge">CRT 스캔라인 필터</span>
           </div>
         </div>
@@ -144,20 +145,20 @@
 
     <!-- Bestiary & Items Section -->
     <section id="bestiary">
-      <h2 class="section-title">🦖 원시 시대 몬스터 & 아이템 도감</h2>
+      <h2 class="section-title">원시 시대 몬스터 도감</h2>
       <div class="grid-4">
         <div class="stone-card">
-          <span class="card-icon">🦖</span>
+          <canvas class="bestiary-icon" data-sprite="dino" width="96" height="96" aria-hidden="true"></canvas>
           <h3>초록 공룡 (Raptor)</h3>
           <p>원시림과 협곡을 순찰하는 가장 흔한 공룡입니다. 몽둥이로 두 번 내려치거나 위에서 밟으면 고기를 떨어뜨립니다.</p>
           <div class="badge-list">
             <span class="mini-badge">HP: 2</span>
-            <span class="mini-badge">드랍: 🍖 공룡갈비</span>
+            <span class="mini-badge">드랍: 공룡갈비</span>
           </div>
         </div>
 
         <div class="stone-card">
-          <span class="card-icon">🐗</span>
+          <canvas class="bestiary-icon" data-sprite="boar" width="96" height="96" aria-hidden="true"></canvas>
           <h3>돌진 멧돼지 (Wild Boar)</h3>
           <p>날카로운 어금니를 세우고 빠른 속도로 돌진합니다. 점프로 피하거나 타이밍을 맞춰 몽둥이로 제압하세요.</p>
           <div class="badge-list">
@@ -167,7 +168,7 @@
         </div>
 
         <div class="stone-card">
-          <span class="card-icon">🦅</span>
+          <canvas class="bestiary-icon" data-sprite="ptero" width="96" height="96" aria-hidden="true"></canvas>
           <h3>보라 익룡 (Pterodactyl)</h3>
           <p>공중에서 물결 궤적을 그리며 날아다닙니다. 통통 버섯을 밟고 점프해서 치거나 <strong>돌도끼(C키)</strong>를 던져 격추하세요!</p>
           <div class="badge-list">
@@ -177,7 +178,7 @@
         </div>
 
         <div class="stone-card">
-          <span class="card-icon">🦣</span>
+          <canvas class="bestiary-icon" data-sprite="boss" width="96" height="96" aria-hidden="true"></canvas>
           <h3>거대 맘모스 대왕 (BOSS)</h3>
           <p>스테이지 3 대고인돌 제단을 지키는 보스! 점프 후 착지할 때 양옆으로 충격파 바위를 날리며 체력이 절반 이하가 되면 분노합니다.</p>
           <div class="badge-list">
@@ -192,7 +193,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <p>🪨 <strong>고인돌 (GOINDOL: Prehistorik Web Edition)</strong> · Built with HTML5 Canvas & Web Audio API</p>
+    <p><strong>고인돌 (GOINDOL: Prehistorik Web Edition)</strong> · Built with HTML5 Canvas & Web Audio API</p>
     <p style="margin-top: 0.4rem;">
       Inspired by classic 1991/1993 Titus Interactive DOS game <em>Prehistorik</em> ·
       <a href="https://github.com/jeiel85/goindol" target="_blank" rel="noopener">GitHub Repository</a>
@@ -200,8 +201,22 @@
   </footer>
 
   <script src="js/audio.js"></script>
+  <script src="js/pixel_assets.js"></script>
   <script src="js/sprites.js"></script>
   <script src="js/levels.js"></script>
   <script src="js/game.js"></script>
+  <script>
+    document.querySelectorAll('.bestiary-icon').forEach((canvas) => {
+      const entry = window.PixelAssets.sprites[canvas.dataset.sprite];
+      const sprite = entry && (entry.walk || entry.fly)[0];
+      if (!sprite) return;
+      const context = canvas.getContext('2d');
+      context.imageSmoothingEnabled = false;
+      const scale = Math.min(canvas.width / sprite.width, canvas.height / sprite.height);
+      const width = Math.round(sprite.width * scale);
+      const height = Math.round(sprite.height * scale);
+      context.drawImage(sprite, Math.round((canvas.width - width) / 2), Math.round((canvas.height - height) / 2), width, height);
+    });
+  </script>
 </body>
 </html>

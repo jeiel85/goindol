@@ -6,10 +6,12 @@ class GoindolGame {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');
+    this.ctx.imageSmoothingEnabled = false;
     this.width = 960;
     this.height = 540;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
+    this.ctx.imageSmoothingEnabled = false;
 
     this.state = 'TITLE'; // TITLE, PLAYING, PAUSED, STAGE_CLEAR, GAME_OVER, VICTORY
     this.currentStageIdx = 0;
@@ -392,7 +394,7 @@ class GoindolGame {
               bouncing: true
             });
 
-            this.addFloatingText(spot.x, spot.y - 20, '숨겨진 보물 발견! ' + rewardEmoji, '#4cd964', 50);
+            this.addFloatingText(spot.x, spot.y - 20, '숨겨진 보물 발견!', '#4cd964', 50);
             this.spawnParticles(spot.x + spot.w / 2, spot.y + spot.h / 2, '#ffae00', 14);
 
             if (spot.hitsLeft <= 0) {
@@ -491,7 +493,7 @@ class GoindolGame {
           this.addFloatingText(item.x, item.y, `돌도끼 +${item.axeAmmo}!`, '#ffd166');
         } else if (item.heal) {
           p.hp = Math.min(p.maxHp, p.hp + item.heal);
-          this.addFloatingText(item.x, item.y, '체력 회복! ❤️', '#ff4d6d');
+          this.addFloatingText(item.x, item.y, '체력 회복!', '#ff4d6d');
         } else {
           this.addFloatingText(item.x, item.y, `냠냠! +${item.score}`, '#ffae00');
         }
@@ -596,7 +598,7 @@ class GoindolGame {
           window.soundEngine.stopBGM();
         }
       } else if (this.time % 45 === 0) {
-        this.addFloatingText(p.x, p.y - 20, '음식을 50% 이상 먹고 오세요! 🍖', '#ff3b30', 40);
+        this.addFloatingText(p.x, p.y - 20, '음식을 50% 이상 먹고 오세요!', '#ff3b30', 40);
       }
     }
 
@@ -669,13 +671,13 @@ class GoindolGame {
       b.enraged = true;
       b.vx = Math.sign(b.vx) * 3.6;
       window.soundEngine.bossRoar();
-      this.addFloatingText(b.x, b.y - 25, '🔥 맘모스 대왕 분노 모드! 🔥', '#ff3b30', 65);
+      this.addFloatingText(b.x, b.y - 25, '맘모스 대왕 분노 모드!', '#ff3b30', 65);
     }
 
     if (b.hp <= 0) {
       window.soundEngine.stageClear();
       this.addScore(5000);
-      this.addFloatingText(b.x, b.y - 30, '🎉 보스 격파! 황금 고기가 쏟아집니다! 🎉', '#4cd964', 90);
+      this.addFloatingText(b.x, b.y - 30, '보스 격파! 황금 고기가 쏟아집니다!', '#4cd964', 90);
       for (let i = 0; i < 6; i++) {
         this.foods.push({
           x: b.x + i * 18,
@@ -783,10 +785,8 @@ class GoindolGame {
       ctx.save();
       ctx.translate(proj.x, proj.y);
       ctx.rotate(proj.rot);
-      ctx.font = '24px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(proj.type === 'axe' ? '🪓' : '🪨', 0, 0);
+      const icon = window.PixelAssets.items[proj.type === 'axe' ? 'axe' : 'rock'];
+      window.PixelAssets.draw(ctx, icon, -16, -16, 32, 32);
       ctx.restore();
     }
 
@@ -840,28 +840,32 @@ class GoindolGame {
     ctx.font = '13px "Press Start 2P", "DungGeunMo", monospace';
     ctx.fillStyle = '#f7efe2';
 
-    // Hearts
-    let hearts = 'HP ';
+    // Pixel icons and a carved stone food gauge.
+    const assets = window.PixelAssets;
+    ctx.fillStyle = '#f7efe2';
+    ctx.fillText('HP', 18, 23);
     for (let i = 0; i < p.maxHp; i++) {
-      hearts += i < p.hp ? '❤️' : '🖤';
+      assets.draw(ctx, assets.items[i < p.hp ? 'heart' : 'emptyHeart'], 48 + i * 25, 4, 24, 24);
     }
-    ctx.fillText(hearts, 18, 24);
-
-    // Stone Axes
+    assets.draw(ctx, assets.items.axe, 18, 27, 24, 24);
     ctx.fillStyle = '#ffd166';
-    ctx.fillText(`🪓 x${p.axeAmmo}`, 18, 45);
+    ctx.fillText(`x${p.axeAmmo}`, 46, 45);
 
-    // Hunger / Food Bar (식량 게이지)
     const pct = Math.min(100, Math.round((p.food / p.foodGoal) * 100));
+    assets.draw(ctx, assets.items.meat, 210, 1, 25, 25);
     ctx.fillStyle = '#ffae00';
-    ctx.fillText(`🍖 식량 게이지 (${pct}%)`, 220, 22);
-
-    ctx.fillStyle = '#2d2217';
-    ctx.fillRect(220, 29, 230, 16);
-    ctx.fillStyle = pct >= 50 ? '#4cd964' : '#ff9500';
-    ctx.fillRect(222, 31, (226 * pct) / 100, 12);
-    ctx.strokeStyle = '#a39581';
-    ctx.strokeRect(220, 29, 230, 16);
+    ctx.fillText(`식량 게이지 (${pct}%)`, 239, 22);
+    ctx.fillStyle = '#17120f';
+    ctx.fillRect(219, 28, 232, 18);
+    ctx.fillStyle = '#827663';
+    ctx.fillRect(221, 30, 228, 14);
+    ctx.fillStyle = '#33271d';
+    ctx.fillRect(224, 32, 222, 10);
+    ctx.fillStyle = pct >= 50 ? '#6ab950' : '#e58e2c';
+    ctx.fillRect(224, 32, (222 * pct) / 100, 10);
+    ctx.fillStyle = '#b5a58a';
+    ctx.fillRect(222, 30, 3, 3);
+    ctx.fillRect(445, 30, 3, 3);
 
     // Stage & Score
     ctx.fillStyle = '#f7efe2';
@@ -896,6 +900,43 @@ class GoindolGame {
 
   drawOverlay(ctx) {
     ctx.save();
+    if (this.state === 'TITLE') {
+      const hero = window.PixelAssets.images.hero;
+      ctx.fillStyle = '#1d1712';
+      ctx.fillRect(0, 0, this.width, this.height);
+      if (hero && hero.complete && hero.naturalWidth) {
+        const scale = Math.max(this.width / hero.naturalWidth, this.height / hero.naturalHeight);
+        const w = hero.naturalWidth * scale;
+        const h = hero.naturalHeight * scale;
+        ctx.drawImage(hero, (this.width - w) / 2, (this.height - h) / 2, w, h);
+      }
+      const shade = ctx.createLinearGradient(0, 0, 0, this.height);
+      shade.addColorStop(0, 'rgba(20,14,10,0.65)');
+      shade.addColorStop(0.45, 'rgba(20,14,10,0.08)');
+      shade.addColorStop(0.72, 'rgba(20,14,10,0.65)');
+      shade.addColorStop(1, 'rgba(20,14,10,0.94)');
+      ctx.fillStyle = shade;
+      ctx.fillRect(0, 0, this.width, this.height);
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#1a100b';
+      ctx.shadowOffsetY = 4;
+      ctx.shadowBlur = 0;
+      ctx.font = 'bold 42px "Press Start 2P", "DungGeunMo", monospace';
+      ctx.fillStyle = '#ffcb5c';
+      ctx.fillText('고인돌 : GOINDOL', this.width / 2, 78);
+      ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
+      ctx.fillStyle = '#f7efe2';
+      ctx.fillText('추억의 DOS 원시인 액션 어드벤처', this.width / 2, 111);
+      ctx.font = '13px "Press Start 2P", "DungGeunMo", monospace';
+      ctx.fillText('이동: ← → / 점프: SPACE / 몽둥이: X / 돌도끼: C', this.width / 2, this.height - 72);
+      if (Math.floor(this.time / 25) % 2 === 0) {
+        ctx.fillStyle = '#ffe090';
+        ctx.font = 'bold 16px "Press Start 2P", "DungGeunMo", monospace';
+        ctx.fillText('CLICK OR PRESS SPACE / ENTER TO START', this.width / 2, this.height - 35);
+      }
+      ctx.restore();
+      return;
+    }
     ctx.fillStyle = 'rgba(10, 7, 4, 0.78)';
     ctx.fillRect(0, 0, this.width, this.height);
 
@@ -915,30 +956,10 @@ class GoindolGame {
 
     ctx.textAlign = 'center';
 
-    if (this.state === 'TITLE') {
-      window.SpriteRenderer.drawDolmen(ctx, this.width / 2, my + 128, 0.9, 'PREHISTORIK');
-
-      ctx.font = 'bold 34px "Press Start 2P", "DungGeunMo", monospace';
-      ctx.fillStyle = '#ffae00';
-      ctx.fillText('고인돌 : GOINDOL', this.width / 2, my + 175);
-
-      ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
-      ctx.fillStyle = '#f7efe2';
-      ctx.fillText('추억의 DOS 원시인 몽둥이 액션 플랫포머!', this.width / 2, my + 212);
-
-      ctx.fillStyle = '#b8a993';
-      ctx.font = '13px "Press Start 2P", "DungGeunMo", monospace';
-      ctx.fillText('이동: ← → / 점프: SPACE / 몽둥이: X / 돌도끼: C', this.width / 2, my + 252);
-
-      if (Math.floor(this.time / 25) % 2 === 0) {
-        ctx.fillStyle = '#4cd964';
-        ctx.font = 'bold 17px "Press Start 2P", "DungGeunMo", monospace';
-        ctx.fillText('▶ CLICK OR PRESS [SPACE / ENTER] TO START ◀', this.width / 2, my + 302);
-      }
-    } else if (this.state === 'STAGE_CLEAR') {
+    if (this.state === 'STAGE_CLEAR') {
       ctx.font = 'bold 30px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#4cd964';
-      ctx.fillText('🍖 STAGE CLEAR! 🍖', this.width / 2, my + 95);
+      ctx.fillText('STAGE CLEAR!', this.width / 2, my + 95);
 
       ctx.font = '16px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
@@ -951,7 +972,7 @@ class GoindolGame {
     } else if (this.state === 'VICTORY') {
       ctx.font = 'bold 28px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#ffae00';
-      ctx.fillText('🏆 ALL STAGES CLEARED! 🏆', this.width / 2, my + 85);
+      ctx.fillText('ALL STAGES CLEARED!', this.width / 2, my + 85);
 
       ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
@@ -967,7 +988,7 @@ class GoindolGame {
     } else if (this.state === 'GAME_OVER') {
       ctx.font = 'bold 32px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#ff3b30';
-      ctx.fillText('💀 GAME OVER 💀', this.width / 2, my + 100);
+      ctx.fillText('GAME OVER', this.width / 2, my + 100);
 
       ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
@@ -980,7 +1001,7 @@ class GoindolGame {
     } else if (this.state === 'PAUSED') {
       ctx.font = 'bold 30px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#ffae00';
-      ctx.fillText('⏸ PAUSED (일시정지)', this.width / 2, my + 145);
+      ctx.fillText('PAUSED (일시정지)', this.width / 2, my + 145);
       ctx.font = '15px "Press Start 2P", "DungGeunMo", monospace';
       ctx.fillStyle = '#f7efe2';
       ctx.fillText('PRESS [P] OR [ESC] TO RESUME', this.width / 2, my + 205);
@@ -1005,7 +1026,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (btnSound) {
     btnSound.addEventListener('click', () => {
       const muted = window.soundEngine.toggleMute();
-      btnSound.textContent = muted ? '🔇 사운드 OFF' : '🔊 사운드 ON';
+      btnSound.textContent = muted ? '사운드 OFF' : '사운드 ON';
       btnSound.classList.toggle('active', !muted);
     });
   }
@@ -1016,7 +1037,7 @@ window.addEventListener('DOMContentLoaded', () => {
     btnCRT.addEventListener('click', () => {
       crtOverlay.classList.toggle('hidden');
       const isOn = !crtOverlay.classList.contains('hidden');
-      btnCRT.textContent = isOn ? '📺 CRT 필터 ON' : '📺 CRT 필터 OFF';
+      btnCRT.textContent = isOn ? 'CRT 필터 ON' : 'CRT 필터 OFF';
       btnCRT.classList.toggle('active', isOn);
     });
   }
