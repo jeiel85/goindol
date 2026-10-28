@@ -50,42 +50,209 @@
     rect(c, x + 1, y, 1, 3, color); rect(c, x, y + 1, 3, 1, color);
   }
 
-  // Sam is drawn facing right. Extra transparent space accommodates his club.
+  // Sam is drawn facing right on a 48x42 pixel grid (96x84 canvas) to match the
+  // muscular, wild-maned, toothy-grinned caveman from hero_banner.png.
   function sam(pose, frame = 0) {
-    return canvas(32, 32, c => {
-      const stride = pose === 'run' ? [0, 2, 0, -2][frame] : 0;
-      const hop = pose === 'jump' ? -2 : pose === 'fall' ? 1 : pose === 'idle' && frame === 1 ? -1 : pose === 'run' && frame === 2 ? -1 : 0;
+    return canvas(48, 42, c => {
+      const stride = pose === 'run' ? [-3, 2, 4, -1][frame] : 0;
+      const oppStride = pose === 'run' ? [3, -2, -3, 2][frame] : 0;
+      const hop = pose === 'jump' ? -3 : pose === 'fall' ? 1 : (pose === 'idle' && frame === 1) ? -1 : (pose === 'run' && frame % 2 === 1) ? -1 : 0;
+      const hairWave = (frame % 2 === 1 || pose === 'run' || pose === 'jump') ? 1 : 0;
+
+      // 1. Huge Golden Smash Burst & Motion Arc (like hero_banner.png) when attacking
       if (pose === 'attack') {
-        poly(c, [[20,4],[25,5],[30,10],[31,15],[29,14],[28,10],[24,7]], '#e99b40', null);
-        poly(c, [[24,3],[28,5],[31,9],[31,11],[27,7],[23,5]], '#ffe08b', null);
+        poly(c, [[24, 3], [34, 4], [43, 11], [47, 22], [45, 31], [41, 29], [42, 20], [37, 11], [28, 6]], '#ff7b1a', null);
+        poly(c, [[27, 2], [37, 5], [45, 14], [47, 25], [43, 24], [40, 14], [33, 7]], '#ffcf40', null);
+        poly(c, [[34, 24], [40, 20], [46, 23], [42, 28], [47, 33], [40, 33], [38, 38], [35, 33], [29, 34]], '#ffe98a', null);
       }
-      // Feet and legs
-      poly(c, [[8,24+hop],[13,24+hop],[13+stride,29],[6+stride,29],[6+stride,27]], '#ad6d4c');
-      poly(c, [[15,24+hop],[20,24+hop],[21-stride,28],[19-stride,30],[14-stride,30]], '#cd8a59');
-      rect(c, 7+stride, 27, 4, 1, '#f2bd82'); rect(c, 15-stride, 28, 4, 1, '#f3c38d');
-      // Tunic, with spotted hide and ragged hem
-      poly(c, [[9,15+hop],[18,14+hop],[21,18+hop],[21,25+hop],[18,24+hop],[16,26+hop],[13,24+hop],[10,26+hop],[7,24+hop],[8,18+hop]], '#d88232');
-      rect(c, 9,17+hop, 2, 5, '#f5bb55'); rect(c, 10,22+hop, 2, 2, '#5b3526');
-      rect(c, 16,17+hop, 2, 2, '#683b27'); rect(c, 17,22+hop, 2, 2, '#683b27');
-      // Head and hair
-      poly(c, [[8,6+hop],[18,5+hop],[21,8+hop],[21,14+hop],[19,17+hop],[11,17+hop],[8,14+hop]], '#e9a96f');
-      rect(c, 9,11+hop, 2, 4, '#c88058'); rect(c, 13,14+hop, 6, 2, '#d68f60');
-      poly(c, [[7,10+hop],[8,5+hop],[11,3+hop],[13,4+hop],[16,2+hop],[20,5+hop],[21,9+hop],[18,8+hop],[17,10+hop],[14,8+hop],[12,10+hop]], '#4b2d24');
-      rect(c, 10,5+hop, 5, 1, '#8e5438'); rect(c, 17,5+hop, 2, 1, '#8e5438');
-      rect(c, 16,10+hop, 3, 3, '#fff4d8'); rect(c, 18,11+hop, 1, 2, '#241d1b');
-      rect(c, 16,9+hop, 4, 1, '#4b2d24'); rect(c, 17,15+hop, 3, 1, pose === 'hurt' ? '#8c292c' : '#5d3327');
-      // Arm and club
-      poly(c, [[17,17+hop],[20,17+hop],[23,20+hop],[22,22+hop],[19,21+hop],[17,20+hop]], '#e6a46b');
-      if (pose === 'windup') {
-        poly(c, [[20,18+hop],[19,8],[17,4],[20,2],[23,4],[23,8],[22,19+hop]], '#9a572b');
-        rect(c, 19,5, 2, 4, '#d89548'); rect(c, 17,4, 2, 2, '#e9dfc4');
-      } else if (pose === 'attack') {
-        poly(c, [[21,19+hop],[25,21],[27,24],[26,27],[23,27],[21,24],[19,21+hop]], '#9a572b');
-        rect(c, 23,22, 2, 3, '#d89548'); rect(c, 27,23, 2, 2, '#e9dfc4'); rect(c, 24,27, 2, 2, '#e9dfc4');
+
+      // 2. Back Flowing Wild Jet-Black Mane (sweeping left like the banner art)
+      poly(c, [
+        [15, 6 + hop],
+        [7, 4 + hop - hairWave],
+        [11, 8 + hop],
+        [4, 8 + hop + hairWave],
+        [10, 12 + hop],
+        [3, 13 + hop - hairWave],
+        [9, 16 + hop],
+        [5, 19 + hop + hairWave],
+        [13, 19 + hop],
+        [16, 14 + hop]
+      ], '#14121d');
+
+      // 3. Muscular Bare Legs & Calves
+      // Back leg
+      poly(c, [
+        [13, 29 + hop],
+        [18, 29 + hop],
+        [18 + stride, 36],
+        [20 + stride, 39],
+        [11 + stride, 39],
+        [12 + stride, 35]
+      ], '#c9784f');
+      rect(c, 13 + stride, 31, 3, 5, '#e89d72');
+      rect(c, 12 + stride, 37, 7, 2, '#f5b890'); // Barefoot toes
+
+      // Front muscular leg
+      poly(c, [
+        [20, 29 + hop],
+        [26, 29 + hop],
+        [27 + oppStride, 36],
+        [29 + oppStride, 39],
+        [19 + oppStride, 39],
+        [20 + oppStride, 35]
+      ], '#e89d72');
+      rect(c, 22 + oppStride, 31, 3, 5, '#ffc49b');
+      rect(c, 21 + oppStride, 37, 7, 2, '#ffd2b0');
+
+      // 4. Muscular Torso & Diagonal One-Shoulder Leopard-Skin Tunic
+      // Broad muscular chest & back shoulder base
+      poly(c, [
+        [11, 17 + hop],
+        [26, 16 + hop],
+        [28, 23 + hop],
+        [26, 30 + hop],
+        [12, 30 + hop],
+        [10, 22 + hop]
+      ], '#f0a679');
+      // Pectoral & shoulder muscle highlights
+      rect(c, 12, 18 + hop, 5, 4, '#ffd0ab');
+      rect(c, 18, 18 + hop, 6, 4, '#ffc49b');
+      rect(c, 16, 21 + hop, 7, 1, '#b86842'); // Pectoral definition line
+
+      // Jagged Leopard-Skin Pelt (draped diagonally from right shoulder to jagged hem)
+      poly(c, [
+        [11, 21 + hop],
+        [21, 17 + hop],
+        [26, 17 + hop],
+        [27, 25 + hop],
+        [28, 32 + hop],
+        [25, 29 + hop],
+        [22, 33 + hop],
+        [19, 29 + hop],
+        [16, 33 + hop],
+        [13, 29 + hop],
+        [10, 32 + hop],
+        [10, 25 + hop]
+      ], '#f59e1d');
+      // Bright golden-yellow pelt highlights
+      rect(c, 13, 22 + hop, 11, 5, '#ffc247');
+      rect(c, 19, 18 + hop, 5, 4, '#ffcf63');
+      // Dark leopard spots on tunic
+      rect(c, 12, 24 + hop, 2, 2, '#24130c');
+      rect(c, 16, 22 + hop, 2, 2, '#24130c');
+      rect(c, 21, 19 + hop, 2, 2, '#24130c');
+      rect(c, 20, 24 + hop, 3, 2, '#24130c');
+      rect(c, 15, 27 + hop, 2, 2, '#24130c');
+      rect(c, 23, 27 + hop, 2, 2, '#24130c');
+
+      // 5. Sculpted Muscular Back Arm / Shoulder (Left side of sprite)
+      poly(c, [
+        [8, 17 + hop],
+        [13, 17 + hop],
+        [14, 24 + hop],
+        [11, 26 + hop],
+        [7, 23 + hop]
+      ], '#e89d72');
+      rect(c, 9, 18 + hop, 3, 4, '#ffd0ab');
+
+      // 6. Head, Square Jaw & Big White Toothy Grin (matching hero_banner.png)
+      poly(c, [
+        [13, 6 + hop],
+        [26, 6 + hop],
+        [29, 10 + hop],
+        [29, 17 + hop],
+        [26, 20 + hop],
+        [15, 20 + hop],
+        [12, 16 + hop]
+      ], '#f2aa7e');
+      // Ear & cheek shading
+      rect(c, 13, 11 + hop, 2, 4, '#c9784f');
+      rect(c, 16, 8 + hop, 9, 3, '#ffd0ab');
+
+      // Top & Front Spiky Wild Black Hair Crown
+      poly(c, [
+        [10, 11 + hop],
+        [11, 5 + hop],
+        [15, 2 + hop - hairWave],
+        [18, 5 + hop],
+        [22, 1 + hop],
+        [24, 4 + hop],
+        [29, 3 + hop - hairWave],
+        [27, 7 + hop],
+        [30, 8 + hop],
+        [25, 9 + hop],
+        [21, 8 + hop],
+        [16, 9 + hop],
+        [13, 12 + hop]
+      ], '#14121d');
+      // Hair sheen highlights (slate blue-grey like 16-bit key art)
+      rect(c, 15, 4 + hop, 4, 1, '#484569');
+      rect(c, 21, 3 + hop, 5, 1, '#484569');
+      rect(c, 9, 9 + hop, 4, 1, '#393654');
+
+      // Thick Expressive Black Eyebrows & Eyes
+      rect(c, 19, 9 + hop, 9, 2, '#14121d'); // Bold caveman brow
+      rect(c, 20, 11 + hop, 3, 3, '#ffffff');
+      rect(c, 25, 11 + hop, 3, 3, '#ffffff');
+      rect(c, 22, 12 + hop, 1, 2, '#14121d');
+      rect(c, 27, 12 + hop, 1, 2, '#14121d');
+
+      // Prominent Nose
+      poly(c, [[25, 12 + hop], [30, 13 + hop], [29, 15 + hop], [25, 15 + hop]], '#e08e63');
+
+      // Signature Wide White Toothy Grin (or shouting mouth on hurt)
+      if (pose === 'hurt') {
+        poly(c, [[20, 15 + hop], [27, 15 + hop], [27, 19 + hop], [20, 19 + hop]], '#8c1d24');
+        rect(c, 21, 15 + hop, 5, 1, '#ffffff');
       } else {
-        poly(c, [[20,19+hop],[25,15+hop],[28,15+hop],[30,17+hop],[29,21+hop],[26,22+hop],[22,21+hop]], '#9a572b');
-        rect(c, 25,16+hop, 3, 1, '#d89548'); rect(c, 27,18+hop, 2, 1, '#d89548');
-        rect(c, 27,13+hop, 2, 2, '#e9dfc4'); rect(c, 30,18+hop, 1, 2, '#e9dfc4');
+        poly(c, [[18, 15 + hop], [28, 15 + hop], [27, 19 + hop], [19, 19 + hop]], '#ffffff');
+        rect(c, 19, 17 + hop, 8, 1, '#2b1b17'); // Grin teeth line
+        rect(c, 22, 15 + hop, 1, 4, '#2b1b17');
+        rect(c, 25, 15 + hop, 1, 4, '#2b1b17');
+      }
+
+      // 7. Massive Spiked Wooden Club & Muscular Forearm
+      if (pose === 'windup') {
+        // Raised overhead ready to smash!
+        poly(c, [[21, 18 + hop], [26, 14 + hop], [29, 16 + hop], [25, 21 + hop]], '#f2aa7e');
+        poly(c, [[24, 15 + hop], [21, 2], [29, 0], [32, 3], [28, 16 + hop]], '#8c4820');
+        rect(c, 23, 3, 4, 10, '#c4743d');
+        rect(c, 22, 1, 7, 2, '#e8b278'); // Club end grain
+        // Silver/stone spikes
+        poly(c, [[21, 4], [17, 3], [21, 7]], '#e6eef7');
+        poly(c, [[21, 9], [17, 9], [22, 11]], '#e6eef7');
+        poly(c, [[30, 4], [34, 3], [30, 7]], '#e6eef7');
+      } else if (pose === 'attack') {
+        // Heavy downward smash with huge spiked barrel!
+        poly(c, [[22, 19 + hop], [29, 20 + hop], [31, 24 + hop], [24, 23 + hop]], '#f2aa7e');
+        poly(c, [[27, 21 + hop], [42, 22], [46, 26], [44, 34], [39, 35], [26, 24 + hop]], '#8c4820');
+        poly(c, [[29, 22 + hop], [42, 24], [43, 28], [28, 24 + hop]], '#c4743d', null);
+        poly(c, [[42, 23], [46, 26], [44, 33], [40, 31]], '#e3ac72'); // Wood ring face
+        // Prominent metallic conical spikes
+        poly(c, [[35, 22], [37, 17], [39, 23]], '#e6eef7');
+        poly(c, [[40, 23], [44, 18], [43, 25]], '#e6eef7');
+        poly(c, [[34, 31], [35, 37], [38, 33]], '#dce6f2');
+        poly(c, [[39, 33], [42, 39], [43, 34]], '#dce6f2');
+      } else {
+        // Held forward at an angle, ready for action (matching banner pose)
+        poly(c, [[21, 19 + hop], [28, 19 + hop], [30, 23 + hop], [22, 23 + hop]], '#f2aa7e');
+        rect(c, 23, 20 + hop, 5, 2, '#ffd0ab');
+        poly(c, [
+          [26, 21 + hop],
+          [39, 10 + hop],
+          [45, 12 + hop],
+          [46, 18 + hop],
+          [41, 21 + hop],
+          [28, 24 + hop]
+        ], '#8c4820');
+        poly(c, [[28, 21 + hop], [40, 12 + hop], [43, 14 + hop], [30, 22 + hop]], '#c4743d', null);
+        poly(c, [[40, 11 + hop], [45, 12 + hop], [45, 18 + hop], [41, 19 + hop]], '#e3ac72'); // End grain
+        // Conical silver/stone spikes on club barrel
+        poly(c, [[34, 14 + hop], [34, 9 + hop], [37, 12 + hop]], '#e6eef7');
+        poly(c, [[38, 11 + hop], [39, 6 + hop], [41, 10 + hop]], '#e6eef7');
+        poly(c, [[36, 20 + hop], [39, 24 + hop], [40, 19 + hop]], '#dce6f2');
+        poly(c, [[41, 19 + hop], [45, 22 + hop], [44, 17 + hop]], '#dce6f2');
       }
     });
   }
@@ -431,5 +598,69 @@
   function draw(ctx, asset, x, y, w = asset.width, h = asset.height) {
     ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(asset, Math.round(x), Math.round(y), Math.round(w), Math.round(h)); ctx.restore();
   }
+
+  // Slice 128x112 RGBA transparent frames from pre-normalized sam_idle_run.png (512x112)
+  // and sam_attack.png (256x112) using pure drawImage so it works on both file:// and https://.
+  function extractSheetFrames(img, expectedCount) {
+    const frames = [];
+    const cellW = 128;
+    const cellH = 112;
+    for (let i = 0; i < expectedCount; i++) {
+      const out = document.createElement('canvas');
+      out.width = cellW;
+      out.height = cellH;
+      const octx = out.getContext('2d');
+      octx.imageSmoothingEnabled = false;
+      octx.drawImage(img, i * cellW, 0, cellW, cellH, 0, 0, cellW, cellH);
+      frames.push(out);
+    }
+    return frames;
+  }
+
+  const sheetIdleRun = new Image();
+  const sheetAttack = new Image();
+  let idleRunFrames = null;
+  let attackFrames = null;
+
+  function applyExtractedSamSprites() {
+    if (idleRunFrames && idleRunFrames.length >= 4) {
+      const [idle0, run0, run1, jump0] = idleRunFrames;
+      // Subtle 2px breathing bob for idle1
+      const idle1 = document.createElement('canvas');
+      idle1.width = idle0.width;
+      idle1.height = idle0.height;
+      idle1.getContext('2d').drawImage(idle0, 0, 2);
+
+      sprites.sam.idle = [idle0, idle1];
+      sprites.sam.run = [run0, idle0, run1, idle1];
+      sprites.sam.jump = jump0;
+      sprites.sam.fall = jump0;
+      sprites.sam.hurt = jump0;
+    }
+    if (attackFrames && attackFrames.length >= 2) {
+      sprites.sam.windup = attackFrames[0];
+      sprites.sam.attack = attackFrames[1];
+    }
+    // Refresh any bestiary preview canvas showing Sam
+    document.querySelectorAll('.bestiary-icon[data-sprite="sam"]').forEach((canvasEl) => {
+      const sprite = sprites.sam.idle[0];
+      const context = canvasEl.getContext('2d');
+      context.clearRect(0, 0, canvasEl.width, canvasEl.height);
+      context.imageSmoothingEnabled = false;
+      context.drawImage(sprite, 0, 0, canvasEl.width, canvasEl.height);
+    });
+  }
+
+  sheetIdleRun.onload = () => {
+    idleRunFrames = extractSheetFrames(sheetIdleRun, 4);
+    applyExtractedSamSprites();
+  };
+  sheetAttack.onload = () => {
+    attackFrames = extractSheetFrames(sheetAttack, 2);
+    applyExtractedSamSprites();
+  };
+  sheetIdleRun.src = 'assets/sam_idle_run.png';
+  sheetAttack.src = 'assets/sam_attack.png';
+
   window.PixelAssets = { images, sprites, items, environment, tiles, draw };
 })();

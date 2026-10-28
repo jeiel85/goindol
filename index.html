@@ -218,8 +218,18 @@
 
     <!-- Bestiary & Items Section -->
     <section id="bestiary">
-      <h2 class="section-title">원시 시대 몬스터 & 보스 도감 (8종)</h2>
+      <h2 class="section-title">주인공 & 원시 시대 몬스터 도감 (9종)</h2>
       <div class="grid-4">
+        <div class="stone-card">
+          <canvas class="bestiary-icon" data-sprite="sam" width="96" height="96" aria-hidden="true"></canvas>
+          <h3>원시인 샘 (Sam the Caveman)</h3>
+          <p>야성적인 검은 장발과 호탕한 미소, 호피 튜닉을 입은 주인공! 거대한 철침 참나무 몽둥이와 돌도끼로 공룡과 맘모스를 제압합니다.</p>
+          <div class="badge-list">
+            <span class="mini-badge">주인공 (PLAYABLE)</span>
+            <span class="mini-badge">무기: 철침 몽둥이 & 돌도끼</span>
+          </div>
+        </div>
+
         <div class="stone-card">
           <canvas class="bestiary-icon" data-sprite="dino" width="96" height="96" aria-hidden="true"></canvas>
           <h3>초록 공룡 (Raptor)</h3>
@@ -328,15 +338,15 @@
     </p>
   </footer>
 
-  <script src="js/audio.js"></script>
-  <script src="js/pixel_assets.js"></script>
-  <script src="js/sprites.js"></script>
-  <script src="js/levels.js"></script>
-  <script src="js/game.js"></script>
+  <script charset="UTF-8" src="js/audio.js"></script>
+  <script charset="UTF-8" src="js/pixel_assets.js"></script>
+  <script charset="UTF-8" src="js/sprites.js"></script>
+  <script charset="UTF-8" src="js/levels.js"></script>
+  <script charset="UTF-8" src="js/game.js"></script>
   <script>
     document.querySelectorAll('.bestiary-icon').forEach((canvas) => {
       const entry = window.PixelAssets.sprites[canvas.dataset.sprite];
-      const sprite = entry && (entry.walk || entry.fly)[0];
+      const sprite = entry && (entry.walk || entry.fly || entry.idle)[0];
       if (!sprite) return;
       const context = canvas.getContext('2d');
       context.imageSmoothingEnabled = false;

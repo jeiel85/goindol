@@ -108,7 +108,7 @@ const SpriteRenderer = {
     if (player.invulnTimer > 0 && Math.floor(player.invulnTimer / 3) % 2 === 0) ctx.globalAlpha = 0.5;
     ctx.translate(player.x + player.w / 2, player.y + player.h);
     ctx.scale(player.facing, 1);
-    window.PixelAssets.draw(ctx, frame, -32, -64, 64, 64);
+    window.PixelAssets.draw(ctx, frame, -48, -94, 112, 98);
     ctx.restore();
   },
 

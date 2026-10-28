@@ -96,6 +96,9 @@ goindol/
     ├── bg_ice.png         # 스테이지 4 빙하기 설원 협곡 배경
     ├── bg_volcano.png     # 스테이지 5 용암 화구 성채 배경
     ├── bg_boss.png        # 스테이지 6 대고인돌 제단 보스 아레나 배경
+    ├── sam_idle_run.png   # 주인공 원시인 샘(Sam) 대기/질주/점프 16비트 스프라이트 시트
+    ├── sam_attack.png     # 주인공 원시인 샘(Sam) 몽둥이 차징/강타 16비트 스프라이트 시트
+    ├── world_map.png      # 6대 스테이지 선사시대 대륙 파노라마 월드맵
     ├── hero_banner.png    # 타이틀 & 랜딩 페이지 아케이드 키 아트
     └── gameplay_preview.png # 인게임 플레이 프리뷰 스크린샷
 ```
