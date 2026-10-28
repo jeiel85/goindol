@@ -101,6 +101,8 @@ goindol/
     ├── monsters_sheet.png # 6종 원시 몬스터(랩터/멧돼지/익룡/악어/검치호/용암렉스) 16비트 시트
     ├── bosses_sheet.png   # 2종 거대 보스(빙하 설원 수호자 / 거대 맘모스 대왕) 16비트 시트
     ├── items_sheet.png    # 11종 식량·보물·돌도끼·생명 하트 16비트 아이콘 시트
+    ├── dolmens_sheet.png  # 4종 고인돌 관문(시작문/체크포인트 성소/닫힌 출구/열린 차원문) 16비트 시트
+    ├── props_sheet.png    # 점프 버섯 & 3단계 타격 원시 보물상자 16비트 오브젝트 시트
     ├── world_map.png      # 6대 스테이지 선사시대 대륙 파노라마 월드맵
     ├── hero_banner.png    # 타이틀 & 랜딩 페이지 아케이드 키 아트
     └── gameplay_preview.png # 인게임 플레이 프리뷰 스크린샷

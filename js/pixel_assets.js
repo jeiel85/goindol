@@ -811,5 +811,47 @@
   };
   sheetItems.src = 'assets/items_sheet.png';
 
+  // Load 16-bit Dolmens Sheet (start, checkpoint, closed, open - 128x112 each)
+  const sheetDolmens = new Image();
+  sheetDolmens.onload = () => {
+    const dFrames = sliceGridFrames(sheetDolmens, 4, 128, 112);
+    if (dFrames.length >= 4) {
+      environment.dolmen.start = dFrames[0];
+      environment.dolmen.checkpoint = dFrames[1];
+      environment.dolmen.closed = dFrames[2];
+      environment.dolmen.open = dFrames[3];
+
+      // Create unlit/dimmed checkpoint shrine for before checkpoint is activated
+      const cpOff = document.createElement('canvas');
+      cpOff.width = 128;
+      cpOff.height = 112;
+      const cctx = cpOff.getContext('2d');
+      cctx.imageSmoothingEnabled = false;
+      cctx.drawImage(dFrames[1], 0, 0);
+      cctx.globalCompositeOperation = 'source-atop';
+      cctx.fillStyle = 'rgba(25, 22, 30, 0.35)';
+      cctx.fillRect(0, 0, 128, 112);
+      environment.dolmen.checkpointOff = cpOff;
+    }
+  };
+  sheetDolmens.src = 'assets/dolmens_sheet.png';
+
+  // Load 16-bit Props Sheet (mushroom, chest intact, chest cracked, chest open - 64x64 each)
+  const sheetProps = new Image();
+  sheetProps.onload = () => {
+    const pFrames = sliceGridFrames(sheetProps, 4, 64, 64);
+    if (pFrames.length >= 4) {
+      const [mushBase, chest0, chest1, chest2] = pFrames;
+      environment.mushroom = mushBase;
+      environment.totem = [chest0, chest1, chest2];
+
+      themes.forEach((t) => {
+        environment.mushroomByTheme[t] = mushBase;
+        environment.totemByTheme[t] = [chest0, chest1, chest2];
+      });
+    }
+  };
+  sheetProps.src = 'assets/props_sheet.png';
+
   window.PixelAssets = { images, sprites, items, environment, tiles, draw };
 })();

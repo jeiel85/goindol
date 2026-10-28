@@ -39,16 +39,20 @@ const SpriteRenderer = {
       ? 'start'
       : label === 'CHECKPOINT ON'
         ? 'checkpoint'
-        : label.includes('OPEN')
-          ? 'open'
-          : 'closed';
+        : label === 'CHECKPOINT'
+          ? (window.PixelAssets.environment.dolmen.checkpointOff ? 'checkpointOff' : 'checkpoint')
+          : label.includes('OPEN')
+            ? 'open'
+            : 'closed';
     const sprite = window.PixelAssets.environment.dolmen[state] || window.PixelAssets.environment.dolmen.closed;
-    window.PixelAssets.draw(ctx, sprite, x - 64 * scale, y - 112 * scale, 128 * scale, 112 * scale);
+    window.PixelAssets.draw(ctx, sprite, x - 68 * scale, y - 118 * scale, 136 * scale, 118 * scale);
     ctx.save();
     ctx.textAlign = 'center';
-    ctx.font = `bold ${Math.max(8, Math.round(9 * scale))}px monospace`;
-    ctx.fillStyle = state === 'open' ? '#baffdc' : state === 'checkpoint' ? '#ffe082' : '#f0d6a1';
-    ctx.fillText(label, x, y - 78 * scale);
+    ctx.font = `bold ${Math.max(9, Math.round(10 * scale))}px "Press Start 2P", "DungGeunMo", monospace`;
+    ctx.fillStyle = '#000';
+    ctx.fillText(label, x + 1, y - 122 * scale + 1);
+    ctx.fillStyle = state === 'open' ? '#6dffb8' : state === 'checkpoint' ? '#ffd859' : '#f0d6a1';
+    ctx.fillText(label, x, y - 122 * scale);
     ctx.restore();
   },
 
@@ -57,7 +61,7 @@ const SpriteRenderer = {
     const assets = window.PixelAssets;
     if (type === 'spring') {
       const mush = (assets.environment.mushroomByTheme && assets.environment.mushroomByTheme[theme]) || assets.environment.mushroom;
-      assets.draw(ctx, mush, x, y, w, h);
+      assets.draw(ctx, mush, x - 4, y - 14, w + 8, h + 14);
       return;
     }
     if (type === 'moving') {
@@ -87,7 +91,7 @@ const SpriteRenderer = {
     const shake = spot.hitTimer > 0 ? Math.sin(time * 2) * 3 : 0;
     const damage = Math.max(0, Math.min(2, 3 - spot.hitsLeft));
     const totemSet = (window.PixelAssets.environment.totemByTheme && window.PixelAssets.environment.totemByTheme[theme]) || window.PixelAssets.environment.totem;
-    window.PixelAssets.draw(ctx, totemSet[damage], spot.x + shake, spot.y, spot.w, spot.h);
+    window.PixelAssets.draw(ctx, totemSet[damage], spot.x + shake - 4, spot.y - 6, spot.w + 8, spot.h + 6);
   },
 
   drawCaveman(ctx, player, time) {
