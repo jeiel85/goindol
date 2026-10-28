@@ -930,53 +930,42 @@
 
   // Load 16-bit Heroes Sheet (uga, brok, tara - 128x112 each)
   const sheetHeroes = new Image();
-  sheetHeroes.onload = () => {
-    const hFrames = sliceGridFrames(sheetHeroes, 3, 128, 112);
-    const heroDefs = [
-      { key: 'uga', arcPrimary: '#47f5ff', arcSecondary: '#ffffff' },
-      { key: 'brok', arcPrimary: '#ff881a', arcSecondary: '#ffe866' },
-      { key: 'tara', arcPrimary: '#d946ef', arcSecondary: '#67e8f9' }
-    ];
-    heroDefs.forEach((def, idx) => {
-      const base = hFrames[idx];
+  const sheetHeroesAttack = new Image();
+  let heroBaseFrames = null;
+  let heroAttackFrames = null;
+
+  function applyHeroesSprites() {
+    if (!heroBaseFrames || heroBaseFrames.length < 3) return;
+    const heroKeys = ['uga', 'brok', 'tara'];
+    heroKeys.forEach((key, idx) => {
+      const base = heroBaseFrames[idx];
       if (!base) return;
 
-      const makePose = (dx, dy, scaleW, scaleH, effectMode) => {
+      const makePose = (dx, dy, scaleW, scaleH) => {
         const c = document.createElement('canvas');
         c.width = 128;
         c.height = 112;
         const ctx = c.getContext('2d');
         ctx.imageSmoothingEnabled = false;
         ctx.drawImage(base, 0, 0, 128, 112, dx, dy, scaleW, scaleH);
-
-        if (effectMode === 'attack') {
-          // Draw crisp 16-bit weapon slash / spear thrust / magic burst arc in front of hero
-          ctx.fillStyle = def.arcPrimary;
-          ctx.beginPath();
-          ctx.moveTo(76, 22);
-          ctx.quadraticCurveTo(124, 48, 116, 92);
-          ctx.quadraticCurveTo(100, 62, 76, 22);
-          ctx.fill();
-
-          ctx.fillStyle = def.arcSecondary;
-          ctx.beginPath();
-          ctx.moveTo(86, 30);
-          ctx.quadraticCurveTo(120, 52, 112, 84);
-          ctx.quadraticCurveTo(100, 58, 86, 30);
-          ctx.fill();
-        }
         return c;
       };
 
       const idle0 = base;
-      const idle1 = makePose(0, 2, 128, 110, null);
-      const run0 = makePose(3, -3, 124, 112, null);
-      const run1 = makePose(-2, 1, 126, 110, null);
-      const jump0 = makePose(0, -5, 126, 112, null);
-      const windup = makePose(-4, -2, 126, 112, null);
-      const attack = makePose(6, 1, 122, 111, 'attack');
+      const idle1 = makePose(0, 2, 128, 110);
+      const run0 = makePose(3, -3, 124, 112);
+      const run1 = makePose(-2, 1, 126, 110);
+      const jump0 = makePose(0, -5, 126, 112);
 
-      sprites[def.key] = {
+      // Custom high-quality 16-bit windup & attack frames from heroes_attack.png
+      let windup = makePose(-4, -2, 126, 112);
+      let attack = makePose(6, 1, 122, 111);
+      if (heroAttackFrames && heroAttackFrames.length >= 6) {
+        windup = heroAttackFrames[idx * 2];
+        attack = heroAttackFrames[idx * 2 + 1];
+      }
+
+      sprites[key] = {
         idle: [idle0, idle1],
         run: [run0, idle0, run1, idle1],
         jump: jump0,
@@ -987,8 +976,18 @@
       };
     });
     refreshBestiaryDom();
+  }
+
+  sheetHeroes.onload = () => {
+    heroBaseFrames = sliceGridFrames(sheetHeroes, 3, 128, 112);
+    applyHeroesSprites();
+  };
+  sheetHeroesAttack.onload = () => {
+    heroAttackFrames = sliceGridFrames(sheetHeroesAttack, 6, 128, 112);
+    applyHeroesSprites();
   };
   sheetHeroes.src = 'assets/heroes_sheet.png';
+  sheetHeroesAttack.src = 'assets/heroes_attack.png';
 
   // Load 16-bit Power-Up Items Sheet (chili, shield, magnet, feather, bomb, golden_egg - 64x64 each)
   const sheetPowerups = new Image();
